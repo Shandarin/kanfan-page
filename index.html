@@ -14,12 +14,12 @@
            LANDING PAGE SPECIFIC STYLES
            ========================================= */
 
-        /* 局部变量：仅在本页使用的颜色 */
+        /* 局部变量 */
         :root {
-            --lp-purple: #9333ea; /* Max 套餐专用色 */
+            --lp-purple: #9333ea;
         }
 
-        /* Nav (覆盖部分默认样式以适应落地页效果) */
+        /* Nav */
         .lp-nav {
             padding: 1.25rem 8%;
             display: flex;
@@ -34,15 +34,15 @@
         }
         .lp-logo {
             font-size: 1.5rem; font-weight: 800;
-            color: var(--primary); /* 使用全局变量 */
+            color: var(--primary);
             text-decoration: none;
             display: flex; align-items: center; gap: 8px;
         }
 
-        /* Buttons (落地页专用按钮样式) */
+        /* Buttons */
         .lp-btn {
             display: inline-flex; align-items: center; gap: 8px;
-            background: var(--primary); /* 使用全局变量 */
+            background: var(--primary);
             color: white;
             padding: 12px 24px;
             border-radius: 50px;
@@ -56,7 +56,7 @@
             white-space: nowrap;
         }
         .lp-btn:hover {
-            background: var(--primary-hover); /* 使用全局变量 */
+            background: var(--primary-hover);
             transform: translateY(-2px);
             box-shadow: 0 10px 15px -3px rgba(249, 115, 22, 0.4);
         }
@@ -203,18 +203,17 @@
         </div>
 
         <div class="lp-plan" style="border-color: #94a3b8;">
-            <h3 style="color: #475569;">Pay As You Go</h3>
-            <div class="lp-plan-price" style="font-size: 1.8rem;">$1.49<span>/1000 img</span></div>
+            <h3 style="color: #475569;">Flex</h3>
+            <div class="lp-plan-price" style="font-size: 1.8rem;">$1.49<span>/1k units</span></div>
             <ul class="lp-features-list">
                 <li><span class="lp-check">✓</span> No monthly fees</li>
                 <li><span class="lp-check">✓</span> Pay only for usage</li>
                 <li><span class="lp-check">✓</span> Billed monthly</li>
             </ul>
-            <a onclick="startPayg()"
-               class="lp-btn"
-               style="background:#475569;width:100%;justify-content:center;">
-                Activate Pay As You Go
+            <a onclick="handleMeteredCheckout('price_xxxxxxxxxxxxxxxxx')" class="lp-btn" style="background: #475569; width:100%; justify-content:center; cursor: pointer;">
+                Start Flex
             </a>
+            <p style="text-align:center; font-size: 0.8rem; color: #94a3b8; margin-top: 8px;">(Requires Login)</p>
         </div>
 
         <div class="lp-plan popular">
@@ -228,6 +227,7 @@
             </ul>
             <a onclick="handleSubscribe('https://buy.stripe.com/9B69AVgkUbSL2KS5SIgw00b')" class="lp-btn" style="width:100%; justify-content:center;">Subscribe Pro</a>
         </div>
+
         <div class="lp-plan">
             <h3 style="color:var(--lp-purple);">Max</h3>
             <div class="lp-plan-price">$6.99<span>/mo</span></div>
@@ -258,10 +258,10 @@
 </footer>
 
 <div id="agreementModal" class="modal">
-    <div class="modal-content"><span class="close-btn" onclick="closeModal('agreementModal')">&times;</span><h2>Terms</h2><p>...</p></div>
+    <div class="modal-content"><span class="close-btn" onclick="closeModal('agreementModal')">&times;</span><h2>Terms</h2><p>User agreement text...</p></div>
 </div>
 <div id="refundModal" class="modal">
-    <div class="modal-content"><span class="close-btn" onclick="closeModal('refundModal')">&times;</span><h2>Refund Policy</h2><p>...</p></div>
+    <div class="modal-content"><span class="close-btn" onclick="closeModal('refundModal')">&times;</span><h2>Refund Policy</h2><p>Refund policy text...</p></div>
 </div>
 
 <script>
@@ -279,27 +279,73 @@
         }
     });
 
-    // Subscribe Handler
+    // 1. Pro / Max Handler (Legacy Links)
     async function handleSubscribe(stripeUrl) {
         const { data: { session } } = await sb.auth.getSession();
         if (!session) {
-            // Save intent if needed, then redirect
             window.location.href = 'login.html';
         } else {
             const finalUrl = stripeUrl + (stripeUrl.includes('?') ? '&' : '?') + "prefilled_email=" + encodeURIComponent(session.user.email);
             window.location.href = finalUrl;
         }
     }
-    async function startPayg() {
+
+    // 2. Flex / Usage-based Handler (AWS Lambda)
+    async function handleMeteredCheckout(priceId) {
         const { data: { session } } = await sb.auth.getSession();
+
         if (!session) {
             window.location.href = 'login.html';
             return;
         }
 
-        // 已登录 → 去账户页处理
-        window.location.href = 'account.html#billing';
+        // 这里的 URL 必须替换为你自己的 AWS Lambda API Gateway URL
+        const LAMBDA_URL = "YOUR_AWS_LAMBDA_URL_HERE";
+
+        if (LAMBDA_URL === "YOUR_AWS_LAMBDA_URL_HERE") {
+            alert("Please configure the AWS Lambda URL in index.html code.");
+            return;
+        }
+
+        const btn = event.currentTarget;
+        const originalText = btn.innerText;
+        btn.innerText = "Processing...";
+        btn.style.opacity = "0.7";
+        btn.style.pointerEvents = "none";
+
+        try {
+            const response = await fetch(LAMBDA_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    priceId: priceId,
+                    email: session.user.email,
+                    returnUrl: window.location.origin // 自动获取 https://kanfan.site
+                })
+            });
+
+            const data = await response.json();
+
+            if (data.url) {
+                window.location.href = data.url;
+            } else {
+                console.error("API Error:", data);
+                alert("Error: " + (data.error || "Could not init checkout"));
+                resetBtn(btn, originalText);
+            }
+        } catch (error) {
+            console.error("Network Error:", error);
+            alert("Network error. Please try again.");
+            resetBtn(btn, originalText);
+        }
     }
+
+    function resetBtn(btn, text) {
+        btn.innerText = text;
+        btn.style.opacity = "1";
+        btn.style.pointerEvents = "auto";
+    }
+
     // Modal Logic
     function openModal(id) { document.getElementById(id).style.display = "block"; }
     function closeModal(id) { document.getElementById(id).style.display = "none"; }
