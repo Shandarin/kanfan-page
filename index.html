@@ -210,9 +210,10 @@
                 <li><span class="lp-check">✓</span> Pay only for usage</li>
                 <li><span class="lp-check">✓</span> Billed monthly</li>
             </ul>
-            <a onclick="handleMeteredCheckout('price_1SwcMjPy6A92Pe9GKkgVAA9k')" class="lp-btn" style="background: #475569; width:100%; justify-content:center; cursor: pointer;">
+            <a onclick="handleMeteredCheckout(event, 'price_1SwcMjPy6A92Pe9GKkgVAA9k')" class="lp-btn" style="background: #475569; width:100%; justify-content:center; cursor: pointer;">
                 Start Flex
             </a>
+            <p style="text-align:center; font-size: 0.8rem; color: #94a3b8; margin-top: 8px;">(Requires Login)</p>
         </div>
 
         <div class="lp-plan popular">
@@ -224,7 +225,7 @@
                 <li><span class="lp-check">✓</span> No text, no charge</li>
                 <li><span class="lp-check">✓</span> Fast Server Priority</li>
             </ul>
-            <a onclick="handleSubscribe('https://buy.stripe.com/8x28wRfgQ2ibadkgxmgw00d')" class="lp-btn" style="width:100%; justify-content:center;">Subscribe Pro</a>
+            <a onclick="handleSubscribe('https://buy.stripe.com/9B69AVgkUbSL2KS5SIgw00b')" class="lp-btn" style="width:100%; justify-content:center;">Subscribe Pro</a>
         </div>
 
         <div class="lp-plan">
@@ -290,7 +291,10 @@
     }
 
     // 2. Flex / Usage-based Handler (AWS Lambda)
-    async function handleMeteredCheckout(priceId) {
+    // 修复：接收 event 参数，修复 undefined 报错
+    async function handleMeteredCheckout(event, priceId) {
+        if (event) event.preventDefault();
+
         const { data: { session } } = await sb.auth.getSession();
 
         if (!session) {
@@ -298,16 +302,13 @@
             return;
         }
 
-        // 这里的 URL 必须替换为你自己的 AWS Lambda API Gateway URL
+        // 这里的 URL 已经替换为你提供的 AWS Lambda URL
         const LAMBDA_URL = "https://3xdsowzhlx7zdqs4wcastqoxlu0xqllf.lambda-url.us-west-1.on.aws/";
-
-        if (LAMBDA_URL === "YOUR_AWS_LAMBDA_URL_HERE") {
-            alert("Please configure the AWS Lambda URL in index.html code.");
-            return;
-        }
 
         const btn = event.currentTarget;
         const originalText = btn.innerText;
+
+        // 按钮状态反馈
         btn.innerText = "Processing...";
         btn.style.opacity = "0.7";
         btn.style.pointerEvents = "none";
@@ -317,9 +318,9 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    priceId: priceId,
+                    priceId: priceId, // 发送 Price ID
                     email: session.user.email,
-                    returnUrl: window.location.origin // 自动获取 https://kanfan.site
+                    returnUrl: window.location.origin
                 })
             });
 
