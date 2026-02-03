@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanfan - AI Manga Translator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Nav */
+        .lp-nav {
+            padding: 1.25rem 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            border-bottom: 1px solid #fed7aa;
+        }
+        .lp-logo {
+            font-size: 1.5rem; font-weight: 800;
+            color: var(--lp-primary);
+            text-decoration: none;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        /* Buttons */
+        .lp-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--lp-primary);
+            color: white;
+            padding: 12px 24px; /* 稍微减小 padding 以适应更紧凑的布局 */
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            transition: all 0.2s;
+            border: none;
+            cursor: pointer;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 6px -1px rgba(249, 115, 22, 0.3);
+            white-space: nowrap;
+        }
+        .lp-btn:hover {
+            background: var(--lp-primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(249, 115, 22, 0.4);
+        }
+
+        /* Hero Section */
+        .lp-hero {
+            padding: 60px 8%;
+            display: flex; align-items: center; justify-content: space-between; gap: 60px;
+            background: radial-gradient(circle at top right, #fff7ed, #ffffff);
+            min-height: 70vh; 
+        }
+        .lp-hero-text { flex: 1; max-width: 600px; }
+        .lp-hero h1 { font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; }
+        .lp-hero h1 span { color: var(--lp-primary); }
+        .lp-hero p { font-size: 1.2rem; color: var(--lp-slate); margin-bottom: 2rem; line-height: 1.6; }
+
+        .lp-app-preview { flex: 1; display: flex; justify-content: center; position: relative; }
+        .lp-mockup-frame {
+            width: 340px; background: #fff; border: 8px solid #0f172a; border-radius: 30px;
+            overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); position: relative; z-index: 10;
+        }
+        .lp-mockup-header { height: 24px; background: #0f172a; display: flex; justify-content: center; align-items: center; }
+        .lp-mockup-camera { width: 60px; height: 12px; background: #1e293b; border-radius: 10px; }
+
+        /* =========================================
+           PRICING GRID (Modified for 4 columns)
+           ========================================= */
+        .lp-pricing { 
+            padding: 60px 5%; /* 左右留白稍微减小 */
+            background: #fafafa; 
+            text-align: center; 
+            border-top: 1px solid #e2e8f0; 
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .lp-price-grid {
+            display: grid;
+            /* 强制 4 列均分 */
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px; /* 间距稍微减小 */
+            max-width: 1280px; /* 增加最大宽度以容纳 4 个卡片 */
+            margin: 40px auto 0;
+        }
+
+        /* 响应式：平板变 2 列，手机变 1 列 */
+        @media (max-width: 1100px) {
+            .lp-price-grid { grid-template-columns: repeat(2, 1fr); max-width: 700px; }
+        }
+        @media (max-width: 600px) {
+            .lp-price-grid { grid-template-columns: 1fr; }
+        }
+
+        .lp-plan {
+            background: white; padding: 25px; border-radius: 16px; border: 1px solid #e2e8f0;
+            text-align: left; transition: transform 0.2s; display: flex; flex-direction: column;
+            position: relative;
+        }
+        .lp-plan:hover { transform: translateY(-5px); border-color: var(--lp-primary); z-index: 2; }
+        
+        /* Popular Plan Highlight */
+        .lp-plan.popular { border: 2px solid var(--lp-primary); transform: scale(1.02); z-index: 1; box-shadow: 0 10px 30px -10px rgba(249, 115, 22, 0.15); }
+        .lp-plan.popular:hover { transform: scale(1.02) translateY(-5px); }
+
+        .lp-badge { position: absolute; top: -12px; right: 20px; background: var(--lp-primary); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
+        
+        .lp-plan h3 { margin-top: 0; font-size: 1.1rem; margin-bottom: 0.5rem; }
+        .lp-plan-price { font-size: 2rem; font-weight: 800; margin: 10px 0; color: var(--lp-dark); }
+        .lp-plan-price span { font-size: 0.85rem; color: var(--lp-slate); font-weight: 500; }
+        
+        .lp-features-list { list-style: none; padding: 0; margin-bottom: 20px; flex-grow: 1; }
+        .lp-features-list li { margin-bottom: 8px; color: var(--lp-slate); display: flex; align-items: center; font-size: 0.9rem; }
+        .lp-check { color: #10b981; margin-right: 8px; flex-shrink: 0; }
+
+        /* Features Section */
+        .lp-features {
+            padding: 80px 8%; background: #fff;
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;
+        }
+        .lp-feature-card { padding: 30px; border-radius: 20px; background: #f8fafc; border: 1px solid #e2e8f0; }
+
+        /* Footer */
+        .lp-footer { padding: 60px 8%; text-align: center; border-top: 1px solid #e2e8f0; color: var(--lp-slate); font-size: 0.9rem; }
+        .lp-footer a { color: var(--lp-slate); text-decoration: none; margin: 0 10px; cursor: pointer; }
+
+        /* Modal */
+        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); }
+        .modal-content { background-color: #ffffff; margin: 5vh auto; padding: 40px; border-radius: 24px; width: 90%; max-width: 800px; max-height: 85vh; overflow-y: auto; position: relative; }
+        .close-btn { float: right; font-size: 28px; cursor: pointer; }
+
+        /* Mockup Internal */
+        #app-preview-root { padding: 16px; background: #f8fafc; height: 100%; }
+        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; color: var(--lp-primary); font-weight: 800; }
+        .status-banner { background: #fff7ed; border: 1px solid #fed7aa; padding: 12px; border-radius: 12px; margin-bottom: 12px; }
+        .card { background: white; border: 1px solid #e2e8f0; padding: 12px; border-radius: 12px; border-top: 3px solid var(--lp-primary); }
+    </style>
+</head>
+<body>
+
+    <nav class="lp-nav">
+        <a href="#" class="lp-logo">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+            Kanfan
+        </a>
+        <div style="display: flex; gap: 15px; align-items: center;">
+            <a href="login.html" id="nav-login-btn" style="color: var(--lp-dark); text-decoration: none; font-weight: 600; font-size: 0.95rem;">Sign In</a>
+            <a href="https://chromewebstore.google.com/detail/kanfan-manga-translator/ffjpelbfmecoidnkjapdhpcbeianmkpp" target="_blank" class="lp-btn">Install Extension</a>
+        </div>
+    </nav>
+
+    <header class="lp-hero">
+        <div class="lp-hero-text">
+            <h1>Read Manga in <br><span>Your Language</span></h1>
+            <p>The smartest AI-powered manga translator extension. Translate raw manga directly in your browser with zero friction.</p>
+            <a href="https://chromewebstore.google.com/detail/kanfan-manga-translator/ffjpelbfmecoidnkjapdhpcbeianmkpp" target="_blank" class="lp-btn">Chrome Web Store</a>
+            <a href="https://microsoftedge.microsoft.com/addons/detail/kanfan-manga-translator/hjdegcejfgbcikdcgafigaoieicofada" target="_blank" class="lp-btn" style="background: var(--lp-dark);">Edge Add-ons</a>
+        </div>
+        <div class="lp-app-preview">
+            <div class="lp-mockup-frame">
+                <div class="lp-mockup-header"><div class="lp-mockup-camera"></div></div>
+                <div id="app-preview-root">
+                    <div class="header">Kanfan Translator</div>
+                    <div class="status-banner">
+                        <div style="font-size: 12px; font-weight: 700;">Guest User <span style="font-weight:400; color:var(--lp-slate);">Free</span></div>
+                        <div style="font-size: 11px; color: var(--lp-primary); margin-top:4px;">Daily Quota: 50/50</div>
+                    </div>
+                    <div class="card">
+                        <div style="height:30px; background:#f1f5f9; border-radius:6px; margin-bottom:8px;"></div>
+                        <div style="display:flex; gap:8px;">
+                            <div style="flex:1; height:30px; background:#f1f5f9; border-radius:6px;"></div>
+                            <div style="flex:1; height:30px; background:#f1f5f9; border-radius:6px;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section class="lp-pricing" id="pricing">
+        <h2>Pricing</h2>
+        <div class="lp-price-grid">
+            
+            <div class="lp-plan">
+                <h3>Free</h3>
+                <div class="lp-plan-price">$0<span>/mo</span></div>
+                <ul class="lp-features-list">
+                    <li><span class="lp-check">✓</span> 80 Weekly Translations</li>
+                </ul>
+                <a href="https://chromewebstore.google.com/detail/kanfan-manga-translator/ffjpelbfmecoidnkjapdhpcbeianmkpp" target="_blank" class="lp-btn" style="background:var(--lp-slate); width:100%; justify-content:center;">Install</a>
+            </div>
+
+            <div class="lp-plan" style="border-color: #94a3b8;">
+                <h3 style="color: #475569;">Pay As You Go</h3>
+                <div class="lp-plan-price" style="font-size: 1.8rem;">$1.49<span>/1000 img</span></div>
+                <ul class="lp-features-list">
+                    <li><span class="lp-check">✓</span> No monthly fees</li>
+                    <li><span class="lp-check">✓</span> Pay only for usage</li>
+                    <li><span class="lp-check">✓</span> Billed monthly</li>
+                </ul>
+                <a onclick="handleSubscribe('YOUR_STRIPE_METERED_LINK_HERE')" class="lp-btn" style="background: #475569; width:100%; justify-content:center;">Start Flex</a>
+            </div>
+
+            <div class="lp-plan popular">
+                <div class="lp-badge">POPULAR</div>
+                <h3 style="color:var(--lp-primary);">Pro</h3>
+                <div class="lp-plan-price">$2.99<span>/mo</span></div>
+                <ul class="lp-features-list">
+                    <li><span class="lp-check">✓</span> 2,500 Weekly Quota</li>
+                    <li><span class="lp-check">✓</span> No text, no charge</li>
+                    <li><span class="lp-check">✓</span> Fast Server Priority</li>
+                </ul>
+                <a onclick="handleSubscribe('https://buy.stripe.com/28EfZjgkU8GzfxE0yogw000')" class="lp-btn" style="width:100%; justify-content:center;">Subscribe Pro</a>
+            </div>
+
+            <div class="lp-plan">
+                <h3 style="color:var(--lp-purple);">Max</h3>
+                <div class="lp-plan-price">$6.99<span>/mo</span></div>
+                <ul class="lp-features-list">
+                    <li><span class="lp-check">✓</span> Unlimited Quota</li>
+                    <li><span class="lp-check">✓</span> No text, no charge</li>
+                    <li><span class="lp-check">✓</span> Fast Server Priority</li>
+                </ul>
+                <a onclick="handleSubscribe('https://buy.stripe.com/aFacN72u41e785c5SIgw002')" class="lp-btn" style="background:var(--lp-purple); width:100%; justify-content:center;">Subscribe Max</a>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="lp-features">
+        <div class="lp-feature-card"><h3>⚡ Smart OCR</h3><p>High-speed text recognition optimized for manga fonts.</p></div>
+        <div class="lp-feature-card"><h3>🎨 In-paint Cleaning</h3><p>Automatically removes original text and restores art.</p></div>
+        <div class="lp-feature-card"><h3>🌍 Multi-Language</h3><p>Instant translation into 20+ other languages.</p></div>
+    </section>
+
+    <footer class="lp-footer">
+        <p>&copy; 2026 Kanfan Project.</p>
+        <div style="margin-top: 15px;">
+            <a href="mailto:support@kanfan.site">Contact</a> | 
+            <a onclick="openModal('agreementModal')">Terms</a> | 
+            <a onclick="openModal('refundModal')">Refunds</a>
+        </div>
+    </footer>
+
+    <div id="agreementModal" class="modal">
+        <div class="modal-content"><span class="close-btn" onclick="closeModal('agreementModal')">&times;</span><h2>Terms</h2><p>...</p></div>
+    </div>
+    <div id="refundModal" class="modal">
+        <div class="modal-content"><span class="close-btn" onclick="closeModal('refundModal')">&times;</span><h2>Refund Policy</h2><p>...</p></div>
+    </div>
+
+    <script>
+        // Config
+        const SUPABASE_URL = "https://ikriqgjylpbwqihwpsho.supabase.co";
+        const SUPABASE_ANON_KEY = "sb_publishable_xdQsvfTfJEwfNjF5KYvxLA_y4QiKqFo";
+        const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+        // Check Login
+        sb.auth.getSession().then(({ data: { session } }) => {
+            if (session) {
+                const navBtn = document.getElementById('nav-login-btn');
+                navBtn.textContent = "My Account";
+                navBtn.href = "account.html";
+            }
+        });
+
+        // Subscribe Handler
+        async function handleSubscribe(stripeUrl) {
+            const { data: { session } } = await sb.auth.getSession();
+            if (!session) {
+                // Save intent if needed, then redirect
+                window.location.href = 'login.html';
+            } else {
+                const finalUrl = stripeUrl + (stripeUrl.includes('?') ? '&' : '?') + "prefilled_email=" + encodeURIComponent(session.user.email);
+                window.location.href = finalUrl;
+            }
+        }
+
+        // Modal Logic
+        function openModal(id) { document.getElementById(id).style.display = "block"; }
+        function closeModal(id) { document.getElementById(id).style.display = "none"; }
+        window.onclick = (e) => { if(e.target.className === 'modal') e.target.style.display = "none"; }
+    </script>
+</body>
+</html>
