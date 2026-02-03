@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,211 +6,302 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Account - Kanfan</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* =========================================
+           ACCOUNT PAGE SPECIFIC STYLES
+           ========================================= */
+
+        /* 布局容器 */
+        .account-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 0 20px;
+            width: 100%;
+            flex: 1;
+        }
+
+        /* 标题 */
+        .page-title {
+            font-size: 1.8rem;
+            font-weight: 800;
+            margin-bottom: 30px;
+            color: var(--dark);
+        }
+
+        /* 导航栏右侧 */
+        .nav-right { display: flex; align-items: center; gap: 15px; }
+
+        /* Logo 微调 */
+        .logo {
+            font-weight: 800;
+            font-size: 1.25rem;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        /* 覆盖卡片样式 */
+        .section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+        .section-title { font-size: 1.1rem; font-weight: 700; color: var(--dark); margin-bottom: 5px; }
+        .section-desc { font-size: 0.9rem; color: var(--slate); line-height: 1.5; }
+
+        /* 用户信息行 */
+        .info-row {
+            display: flex;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #f1f5f9;
+        }
+        .info-row:last-child { border-bottom: none; }
+        .info-label { width: 120px; color: var(--slate); font-size: 0.9rem; }
+        .info-value { font-weight: 500; color: var(--dark); flex: 1; }
+
+        /* 特殊按钮样式补充 */
+        .btn-outline {
+            background: white;
+            border: 1px solid #cbd5e1;
+            color: var(--slate);
+            padding: 8px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .btn-outline:hover { border-color: var(--dark); color: var(--dark); }
+
+        .btn-text {
+            background: none;
+            border: none;
+            color: var(--primary);
+            padding: 0;
+            font-size: 0.9rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .btn-text:hover { text-decoration: underline; color: var(--primary-hover); }
+
+        /* 扩展同步状态卡片颜色 */
+        .sync-card {
+            background: #f0f9ff;
+            border: 1px solid #bae6fd;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            display: none;
+        }
+    </style>
 </head>
 <body>
 
-    <nav>
-        <a href="index.html" class="logo">Kanfan</a>
-        <div class="nav-right">
-            <span id="nav-email" style="font-size: 0.9rem; color: var(--slate); margin-right: 10px;"></span>
-            <button id="btn-logout" class="btn btn-outline" style="padding: 6px 16px; font-size: 0.85rem;">Sign Out</button>
-        </div>
-    </nav>
+<nav class="navbar">
+    <a href="index.html" class="logo">Kanfan</a>
+    <div class="nav-right">
+        <span id="nav-email" style="font-size: 0.9rem; color: var(--slate); margin-right: 10px;"></span>
+        <button id="btn-logout" class="btn-outline" style="font-size: 0.85rem;">Sign Out</button>
+    </div>
+</nav>
 
-    <div class="container">
-        
-        <div id="sync-status" class="card" style="display: none; background: #f0f9ff; border-color: #bae6fd;">
-            <div style="display: flex; gap: 15px; align-items: center;">
-                <svg width="24" height="24" fill="none" stroke="#0284c7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-                <div>
-                    <h3 style="font-size: 1rem; color: #0c4a6e; margin-bottom: 2px;">Extension Connected</h3>
-                    <p style="font-size: 0.9rem; color: #0369a1;">Your account is now synced with the Kanfan browser extension.</p>
-                </div>
+<div class="account-container">
+
+    <div id="sync-status" class="sync-card">
+        <div style="display: flex; gap: 15px; align-items: center;">
+            <svg width="24" height="24" fill="none" stroke="#0284c7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            <div>
+                <h3 style="font-size: 1rem; color: #0c4a6e; margin-bottom: 2px;">Extension Connected</h3>
+                <p style="font-size: 0.9rem; color: #0369a1;">Your account is now synced with the Kanfan browser extension.</p>
             </div>
         </div>
-
-        <h1 class="page-title">Account Settings</h1>
-
-        <div class="card">
-            <div class="section-header">
-                <div>
-                    <div class="section-title">Profile</div>
-                    <div class="section-desc">Manage your login information</div>
-                </div>
-            </div>
-
-            <div class="info-row">
-                <span class="info-label">Email</span>
-                <span class="info-value" id="user-email">Loading...</span>
-            </div>
-            <div class="info-row">
-                <span class="info-label">Password</span>
-                <span class="info-value">••••••••</span>
-                <button id="btn-reset-pw" class="btn btn-text">Change</button>
-            </div>
-            <div id="pw-msg" class="msg-box"></div>
-        </div>
-
-        <div class="card">
-            <div class="section-header">
-                <div>
-                    <div class="section-title">Subscription & Billing</div>
-                    <div class="section-desc">Manage your plan, payment methods, and invoices via Stripe</div>
-                </div>
-            </div>
-
-            <p style="color: var(--slate); font-size: 0.95rem; margin-bottom: 20px;">
-                You will be redirected to our secure billing portal hosted by Stripe.
-            </p>
-
-            <button id="btn-portal" class="btn btn-primary">
-                Manage Subscription <span style="margin-left: 8px">→</span>
-            </button>
-            <div id="portal-msg" class="msg-box"></div>
-        </div>
-
     </div>
 
-    <script>
-        // ================= CONFIG =================
-        const SUPABASE_URL = "https://ikriqgjylpbwqihwpsho.supabase.co";
-        const SUPABASE_ANON_KEY = "sb_publishable_xdQsvfTfJEwfNjF5KYvxLA_y4QiKqFo";
-        // 你的 Python 后端 API 地址 (AWS API Gateway)
-        const API_BASE_URL = "https://pg4wru4uxh.execute-api.us-west-1.amazonaws.com/auth";
+    <h1 class="page-title">Account Settings</h1>
 
-        const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-        let currentUser = null;
+    <div class="card">
+        <div class="section-header">
+            <div>
+                <div class="section-title">Profile</div>
+                <div class="section-desc">Manage your login information</div>
+            </div>
+        </div>
 
-        // ================= INIT =================
-        async function init() {
-            // 1. Check Session
-            const { data: { session } } = await sb.auth.getSession();
-            
-            if (!session) {
-                // Not logged in -> Redirect to login
-                // 保留 source 参数以便登录后跳回
-                const params = new URLSearchParams(window.location.search);
-                window.location.href = `login.html?${params.toString()}`;
-                return;
-            }
+        <div class="info-row">
+            <span class="info-label">Email</span>
+            <span class="info-value" id="user-email">Loading...</span>
+        </div>
+        <div class="info-row">
+            <span class="info-label">Password</span>
+            <span class="info-value">••••••••</span>
+            <button id="btn-reset-pw" class="btn-text">Change</button>
+        </div>
+        <div id="pw-msg" class="msg"></div>
+    </div>
 
-            currentUser = session.user;
-            updateUI(session.user);
-            checkExtensionSync(session);
-        }
+    <div class="card">
+        <div class="section-header">
+            <div>
+                <div class="section-title">Subscription & Billing</div>
+                <div class="section-desc">Manage your plan, payment methods, and invoices via Stripe</div>
+            </div>
+        </div>
 
-        function updateUI(user) {
-            document.getElementById('user-email').textContent = user.email;
-            document.getElementById('nav-email').textContent = user.email;
-        }
+        <p style="color: var(--slate); font-size: 0.95rem; margin-bottom: 20px;">
+            You will be redirected to our secure billing portal hosted by Stripe.
+        </p>
 
-        // ================= LOGIC: EXTENSION SYNC =================
-        function checkExtensionSync(session) {
+        <button id="btn-portal" class="btn">
+            Manage Subscription <span style="margin-left: 8px">→</span>
+        </button>
+        <div id="portal-msg" class="msg"></div>
+    </div>
+
+</div>
+
+<script>
+    // ================= CONFIG =================
+    const SUPABASE_URL = "https://ikriqgjylpbwqihwpsho.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_xdQsvfTfJEwfNjF5KYvxLA_y4QiKqFo";
+    // 你的 Python 后端 API 地址 (AWS API Gateway)
+    const API_BASE_URL = "https://pg4wru4uxh.execute-api.us-west-1.amazonaws.com/auth";
+
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    let currentUser = null;
+
+    // ================= INIT =================
+    async function init() {
+        // 1. Check Session
+        const { data: { session } } = await sb.auth.getSession();
+
+        if (!session) {
+            // Not logged in -> Redirect to login
             const params = new URLSearchParams(window.location.search);
-            const source = params.get('source');
-
-            // 只要 source 是 extension，我们就广播 Token
-            if (source === 'extension') {
-                document.getElementById('sync-status').style.display = 'block';
-                
-                // 发送消息给 Content Script (index.js)
-                // Content Script 会接收这个消息并转发给 Background 存储
-                window.postMessage({
-                    type: "KANFAN_WEB_AUTH",
-                    payload: {
-                        access_token: session.access_token,
-                        refresh_token: session.refresh_token,
-                        expires_in: session.expires_in,
-                        user: session.user
-                    }
-                }, window.location.origin);
-
-                console.log("Synced auth to extension");
-            }
+            window.location.href = `login.html?${params.toString()}`;
+            return;
         }
 
-        // ================= ACTIONS =================
+        currentUser = session.user;
+        updateUI(session.user);
+        checkExtensionSync(session);
+    }
 
-        // 1. Logout
-        document.getElementById('btn-logout').addEventListener('click', async () => {
-            await sb.auth.signOut();
-            window.location.href = 'index.html';
+    function updateUI(user) {
+        document.getElementById('user-email').textContent = user.email;
+        document.getElementById('nav-email').textContent = user.email;
+    }
+
+    // ================= LOGIC: EXTENSION SYNC =================
+    function checkExtensionSync(session) {
+        const params = new URLSearchParams(window.location.search);
+        const source = params.get('source');
+
+        // 只要 source 是 extension，我们就广播 Token
+        if (source === 'extension') {
+            document.getElementById('sync-status').style.display = 'block';
+
+            // 发送消息给 Content Script (index.js)
+            window.postMessage({
+                type: "KANFAN_WEB_AUTH",
+                payload: {
+                    access_token: session.access_token,
+                    refresh_token: session.refresh_token,
+                    expires_in: session.expires_in,
+                    user: session.user
+                }
+            }, window.location.origin);
+
+            console.log("Synced auth to extension");
+        }
+    }
+
+    // ================= ACTIONS =================
+
+    // 1. Logout
+    document.getElementById('btn-logout').addEventListener('click', async () => {
+        await sb.auth.signOut();
+        window.location.href = 'index.html';
+    });
+
+    // 2. Reset Password (Send Email)
+    document.getElementById('btn-reset-pw').addEventListener('click', async function() {
+        const btn = this;
+        const msg = document.getElementById('pw-msg');
+
+        if(!confirm("Send password reset instructions to your email?")) return;
+
+        btn.disabled = true;
+        btn.textContent = "Sending...";
+        msg.style.display = 'none';
+
+        const { error } = await sb.auth.resetPasswordForEmail(currentUser.email, {
+            // 重置后跳转回专门的重置密码页
+            redirectTo: window.location.origin + '/reset-password.html',
         });
 
-        // 2. Reset Password (Send Email)
-        document.getElementById('btn-reset-pw').addEventListener('click', async function() {
-            const btn = this;
-            const msg = document.getElementById('pw-msg');
-            
-            if(!confirm("Send password reset instructions to your email?")) return;
+        if (error) {
+            msg.textContent = "Error: " + error.message;
+            // 更新为 style.css 的类名
+            msg.className = "msg error";
+            msg.style.display = "block";
+            btn.disabled = false;
+            btn.textContent = "Change";
+        } else {
+            msg.textContent = "Reset link sent! Please check your email inbox.";
+            // 更新为 style.css 的类名
+            msg.className = "msg success";
+            msg.style.display = "block";
+            btn.textContent = "Sent";
+        }
+    });
 
-            btn.disabled = true;
-            btn.textContent = "Sending...";
-            msg.style.display = 'none';
+    // 3. Manage Subscription (Stripe Portal)
+    document.getElementById('btn-portal').addEventListener('click', async function() {
+        const btn = this;
+        const msg = document.getElementById('portal-msg');
 
-            const { error } = await sb.auth.resetPasswordForEmail(currentUser.email, {
-                // 重置后跳转回专门的重置密码页
-                redirectTo: window.location.origin + '/reset-password.html',
+        btn.disabled = true;
+        btn.innerHTML = '<span class="spinner"></span> Loading Portal...';
+        msg.style.display = 'none';
+
+        try {
+            // Call Python Backend
+            const response = await fetch(API_BASE_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    action: 'createStripePortal',
+                    user_id: currentUser.id
+                })
             });
 
-            if (error) {
-                msg.textContent = "Error: " + error.message;
-                msg.className = "msg-box msg-error";
-                msg.style.display = "block";
-                btn.disabled = false;
-                btn.textContent = "Change";
+            const data = await response.json();
+
+            if (data.success && data.url) {
+                // Redirect to Stripe
+                window.location.href = data.url;
             } else {
-                msg.textContent = "Reset link sent! Please check your email inbox.";
-                msg.className = "msg-box msg-success";
-                msg.style.display = "block";
-                btn.textContent = "Sent";
+                throw new Error(data.error || "Failed to create portal session");
             }
-        });
+        } catch (err) {
+            console.error(err);
+            msg.textContent = "Could not open billing portal. " + err.message;
+            // 更新为 style.css 的类名
+            msg.className = "msg error";
+            msg.style.display = "block";
+            btn.disabled = false;
+            btn.innerHTML = 'Manage Subscription <span style="margin-left: 8px">→</span>';
+        }
+    });
 
-        // 3. Manage Subscription (Stripe Portal)
-        document.getElementById('btn-portal').addEventListener('click', async function() {
-            const btn = this;
-            const msg = document.getElementById('portal-msg');
+    // Run Init
+    init();
 
-            btn.disabled = true;
-            btn.innerHTML = '<span class="spinner"></span> Loading Portal...';
-            msg.style.display = 'none';
-
-            try {
-                // Call Python Backend: createStripePortal
-                const response = await fetch(API_BASE_URL, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        action: 'createStripePortal',
-                        user_id: currentUser.id
-                    })
-                });
-
-                const data = await response.json();
-
-                if (data.success && data.url) {
-                    // Redirect to Stripe
-                    window.location.href = data.url;
-                } else {
-                    throw new Error(data.error || "Failed to create portal session");
-                }
-            } catch (err) {
-                console.error(err);
-                msg.textContent = "Could not open billing portal. " + err.message;
-                msg.className = "msg-box msg-error";
-                msg.style.display = "block";
-                btn.disabled = false;
-                btn.innerHTML = 'Manage Subscription <span style="margin-left: 8px">→</span>';
-            }
-        });
-
-        // Run Init
-        init();
-
-    </script>
+</script>
 </body>
 </html>
