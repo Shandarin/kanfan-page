@@ -295,6 +295,11 @@
     async function handleMeteredCheckout(event, priceId) {
         if (event) event.preventDefault();
 
+        // 🟢 关键修复：在 await 之前，立刻保存按钮对象！
+        // 因为 await 之后，event.currentTarget 会自动变成 null
+        const btn = event.currentTarget;
+        const originalText = btn.innerText; // 也可以现在就保存文字
+
         const { data: { session } } = await sb.auth.getSession();
 
         if (!session) {
@@ -302,11 +307,8 @@
             return;
         }
 
-        // 这里的 URL 已经替换为你提供的 AWS Lambda URL
+        // 这里的 URL 替换为你自己的 AWS Lambda 地址
         const LAMBDA_URL = "https://3xdsowzhlx7zdqs4wcastqoxlu0xqllf.lambda-url.us-west-1.on.aws/";
-
-        const btn = event.currentTarget;
-        const originalText = btn.innerText;
 
         // 按钮状态反馈
         btn.innerText = "Processing...";
@@ -318,7 +320,7 @@
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    priceId: priceId, // 发送 Price ID
+                    priceId: priceId,
                     email: session.user.email,
                     returnUrl: window.location.origin
                 })
