@@ -210,7 +210,11 @@
                 <li><span class="lp-check">✓</span> Pay only for usage</li>
                 <li><span class="lp-check">✓</span> Billed monthly</li>
             </ul>
-            <a onclick="handleSubscribe('YOUR_STRIPE_METERED_LINK_HERE')" class="lp-btn" style="background: #475569; width:100%; justify-content:center;">Start Flex</a>
+            <a onclick="startPayg()"
+               class="lp-btn"
+               style="background:#475569;width:100%;justify-content:center;">
+                Activate Pay As You Go
+            </a>
         </div>
 
         <div class="lp-plan popular">
@@ -222,9 +226,9 @@
                 <li><span class="lp-check">✓</span> No text, no charge</li>
                 <li><span class="lp-check">✓</span> Fast Server Priority</li>
             </ul>
-            <a onclick="handleSubscribe('https://buy.stripe.com/28EfZjgkU8GzfxE0yogw000')" class="lp-btn" style="width:100%; justify-content:center;">Subscribe Pro</a>
+            <a onclick="handleSubscribe('https://buy.stripe.com/9B69AVgkUbSL2KS5SIgw00b')" class="lp-btn" style="width:100%; justify-content:center;">Subscribe Pro</a>
         </div>
-
+“https://buy.stripe.com/8x27sN2u4aOH1GO4OEgw003”
         <div class="lp-plan">
             <h3 style="color:var(--lp-purple);">Max</h3>
             <div class="lp-plan-price">$6.99<span>/mo</span></div>
@@ -233,7 +237,7 @@
                 <li><span class="lp-check">✓</span> No text, no charge</li>
                 <li><span class="lp-check">✓</span> Fast Server Priority</li>
             </ul>
-            <a onclick="handleSubscribe('https://buy.stripe.com/aFacN72u41e785c5SIgw002')" class="lp-btn" style="background:var(--lp-purple); width:100%; justify-content:center;">Subscribe Max</a>
+            <a onclick="handleSubscribe('https://buy.stripe.com/8x27sN2u4aOH1GO4OEgw003')" class="lp-btn" style="background:var(--lp-purple); width:100%; justify-content:center;">Subscribe Max</a>
         </div>
 
     </div>
@@ -287,7 +291,16 @@
             window.location.href = finalUrl;
         }
     }
+    async function startPayg() {
+        const { data: { session } } = await sb.auth.getSession();
+        if (!session) {
+            window.location.href = 'login.html';
+            return;
+        }
 
+        // 已登录 → 去账户页处理
+        window.location.href = 'account.html#billing';
+    }
     // Modal Logic
     function openModal(id) { document.getElementById(id).style.display = "block"; }
     function closeModal(id) { document.getElementById(id).style.display = "none"; }
