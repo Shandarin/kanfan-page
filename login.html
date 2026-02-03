@@ -25,7 +25,7 @@
             justify-content: center;
             min-height: 100vh;
         }
-        
+
         .auth-container {
             width: 100%;
             max-width: 400px;
@@ -40,11 +40,11 @@
             text-align: center;
         }
 
-        .logo { 
-            font-size: 1.5rem; 
-            font-weight: 800; 
-            color: var(--primary); 
-            text-decoration: none; 
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
             margin-bottom: 30px;
             display: inline-block;
         }
@@ -76,9 +76,49 @@
             cursor: pointer;
             margin-top: 10px;
             transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .btn:hover { background: var(--primary-hover); }
         .btn:disabled { opacity: 0.7; cursor: not-allowed; }
+
+        /* Google Button Specifics */
+        .btn-google {
+            background: white;
+            color: var(--dark);
+            border: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+            margin-top: 0;
+            position: relative;
+        }
+        .btn-google:hover {
+            background-color: #f8fafc;
+            border-color: #cbd5e1;
+        }
+        .btn-google svg {
+            margin-right: 10px;
+            width: 20px;
+            height: 20px;
+        }
+
+        /* Divider */
+        .divider {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            margin: 20px 0;
+            color: var(--slate);
+            font-size: 0.85rem;
+        }
+        .divider::before, .divider::after {
+            content: '';
+            flex: 1;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .divider span {
+            padding: 0 10px;
+        }
 
         .toggle-text { margin-top: 20px; font-size: 0.9rem; color: var(--slate); }
         .toggle-link { color: var(--primary); cursor: pointer; font-weight: 600; text-decoration: none; }
@@ -96,172 +136,215 @@
 
         /* Success State for Extension */
         .success-view { display: none; }
-        .success-icon { 
-            width: 60px; height: 60px; 
+        .success-icon {
+            width: 60px; height: 60px;
             background: #dcfce7; color: #15803d;
-            border-radius: 50%; 
+            border-radius: 50%;
             display: flex; align-items: center; justifyContent: center;
             margin: 0 auto 20px;
         }
+
+        .spinner {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            border: 2px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 
-    <div class="auth-container">
-        
-        <div id="view-auth" class="card">
-            <a href="index.html" class="logo">Kanfan</a>
-            <h2 id="title">Welcome Back</h2>
-            <p class="subtitle" id="subtitle">Sign in to manage your subscription</p>
+<div class="auth-container">
 
-            <form id="auth-form">
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="email" id="email" required placeholder="name@example.com">
-                </div>
-                <div class="form-group">
-                    <label>Password</label>
-                    <input type="password" id="password" required placeholder="••••••••">
-                </div>
-                
-                <div id="message-box" class="msg"></div>
+    <div id="view-auth" class="card">
+        <a href="index.html" class="logo">Kanfan</a>
+        <h2 id="title">Welcome Back</h2>
+        <p class="subtitle" id="subtitle">Sign in to manage your subscription</p>
 
-                <button type="submit" class="btn" id="btn-submit">Sign In</button>
-            </form>
+        <button type="button" class="btn btn-google" id="btn-google">
+            <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
+                <g transform="matrix(1, 0, 0, 1, 27.009001, -39.238998)">
+                    <path fill="#4285F4" d="M -3.264 51.509 C -3.264 50.719 -3.334 49.969 -3.454 49.239 L -14.754 49.239 L -14.754 53.749 L -8.284 53.749 C -8.574 55.229 -9.424 56.479 -10.684 57.329 L -10.684 60.329 L -6.824 60.329 C -4.564 58.239 -3.264 55.159 -3.264 51.509 Z"/>
+                    <path fill="#34A853" d="M -14.754 63.239 C -11.514 63.239 -8.804 62.159 -6.824 60.329 L -10.684 57.329 C -11.764 58.049 -13.134 58.489 -14.754 58.489 C -17.884 58.489 -20.534 56.379 -21.484 53.529 L -25.464 53.529 L -25.464 56.619 C -23.494 60.539 -19.444 63.239 -14.754 63.239 Z"/>
+                    <path fill="#FBBC05" d="M -21.484 53.529 C -21.734 52.769 -21.864 51.959 -21.864 51.129 C -21.864 50.299 -21.734 49.489 -21.484 48.729 L -21.484 45.639 L -25.464 45.639 C -26.284 47.269 -26.754 49.129 -26.754 51.129 C -26.754 53.129 -26.284 54.989 -25.464 56.619 L -21.484 53.529 Z"/>
+                    <path fill="#EA4335" d="M -14.754 43.769 C -12.984 43.769 -11.424 44.369 -10.174 45.579 L -6.714 42.119 C -8.804 40.169 -11.514 39.019 -14.754 39.019 C -19.444 39.019 -23.494 41.719 -25.464 45.639 L -21.484 48.729 C -20.534 45.879 -17.884 43.769 -14.754 43.769 Z"/>
+                </g>
+            </svg>
+            Continue with Google
+        </button>
 
-            <div class="toggle-text">
-                <span id="toggle-desc">Don't have an account?</span>
-                <a class="toggle-link" id="toggle-btn">Create one</a>
-            </div>
-            <div style="margin-top: 15px;">
-                 <a href="reset-password.html" style="font-size: 0.85rem; color: var(--slate); text-decoration: none;">Forgot Password?</a>
-            </div>
+        <div class="divider">
+            <span>OR</span>
         </div>
 
-        <div id="view-success" class="card success-view">
-            <div class="success-icon">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        <form id="auth-form">
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="email" required placeholder="name@example.com">
             </div>
-            <h2>Successfully Signed In</h2>
-            <p style="color: var(--slate); margin-bottom: 20px;">
-                You have successfully logged in. Your extension is now synced.
-            </p>
-            <p style="font-size: 0.9rem; color: var(--slate);">
-                You can verify your status in the extension popup.
-            </p>
-            <button onclick="window.close()" class="btn" style="margin-top: 20px; background: var(--dark);">Close Window</button>
-        </div>
+            <div class="form-group">
+                <label>Password</label>
+                <input type="password" id="password" required placeholder="••••••••">
+            </div>
 
+            <div id="message-box" class="msg"></div>
+
+            <button type="submit" class="btn" id="btn-submit">Sign In</button>
+        </form>
+
+        <div class="toggle-text">
+            <span id="toggle-desc">Don't have an account?</span>
+            <a class="toggle-link" id="toggle-btn">Create one</a>
+        </div>
+        <div style="margin-top: 15px;">
+            <a href="reset-password.html" style="font-size: 0.85rem; color: var(--slate); text-decoration: none;">Forgot Password?</a>
+        </div>
     </div>
 
-    <script>
-        // Config (Consistent with background.js)
-        const SUPABASE_URL = "https://ikriqgjylpbwqihwpsho.supabase.co";
-        const SUPABASE_ANON_KEY = "sb_publishable_xdQsvfTfJEwfNjF5KYvxLA_y4QiKqFo";
-        const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    <div id="view-success" class="card success-view">
+        <div class="success-icon">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+        <h2>Successfully Signed In</h2>
+        <p style="color: var(--slate); margin-bottom: 20px;">
+            You have successfully logged in. Your extension is now synced.
+        </p>
+        <p style="font-size: 0.9rem; color: var(--slate);">
+            You can verify your status in the extension popup.
+        </p>
+        <button onclick="window.close()" class="btn" style="margin-top: 20px; background: var(--dark);">Close Window</button>
+    </div>
 
-        // State
-        const params = new URLSearchParams(window.location.search);
-        const source = params.get('source'); // 'extension' or null
-        let isLoginMode = true;
+</div>
 
-        // Elements
-        const form = document.getElementById('auth-form');
-        const emailEl = document.getElementById('email');
-        const passEl = document.getElementById('password');
-        const btnSubmit = document.getElementById('btn-submit');
-        const msgBox = document.getElementById('message-box');
-        const viewAuth = document.getElementById('view-auth');
-        const viewSuccess = document.getElementById('view-success');
+<script>
+    // Config (Consistent with background.js)
+    const SUPABASE_URL = "https://ikriqgjylpbwqihwpsho.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_xdQsvfTfJEwfNjF5KYvxLA_y4QiKqFo";
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-        // Toggle Login/Signup
-        document.getElementById('toggle-btn').addEventListener('click', () => {
-            isLoginMode = !isLoginMode;
-            document.getElementById('title').textContent = isLoginMode ? 'Welcome Back' : 'Create Account';
-            document.getElementById('subtitle').textContent = isLoginMode ? 'Sign in to manage your subscription' : 'Start your manga translation journey';
-            btnSubmit.textContent = isLoginMode ? 'Sign In' : 'Sign Up';
-            document.getElementById('toggle-desc').textContent = isLoginMode ? "Don't have an account?" : "Already have an account?";
-            document.getElementById('toggle-btn').textContent = isLoginMode ? "Create one" : "Sign In";
-            msgBox.className = 'msg';
-            msgBox.textContent = '';
-        });
+    // State
+    const params = new URLSearchParams(window.location.search);
+    const source = params.get('source'); // 'extension' or null
+    let isLoginMode = true;
 
-        // 1. Check if already logged in
-        async function checkSession() {
-            const { data: { session } } = await sb.auth.getSession();
-            if (session) {
-                handleAuthSuccess(session);
-            }
+    // Elements
+    const form = document.getElementById('auth-form');
+    const emailEl = document.getElementById('email');
+    const passEl = document.getElementById('password');
+    const btnSubmit = document.getElementById('btn-submit');
+    const btnGoogle = document.getElementById('btn-google');
+    const msgBox = document.getElementById('message-box');
+    const viewAuth = document.getElementById('view-auth');
+    const viewSuccess = document.getElementById('view-success');
+
+    // Toggle Login/Signup
+    document.getElementById('toggle-btn').addEventListener('click', () => {
+        isLoginMode = !isLoginMode;
+        document.getElementById('title').textContent = isLoginMode ? 'Welcome Back' : 'Create Account';
+        document.getElementById('subtitle').textContent = isLoginMode ? 'Sign in to manage your subscription' : 'Start your manga translation journey';
+        btnSubmit.textContent = isLoginMode ? 'Sign In' : 'Sign Up';
+        document.getElementById('toggle-desc').textContent = isLoginMode ? "Don't have an account?" : "Already have an account?";
+        document.getElementById('toggle-btn').textContent = isLoginMode ? "Create one" : "Sign In";
+        msgBox.className = 'msg';
+        msgBox.textContent = '';
+    });
+
+    // 1. Check if already logged in (Handles page load AND OAuth redirect return)
+    async function checkSession() {
+        const { data: { session } } = await sb.auth.getSession();
+        if (session) {
+            handleAuthSuccess(session);
         }
-        checkSession();
+    }
+    checkSession();
 
-        // 2. Handle Form Submit
-        form.addEventListener('submit', async (e) => {
-            e.preventDefault();
-            setLoading(true);
-            const email = emailEl.value.trim();
-            const password = passEl.value.trim();
-
-            try {
-                let result;
-                if (isLoginMode) {
-                    result = await sb.auth.signInWithPassword({ email, password });
-                } else {
-                    result = await sb.auth.signUp({ email, password });
+    // 2a. Handle Google SSO
+    btnGoogle.addEventListener('click', async () => {
+        try {
+            // We use window.location.href to return to this exact page (preserving ?source=extension)
+            const { error } = await sb.auth.signInWithOAuth({
+                provider: 'google',
+                options: {
+                    redirectTo: window.location.href
                 }
+            });
+            if (error) throw error;
+            // Note: Redirect will happen, no need to manually stop loading unless error
+        } catch (err) {
+            showMessage(err.message, "error");
+        }
+    });
 
-                if (result.error) throw result.error;
+    // 2b. Handle Email/Password Submit
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        const email = emailEl.value.trim();
+        const password = passEl.value.trim();
 
-                if (!isLoginMode && !result.data.session) {
-                    // Signup success but needs email verification (optional handling)
-                    showMessage("Account created! Please check your email to confirm.", "success");
-                    setLoading(false);
-                } else if (result.data.session) {
-                    handleAuthSuccess(result.data.session);
-                }
-            } catch (err) {
-                showMessage(err.message, "error");
-                setLoading(false);
-            }
-        });
-
-        // 3. Handle Success & Extension Sync
-        function handleAuthSuccess(session) {
-            if (source === 'extension') {
-                // A. Sync with Extension
-                viewAuth.style.display = 'none';
-                viewSuccess.style.display = 'block';
-
-                // Send message to Content Script (index.js will pick this up)
-                window.postMessage({
-                    type: "KANFAN_WEB_AUTH",
-                    payload: {
-                        access_token: session.access_token,
-                        refresh_token: session.refresh_token,
-                        expires_in: session.expires_in,
-                        user: session.user
-                    }
-                }, window.location.origin);
-                
-                // Optional: Attempt to call extension directly if possible? 
-                // No, standard way is postMessage to content script -> background.
-                
+        try {
+            let result;
+            if (isLoginMode) {
+                result = await sb.auth.signInWithPassword({ email, password });
             } else {
-                // B. Normal Web Login -> Go to Account/Pricing
-                window.location.href = 'account.html';
+                result = await sb.auth.signUp({ email, password });
             }
-        }
 
-        // Helpers
-        function setLoading(isLoading) {
-            btnSubmit.disabled = isLoading;
-            btnSubmit.innerHTML = isLoading ? '<span class="spinner"></span> Processing...' : (isLoginMode ? 'Sign In' : 'Sign Up');
-        }
+            if (result.error) throw result.error;
 
-        function showMessage(text, type) {
-            msgBox.textContent = text;
-            msgBox.className = `msg ${type}`;
+            if (!isLoginMode && !result.data.session) {
+                // Signup success but needs email verification (optional handling)
+                showMessage("Account created! Please check your email to confirm.", "success");
+                setLoading(false);
+            } else if (result.data.session) {
+                handleAuthSuccess(result.data.session);
+            }
+        } catch (err) {
+            showMessage(err.message, "error");
+            setLoading(false);
         }
-    </script>
+    });
+
+    // 3. Handle Success & Extension Sync
+    function handleAuthSuccess(session) {
+        if (source === 'extension') {
+            // A. Sync with Extension
+            viewAuth.style.display = 'none';
+            viewSuccess.style.display = 'block';
+
+            // Send message to Content Script (index.js will pick this up)
+            window.postMessage({
+                type: "KANFAN_WEB_AUTH",
+                payload: {
+                    access_token: session.access_token,
+                    refresh_token: session.refresh_token,
+                    expires_in: session.expires_in,
+                    user: session.user
+                }
+            }, window.location.origin);
+
+        } else {
+            // B. Normal Web Login -> Go to Account/Pricing
+            window.location.href = 'account.html';
+        }
+    }
+
+    // Helpers
+    function setLoading(isLoading) {
+        btnSubmit.disabled = isLoading;
+        btnSubmit.innerHTML = isLoading ? '<span class="spinner"></span> Processing...' : (isLoginMode ? 'Sign In' : 'Sign Up');
+    }
+
+    function showMessage(text, type) {
+        msgBox.textContent = text;
+        msgBox.className = `msg ${type}`;
+    }
+</script>
 </body>
 </html>
