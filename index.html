@@ -210,9 +210,7 @@
                 <li><span class="lp-check">✓</span> Pay only for usage</li>
                 <li><span class="lp-check">✓</span> Billed monthly</li>
             </ul>
-            <a onclick="handleMeteredCheckout(event, 'price_1SwhW0Py6A92Pe9GG2AmAlgW')" class="lp-btn" style="background: #475569; width:100%; justify-content:center; cursor: pointer;">
-                Start Flex
-            </a>
+            <a onclick="handleMeteredCheckout(event)" class="lp-btn" ...>Start Flex</a>
         </div>
 
         <div class="lp-plan popular">
@@ -351,56 +349,47 @@
         }
     }
 
-    // 2. Flex / Usage-based Handler (AWS Lambda)
-    // 修复：接收 event 参数，修复 undefined 报错
-    async function handleMeteredCheckout(event, priceId) {
+    async function handleMeteredCheckout(event) {
         if (event) event.preventDefault();
 
         const btn = event.currentTarget;
-        const originalText = btn.innerText; // 也可以现在就保存文字
+        const originalText = btn.innerText;
 
         const { data: { session } } = await sb.auth.getSession();
+        if (!session) { window.location.href = 'login.html'; return; }
 
-        if (!session) {
-            window.location.href = 'login.html';
-            return;
-        }
-
-        // 这里的 URL 替换为你自己的 AWS Lambda 地址
-        const LAMBDA_URL = "https://3xdsowzhlx7zdqs4wcastqoxlu0xqllf.lambda-url.us-west-1.on.aws/";
-
-        // 按钮状态反馈
         btn.innerText = "Processing...";
         btn.style.opacity = "0.7";
         btn.style.pointerEvents = "none";
 
         try {
-            const response = await fetch(LAMBDA_URL, {
-                method: 'POST',
+            const resp = await fetch(AUTH_API_URL, {
+                method: "POST",
                 headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${session.access_token}`,
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${session.access_token}`,
                 },
                 body: JSON.stringify({
-                    priceId: priceId,
-                    email: session.user.email,
-                    returnUrl: window.location.origin
+                    action: "createPaygCheckout",
+                    payload: {}
                 })
             });
 
-            const data = await response.json();
-
-            if (data.url) {
-                window.location.href = data.url;
-            } else {
-                console.error("API Error:", data);
-                alert("Error: " + (data.error || "Could not init checkout"));
-                resetBtn(btn, originalText);
+            const data = await resp.json();
+            if (data.success && data.checkout_url) {
+                window.location.href = data.checkout_url;
+                return;
             }
-        } catch (error) {
-            console.error("Network Error:", error);
+
+            console.error("API Error:", data);
+            alert("Error: " + (data.error || "Could not init PAYG checkout"));
+        } catch (e) {
+            console.error("Network Error:", e);
             alert("Network error. Please try again.");
-            resetBtn(btn, originalText);
+        } finally {
+            btn.innerText = originalText;
+            btn.style.opacity = "1";
+            btn.style.pointerEvents = "auto";
         }
     }
 
