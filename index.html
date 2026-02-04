@@ -224,7 +224,9 @@
                 <li><span class="lp-check">✓</span> No text, no charge</li>
                 <li><span class="lp-check">✓</span> Fast Server Priority</li>
             </ul>
-            <a onclick="handleSubscribe('https://buy.stripe.com/9B69AVgkUbSL2KS5SIgw00b')" class="lp-btn" style="width:100%; justify-content:center;">Subscribe Pro</a>
+            <a onclick="handleProMaxCheckout(event, LK_PRO, this)" class="lp-btn" style="width:100%; justify-content:center;">
+                Subscribe Pro
+            </a>
         </div>
 
         <div class="lp-plan">
@@ -235,7 +237,9 @@
                 <li><span class="lp-check">✓</span> No text, no charge</li>
                 <li><span class="lp-check">✓</span> Fast Server Priority</li>
             </ul>
-            <a onclick="handleSubscribe('https://buy.stripe.com/8x27sN2u4aOH1GO4OEgw003')" class="lp-btn" style="background:var(--lp-purple); width:100%; justify-content:center;">Subscribe Max</a>
+            <a onclick="handleProMaxCheckout(event, LK_MAX, this)" class="lp-btn" style="background:var(--lp-purple); width:100%; justify-content:center;">
+                Subscribe Max
+            </a>
         </div>
 
     </div>
@@ -268,6 +272,9 @@
     const SUPABASE_URL = "https://ikriqgjylpbwqihwpsho.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_xdQsvfTfJEwfNjF5KYvxLA_y4QiKqFo";
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const AUTH_API_URL = "https://api.kanfan.site/auth";//for creating pro/max pay link
+    const LK_PRO = "kanfan_pro_monthly_2";
+    const LK_MAX = "kanfan_max_monthly";
 
     // Check Login
     sb.auth.getSession().then(({ data: { session } }) => {
@@ -286,6 +293,61 @@
         } else {
             const finalUrl = stripeUrl + (stripeUrl.includes('?') ? '&' : '?') + "prefilled_email=" + encodeURIComponent(session.user.email);
             window.location.href = finalUrl;
+        }
+    }
+
+    async function handleProMaxCheckout(event, lookupKey, btnEl) {
+        if (event) event.preventDefault();
+
+        const { data: { session } } = await sb.auth.getSession();
+        if (!session) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        const btn = btnEl || (event && event.currentTarget);
+        const originalText = btn ? btn.innerText : "";
+
+        if (btn) {
+            btn.innerText = "Processing...";
+            btn.style.opacity = "0.7";
+            btn.style.pointerEvents = "none";
+        }
+
+        try {
+            const resp = await fetch(AUTH_API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${session.access_token}`,
+                },
+                body: JSON.stringify({
+                    action: "createStripeCheckout",
+                    payload: {
+                        lookup_key: lookupKey
+                    }
+                })
+            });
+
+            const data = await resp.json();
+
+            // 你的后端返回字段是 checkout_url :contentReference[oaicite:2]{index=2}
+            if (data.success && data.checkout_url) {
+                window.location.href = data.checkout_url;
+                return;
+            }
+
+            console.error("API Error:", data);
+            alert("Error: " + (data.error || "Could not init checkout"));
+        } catch (e) {
+            console.error("Network Error:", e);
+            alert("Network error. Please try again.");
+        } finally {
+            if (btn) {
+                btn.innerText = originalText;
+                btn.style.opacity = "1";
+                btn.style.pointerEvents = "auto";
+            }
         }
     }
 
