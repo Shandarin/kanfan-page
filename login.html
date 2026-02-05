@@ -311,27 +311,35 @@
         }
     });
 
+    function broadcastAuthToExtension(session) {
+        try {
+            window.postMessage(
+                {
+                    type: "KANFAN_WEB_AUTH",
+                    payload: {
+                        access_token: session.access_token,
+                        refresh_token: session.refresh_token,
+                        expires_in: session.expires_in,
+                        user: session.user
+                    }
+                },
+                "*" // 最稳：同窗口 postMessage 给 content script，用 * 不会卡 origin
+            );
+        } catch (e) {
+            console.warn("postMessage failed:", e);
+        }
+    }
+
     // 3. Handle Success & Extension Sync
     function handleAuthSuccess(session) {
+        broadcastAuthToExtension(session);
         if (source === 'extension') {
             // A. Sync with Extension
             viewAuth.style.display = 'none';
             viewSuccess.style.display = 'block';
 
-            // Send message to Content Script (index.js will pick this up)
-            window.postMessage({
-                type: "KANFAN_WEB_AUTH",
-                payload: {
-                    access_token: session.access_token,
-                    refresh_token: session.refresh_token,
-                    expires_in: session.expires_in,
-                    user: session.user
-                }
-            }, window.location.origin);
-
         } else {
-            // B. Normal Web Login -> Go to Account/Pricing
-            window.location.href = 'account.html';
+            window.location.href = 'index.html';
         }
     }
 

@@ -266,6 +266,38 @@
     const SUPABASE_URL = "https://ikriqgjylpbwqihwpsho.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_xdQsvfTfJEwfNjF5KYvxLA_y4QiKqFo";
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    function broadcastAuthToExtension(session) {
+        if (!session) return;
+        window.postMessage(
+            {
+                type: "KANFAN_WEB_AUTH",
+                payload: {
+                    access_token: session.access_token,
+                    refresh_token: session.refresh_token,
+                    expires_in: session.expires_in,
+                    user: session.user
+                }
+            },
+            "*"
+        );
+    }
+
+    // 1) Page load: if already logged in, broadcast once
+    (async () => {
+        const { data: { session } } = await sb.auth.getSession();
+        if (session) broadcastAuthToExtension(session);
+    })();
+
+    // 2) Realtime: listen auth changes (OAuth return, token refresh, sign in/out)
+    sb.auth.onAuthStateChange((event, session) => {
+        if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED" || event === "USER_UPDATED") {
+            broadcastAuthToExtension(session);
+        }
+        if (event === "SIGNED_OUT") {
+            window.postMessage({ type: "KANFAN_WEB_SIGNED_OUT" }, "*");
+        }
+    });
+
     const AUTH_API_URL = "https://api.kanfan.site/auth";//for creating pro/max pay link
     const LK_PRO = "kanfan_pro_monthly_new";
     const LK_MAX = "kanfan_max_monthly_new";

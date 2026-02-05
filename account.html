@@ -172,6 +172,43 @@
     const API_BASE_URL = "https://pg4wru4uxh.execute-api.us-west-1.amazonaws.com/auth";
 
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    function broadcastAuthToExtension(session) {
+        if (!session) return;
+
+        window.postMessage(
+            {
+                type: "KANFAN_WEB_AUTH",
+                payload: {
+                    access_token: session.access_token,
+                    refresh_token: session.refresh_token,
+                    expires_in: session.expires_in,
+                    user: session.user
+                }
+            },
+            "*" // ⚠️ 用 *，避免 origin / file:// / 扩展环境问题
+        );
+
+        console.log("[KANFAN] auth broadcasted to extension");
+    }
+    (async () => {
+        const { data: { session } } = await sb.auth.getSession();
+        if (session) broadcastAuthToExtension(session);
+    })();
+
+    // 监听所有 auth 变化（OAuth 回跳 / 刷新 token / 登录）
+    sb.auth.onAuthStateChange((event, session) => {
+        if (
+            event === "SIGNED_IN" ||
+            event === "TOKEN_REFRESHED" ||
+            event === "USER_UPDATED"
+        ) {
+            broadcastAuthToExtension(session);
+        }
+
+        if (event === "SIGNED_OUT") {
+            window.postMessage({ type: "KANFAN_WEB_SIGNED_OUT" }, "*");
+        }
+    });
     let currentUser = null;
 
     // ================= INIT =================
@@ -188,7 +225,6 @@
 
         currentUser = session.user;
         updateUI(session.user);
-        checkExtensionSync(session);
     }
 
     function updateUI(user) {
@@ -196,29 +232,6 @@
         document.getElementById('nav-email').textContent = user.email;
     }
 
-    // ================= LOGIC: EXTENSION SYNC =================
-    function checkExtensionSync(session) {
-        const params = new URLSearchParams(window.location.search);
-        const source = params.get('source');
-
-        // 只要 source 是 extension，我们就广播 Token
-        if (source === 'extension') {
-            document.getElementById('sync-status').style.display = 'block';
-
-            // 发送消息给 Content Script (index.js)
-            window.postMessage({
-                type: "KANFAN_WEB_AUTH",
-                payload: {
-                    access_token: session.access_token,
-                    refresh_token: session.refresh_token,
-                    expires_in: session.expires_in,
-                    user: session.user
-                }
-            }, window.location.origin);
-
-            console.log("Synced auth to extension");
-        }
-    }
 
     // ================= ACTIONS =================
 
