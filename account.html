@@ -166,6 +166,7 @@
 
 <script>
     // ================= CONFIG =================
+    const STRIPE_PORTAL_URL = "https://api.kanfan.site/stripe_portal";
     const SUPABASE_URL = "https://ikriqgjylpbwqihwpsho.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_xdQsvfTfJEwfNjF5KYvxLA_y4QiKqFo";
     // 你的 Python 后端 API 地址 (AWS API Gateway)
@@ -273,38 +274,44 @@
         }
     });
 
-    // 3. Manage Subscription (Stripe Portal)
-    document.getElementById('btn-portal').addEventListener('click', async function() {
+    document.getElementById('btn-portal').addEventListener('click', async function () {
         const btn = this;
         const msg = document.getElementById('portal-msg');
 
         btn.disabled = true;
-        btn.innerHTML = '<span class="spinner"></span> Loading Portal...';
+        btn.innerHTML = '<span class="spinner"></span> Redirecting...';
         msg.style.display = 'none';
 
         try {
-            // Call Python Backend
-            const response = await fetch(API_BASE_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    action: 'createStripePortal',
-                    user_id: currentUser.id
-                })
-            });
-
-            const data = await response.json();
-
-            if (data.success && data.url) {
-                // Redirect to Stripe
-                window.location.href = data.url;
-            } else {
-                throw new Error(data.error || "Failed to create portal session");
+            const { data: { session } } = await sb.auth.getSession();
+            if (!session) {
+                window.location.href = 'login.html';
+                return;
             }
+
+            // ✅ 推荐：用 Authorization header（更干净）
+            // 但浏览器 location.href 不能带 header，所以用“临时 form POST”来提交 token
+            const form = document.createElement("form");
+            form.method = "POST";
+            form.action = STRIPE_PORTAL_URL;
+
+            const input = document.createElement("input");
+            input.type = "hidden";
+            input.name = "access_token";
+            input.value = session.access_token;
+
+            const returnUrl = document.createElement("input");
+            returnUrl.type = "hidden";
+            returnUrl.name = "return_url";
+            returnUrl.value = window.location.origin + "/account.html";
+
+            form.appendChild(input);
+            form.appendChild(returnUrl);
+            document.body.appendChild(form);
+            form.submit();
         } catch (err) {
             console.error(err);
             msg.textContent = "Could not open billing portal. " + err.message;
-            // 更新为 style.css 的类名
             msg.className = "msg error";
             msg.style.display = "block";
             btn.disabled = false;
