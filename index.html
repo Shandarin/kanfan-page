@@ -271,8 +271,8 @@
     const SUPABASE_ANON_KEY = "sb_publishable_xdQsvfTfJEwfNjF5KYvxLA_y4QiKqFo";
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
     const AUTH_API_URL = "https://api.kanfan.site/auth";//for creating pro/max pay link
-    const LK_PRO = "kanfan_pro_monthly_2";
-    const LK_MAX = "kanfan_max_monthly";
+    const LK_PRO = "kanfan_pro_monthly_new";
+    const LK_MAX = "kanfan_max_monthly_new";
 
     // Check Login
     sb.auth.getSession().then(({ data: { session } }) => {
