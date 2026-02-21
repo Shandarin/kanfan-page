@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Uninstall Feedback - Kanfan</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../style.css">
+    <script src="../../i18n.js"></script>
+
+    <style>
+        .feedback-container {
+            max-width: 500px;
+            margin: 60px auto;
+            background: var(--white);
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1),
+            0 4px 6px -2px rgba(0,0,0,0.05);
+        }
+        .feedback-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .feedback-desc {
+            text-align: center;
+            color: var(--slate);
+            font-size: 0.95rem;
+            margin-bottom: 24px;
+        }
+
+        /* 原来叫 radio-group，这里保留 class 名不影响样式 */
+        .radio-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 24px;
+        }
+        .radio-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            line-height: 1.25;
+        }
+        .radio-label input[type="checkbox"] {
+            margin-top: 2px;
+            accent-color: var(--primary);
+            width: 16px;
+            height: 16px;
+        }
+
+        .textarea-box {
+            width: 100%;
+            min-height: 100px;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            resize: vertical;
+            margin-bottom: 24px;
+        }
+        .submit-btn {
+            width: 100%;
+            background: var(--primary);
+            color: var(--white);
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .submit-btn:disabled {
+            background: #cbd5e1;
+            cursor: not-allowed;
+        }
+        #success-msg {
+            display: none;
+            text-align: center;
+            color: var(--success);
+            font-weight: 600;
+            margin-top: 20px;
+        }
+        #error-msg {
+            display: none;
+            text-align: center;
+            color: var(--danger);
+            font-size: 0.9rem;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<body>
+<div style="position: fixed; top: 16px; right: 16px;" data-lang-switcher></div>
+
+<div class="feedback-container">
+    <h1 class="feedback-title" data-i18n="uninstall.title">We're sorry to see you go</h1>
+    <p class="feedback-desc" data-i18n="uninstall.desc">Could you tell us why you uninstalled Kanfan?</p>
+
+    <form id="uninstall-form">
+        <!-- 多选：卸载原因 -->
+        <div class="radio-group">
+            <label class="radio-label">
+                <input type="checkbox" name="reason" value="performance">
+                <span>Too slow</span>
+            </label>
+
+            <label class="radio-label">
+                <input type="checkbox" name="reason" value="pricing">
+                <span>Too expensive</span>
+            </label>
+
+            <label class="radio-label">
+                <input type="checkbox" name="reason" value="translation">
+                <span>Translation quality</span>
+            </label>
+
+            <label class="radio-label">
+                <input type="checkbox" name="reason" value="ocr_accuracy">
+                <span>Image recognition accuracy</span>
+            </label>
+
+            <label class="radio-label">
+                <input type="checkbox" name="reason" value="display_quality">
+                <span>Display quality</span>
+            </label>
+
+            <label class="radio-label">
+                <input type="checkbox" name="reason" value="missing_feature">
+                <span>Missing features</span>
+            </label>
+
+            <label class="radio-label">
+                <input type="checkbox" name="reason" value="site_not_supported">
+                <span>Some websites are not supported</span>
+            </label>
+
+            <label class="radio-label">
+                <input type="checkbox" name="reason" value="alternative">
+                <span>Found an alternative</span>
+            </label>
+
+            <label class="radio-label">
+                <input type="checkbox" name="reason" value="bug">
+                <span>Bug</span>
+            </label>
+
+            <label class="radio-label">
+                <input type="checkbox" name="reason" value="not_needed">
+                <span>No longer needed</span>
+            </label>
+
+            <label class="radio-label">
+                <input type="checkbox" name="reason" value="other">
+                <span>Other</span>
+            </label>
+        </div>
+
+        <textarea
+                id="comment"
+                class="textarea-box"
+                placeholder="How can we make it better?"
+        ></textarea>
+
+        <button type="submit" id="submit-btn" class="submit-btn">
+            Submit feedback
+        </button>
+
+        <div id="success-msg">Thank you! You can safely close this tab.</div>
+        <div id="error-msg">Failed to submit. Please try again later.</div>
+    </form>
+</div>
+
+<script>
+    KanfanI18n.apply();
+    KanfanI18n.renderSelect(document.querySelector('[data-lang-switcher]'));
+
+    const API_URL = 'https://api.kanfan.site/feedback/uninstall';
+
+    document.getElementById('uninstall-form').addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const btn = document.getElementById('submit-btn');
+        const successMsg = document.getElementById('success-msg');
+        const errorMsg = document.getElementById('error-msg');
+
+        const comment = document.getElementById('comment').value.trim();
+
+        // 多选 reasons
+        const checked = document.querySelectorAll('input[name="reason"]:checked');
+        const reasons = Array.from(checked).map(el => el.value);
+
+        // 产品友好：允许空 reasons + 空 comment（不拦用户）
+        const payload = {
+            reasons,                 // <-- 改为数组
+            comment,
+            lang: KanfanI18n.getLang(),
+            page: 'uninstall',
+            ua: navigator.userAgent,
+            tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
+            ref: document.referrer || ''
+        };
+
+        btn.disabled = true;
+        errorMsg.style.display = 'none';
+
+        try {
+            await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            document.getElementById('uninstall-form').innerHTML = '';
+            successMsg.style.display = 'block';
+        } catch (err) {
+            console.warn('Feedback submit failed', err);
+            // 不打扰卸载用户：这里你也可以选择直接当成功
+            btn.disabled = false;
+            errorMsg.style.display = 'block';
+        }
+    });
+</script>
+</body>
+</html>
