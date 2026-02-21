@@ -6,19 +6,19 @@
     <title>Payment Successful - Kanfan</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <script src="i18n.js"></script>
 </head>
 <body>
+    <div style="position: fixed; top: 16px; right: 16px; z-index: 999;" data-lang-switcher></div>
     <div class="container">
         <div class="icon-box">
             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
         </div>
-        <h1>Payment Successful!</h1>
-        <p>Thank you for supporting Kanfan. Your account has been upgraded to Pro. You can now enjoy unlimited manga translations.</p>
-<!--         
-        <a href="account.html" class="btn">Go to My Account</a>
-        <a href="index.html" class="btn-text">Back to Home</a> -->
+        <h1 data-i18n="pay.successTitle">Payment Successful!</h1>
+        <p data-i18n="pay.successDesc">Thank you for supporting Kanfan. Your account has been upgraded to Pro. You can now enjoy unlimited manga translations.</p>
     </div>
+    <script>KanfanI18n.renderSelect(document.querySelector("[data-lang-switcher]"));KanfanI18n.apply();</script>
 </body>
 </html>

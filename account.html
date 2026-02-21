@@ -7,7 +7,7 @@
     <title>My Account - Kanfan</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
+    <script src="i18n.js"></script>
     <link rel="stylesheet" href="style.css">
 
     <style>
@@ -104,9 +104,9 @@
 
 <nav class="navbar">
     <a href="index.html" class="logo">Kanfan</a>
-    <div class="nav-right">
+    <div class="nav-right"><div data-lang-switcher></div>
         <span id="nav-email" style="font-size: 0.9rem; color: var(--slate); margin-right: 10px;"></span>
-        <button id="btn-logout" class="btn-outline" style="font-size: 0.85rem;">Sign Out</button>
+        <button id="btn-logout" class="btn-outline" style="font-size: 0.85rem;"><span data-i18n="account.signout">Sign Out</span></button>
     </div>
 </nav>
 
@@ -116,30 +116,30 @@
         <div style="display: flex; gap: 15px; align-items: center;">
             <svg width="24" height="24" fill="none" stroke="#0284c7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
             <div>
-                <h3 style="font-size: 1rem; color: #0c4a6e; margin-bottom: 2px;">Extension Connected</h3>
-                <p style="font-size: 0.9rem; color: #0369a1;">Your account is now synced with the Kanfan browser extension.</p>
+                <h3 style="font-size: 1rem; color: #0c4a6e; margin-bottom: 2px;"><span data-i18n="account.syncTitle">Extension Connected</span></h3>
+                <p style="font-size: 0.9rem; color: #0369a1;"><span data-i18n="account.syncDesc">Your account is now synced with the Kanfan browser extension.</span></p>
             </div>
         </div>
     </div>
 
-    <h1 class="page-title">Account Settings</h1>
+    <h1 class="page-title" data-i18n="account.title">Account Settings</h1>
 
     <div class="card">
         <div class="section-header">
             <div>
-                <div class="section-title">Profile</div>
-                <div class="section-desc">Manage your login information</div>
+                <div class="section-title" data-i18n="account.profile">Profile</div>
+                <div class="section-desc" data-i18n="account.profileDesc">Manage your login information</div>
             </div>
         </div>
 
         <div class="info-row">
-            <span class="info-label">Email</span>
+            <span class="info-label" data-i18n="account.email">Email</span>
             <span class="info-value" id="user-email">Loading...</span>
         </div>
         <div class="info-row">
-            <span class="info-label">Password</span>
+            <span class="info-label" data-i18n="account.password">Password</span>
             <span class="info-value">••••••••</span>
-            <button id="btn-reset-pw" class="btn-text">Change</button>
+            <button id="btn-reset-pw" class="btn-text" data-i18n="account.change">Change</button>
         </div>
         <div id="pw-msg" class="msg"></div>
     </div>
@@ -147,8 +147,8 @@
     <div class="card">
         <div class="section-header">
             <div>
-                <div class="section-title">Subscription & Billing</div>
-                <div class="section-desc">Manage your plan, payment methods, and invoices via Stripe</div>
+                <div class="section-title" data-i18n="account.billing">Subscription & Billing</div>
+                <div class="section-desc" data-i18n="account.billingDesc">Manage your plan, payment methods, and invoices via Stripe</div>
             </div>
         </div>
 
@@ -157,7 +157,7 @@
         </p>
 
         <button id="btn-portal" class="btn">
-            Manage Subscription <span style="margin-left: 8px">→</span>
+            <span data-i18n="account.manage">Manage Subscription</span> <span style="margin-left: 8px">→</span>
         </button>
         <div id="portal-msg" class="msg"></div>
     </div>
@@ -171,6 +171,8 @@
     const SUPABASE_ANON_KEY = "sb_publishable_xdQsvfTfJEwfNjF5KYvxLA_y4QiKqFo";
 
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    KanfanI18n.renderSelect(document.querySelector("[data-lang-switcher]"));
+    KanfanI18n.apply();
     function broadcastAuthToExtension(session) {
         if (!session) return;
 
@@ -245,10 +247,10 @@
         const btn = this;
         const msg = document.getElementById('pw-msg');
 
-        if(!confirm("Send password reset instructions to your email?")) return;
+        if(!confirm(KanfanI18n.getLang().startsWith("zh") ? "向你的邮箱发送重置密码邮件吗？" : "Send password reset instructions to your email?")) return;
 
         btn.disabled = true;
-        btn.textContent = "Sending...";
+        btn.textContent = KanfanI18n.getLang().startsWith("zh") ? "发送中..." : "Sending...";
         msg.style.display = 'none';
 
         const { error } = await sb.auth.resetPasswordForEmail(currentUser.email, {
@@ -264,11 +266,11 @@
             btn.disabled = false;
             btn.textContent = "Change";
         } else {
-            msg.textContent = "Reset link sent! Please check your email inbox.";
+            msg.textContent = KanfanI18n.getLang().startsWith("zh") ? "重置链接已发送，请检查邮箱。" : "Reset link sent! Please check your email inbox.";
             // 更新为 style.css 的类名
             msg.className = "msg success";
             msg.style.display = "block";
-            btn.textContent = "Sent";
+            btn.textContent = KanfanI18n.getLang().startsWith("zh") ? "已发送" : "Sent";
         }
     });
 
@@ -277,7 +279,7 @@
         const msg = document.getElementById('portal-msg');
 
         btn.disabled = true;
-        btn.innerHTML = '<span class="spinner"></span> Redirecting...';
+        btn.innerHTML = `<span class="spinner"></span> ${KanfanI18n.getLang().startsWith('zh') ? '跳转中...' : 'Redirecting...'}`;
         msg.style.display = 'none';
 
         try {
@@ -309,11 +311,11 @@
             form.submit();
         } catch (err) {
             console.error(err);
-            msg.textContent = "Could not open billing portal. " + err.message;
+            msg.textContent = (KanfanI18n.getLang().startsWith("zh") ? "无法打开账单页面。" : "Could not open billing portal. ") + err.message;
             msg.className = "msg error";
             msg.style.display = "block";
             btn.disabled = false;
-            btn.innerHTML = 'Manage Subscription <span style="margin-left: 8px">→</span>';
+            btn.innerHTML = '<span data-i18n="account.manage">Manage Subscription</span> <span style="margin-left: 8px">→</span>';
         }
     });
 

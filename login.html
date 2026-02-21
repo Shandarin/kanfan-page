@@ -6,6 +6,7 @@
     <title>Login - Kanfan</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="i18n.js"></script>
     <style>
         :root {
             --primary: #f97316;
@@ -159,12 +160,13 @@
 </head>
 <body>
 
+<div style="position: fixed; top: 16px; right: 16px; z-index: 999;" data-lang-switcher></div>
 <div class="auth-container">
 
     <div id="view-auth" class="card">
         <a href="index.html" class="logo">Kanfan</a>
-        <h2 id="title">Welcome Back</h2>
-        <p class="subtitle" id="subtitle">Sign in to manage your subscription</p>
+        <h2 id="title" data-i18n="login.title">Welcome Back</h2>
+        <p class="subtitle" id="subtitle" data-i18n="login.subtitle">Sign in to manage your subscription</p>
 
         <button type="button" class="btn btn-google" id="btn-google">
             <svg viewBox="0 0 24 24" width="24" height="24" xmlns="http://www.w3.org/2000/svg">
@@ -175,34 +177,34 @@
                     <path fill="#EA4335" d="M -14.754 43.769 C -12.984 43.769 -11.424 44.369 -10.174 45.579 L -6.714 42.119 C -8.804 40.169 -11.514 39.019 -14.754 39.019 C -19.444 39.019 -23.494 41.719 -25.464 45.639 L -21.484 48.729 C -20.534 45.879 -17.884 43.769 -14.754 43.769 Z"/>
                 </g>
             </svg>
-            Continue with Google
+            <span data-i18n="login.google">Continue with Google</span>
         </button>
 
         <div class="divider">
-            <span>OR</span>
+            <span data-i18n="login.or">or</span>
         </div>
 
         <form id="auth-form">
             <div class="form-group">
-                <label>Email</label>
+                <label data-i18n="login.email">Email</label>
                 <input type="email" id="email" required placeholder="name@example.com">
             </div>
             <div class="form-group">
-                <label>Password</label>
+                <label data-i18n="login.password">Password</label>
                 <input type="password" id="password" required placeholder="••••••••">
             </div>
 
             <div id="message-box" class="msg"></div>
 
-            <button type="submit" class="btn" id="btn-submit">Sign In</button>
+            <button type="submit" class="btn" id="btn-submit" data-i18n="login.submitIn">Sign In</button>
         </form>
 
         <div class="toggle-text">
-            <span id="toggle-desc">Don't have an account?</span>
-            <a class="toggle-link" id="toggle-btn">Create one</a>
+            <span id="toggle-desc" data-i18n="login.noAccount">Don't have an account?</span>
+            <a class="toggle-link" id="toggle-btn" data-i18n="login.create">Create one</a>
         </div>
         <div style="margin-top: 15px;">
-            <a href="reset-password.html" style="font-size: 0.85rem; color: var(--slate); text-decoration: none;">Forgot Password?</a>
+            <a href="reset-password.html" style="font-size: 0.85rem; color: var(--slate); text-decoration: none;" data-i18n="login.forgot">Forgot Password?</a>
         </div>
     </div>
 
@@ -210,14 +212,14 @@
         <div class="success-icon">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
         </div>
-        <h2>Successfully Signed In</h2>
+        <h2 data-i18n="login.successTitle">Successfully Signed In</h2>
         <p style="color: var(--slate); margin-bottom: 20px;">
-            You have successfully logged in. Your extension is now synced.
+            <span data-i18n="login.successDesc">You have successfully logged in. Your extension is now synced.</span>
         </p>
         <p style="font-size: 0.9rem; color: var(--slate);">
-            You can verify your status in the extension popup.
+            <span data-i18n="login.successTip">You can verify your status in the extension popup.</span>
         </p>
-        <button onclick="window.close()" class="btn" style="margin-top: 20px; background: var(--dark);">Close Window</button>
+        <button onclick="window.close()" class="btn" style="margin-top: 20px; background: var(--dark);" data-i18n="login.close">Close Window</button>
     </div>
 
 </div>
@@ -232,6 +234,8 @@
     const params = new URLSearchParams(window.location.search);
     const source = params.get('source'); // 'extension' or null
     let isLoginMode = true;
+    KanfanI18n.renderSelect(document.querySelector('[data-lang-switcher]'));
+    KanfanI18n.apply();
 
     // Elements
     const form = document.getElementById('auth-form');
@@ -246,11 +250,11 @@
     // Toggle Login/Signup
     document.getElementById('toggle-btn').addEventListener('click', () => {
         isLoginMode = !isLoginMode;
-        document.getElementById('title').textContent = isLoginMode ? 'Welcome Back' : 'Create Account';
-        document.getElementById('subtitle').textContent = isLoginMode ? 'Sign in to manage your subscription' : 'Start your manga translation journey';
-        btnSubmit.textContent = isLoginMode ? 'Sign In' : 'Sign Up';
-        document.getElementById('toggle-desc').textContent = isLoginMode ? "Don't have an account?" : "Already have an account?";
-        document.getElementById('toggle-btn').textContent = isLoginMode ? "Create one" : "Sign In";
+        document.getElementById('title').textContent = isLoginMode ? KanfanI18n.t('login.title') : 'Create Account';
+        document.getElementById('subtitle').textContent = isLoginMode ? KanfanI18n.t('login.subtitle') : 'Start your manga translation journey';
+        btnSubmit.textContent = isLoginMode ? KanfanI18n.t('login.submitIn') : KanfanI18n.t('login.submitUp');
+        document.getElementById('toggle-desc').textContent = isLoginMode ? KanfanI18n.t('login.noAccount') : KanfanI18n.t('login.haveAccount');
+        document.getElementById('toggle-btn').textContent = isLoginMode ? KanfanI18n.t('login.create') : KanfanI18n.t('login.submitIn');
         msgBox.className = 'msg';
         msgBox.textContent = '';
     });
@@ -346,7 +350,7 @@
     // Helpers
     function setLoading(isLoading) {
         btnSubmit.disabled = isLoading;
-        btnSubmit.innerHTML = isLoading ? '<span class="spinner"></span> Processing...' : (isLoginMode ? 'Sign In' : 'Sign Up');
+        btnSubmit.innerHTML = isLoading ? '<span class="spinner"></span> Processing...' : (isLoginMode ? KanfanI18n.t('login.submitIn') : KanfanI18n.t('login.submitUp'));
     }
 
     function showMessage(text, type) {
