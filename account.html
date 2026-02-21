@@ -247,7 +247,7 @@
         const btn = this;
         const msg = document.getElementById('pw-msg');
 
-        if(!confirm(KanfanI18n.getLang().startsWith("zh") ? "向你的邮箱发送重置密码邮件吗？" : "Send password reset instructions to your email?")) return;
+        if(!confirm(KanfanI18n.getLang().startsWith("zh") ? "向你的邮箱发送重置密码邮件？" : "Send password reset instructions to your email?")) return;
 
         btn.disabled = true;
         btn.textContent = KanfanI18n.getLang().startsWith("zh") ? "发送中..." : "Sending...";

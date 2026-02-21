@@ -194,10 +194,10 @@
 
 <header class="lp-hero">
     <div class="lp-hero-text">
-        <h1>Read Manga in <br><span>Your Language</span></h1>
-        <p>The smartest AI-powered manga translator extension. Translate raw manga directly in your browser with zero friction.</p>
-        <a href="https://chromewebstore.google.com/detail/kanfan-manga-translator/ffjpelbfmecoidnkjapdhpcbeianmkpp" target="_blank" class="lp-btn">Chrome Web Store</a>
-        <a href="https://microsoftedge.microsoft.com/addons/detail/kanfan-manga-translator/hjdegcejfgbcikdcgafigaoieicofada" target="_blank" class="lp-btn" style="background: var(--dark);">Edge Add-ons</a>
+        <h1><span data-i18n="home.heroLine1">Read Manga in</span> <br><span data-i18n="home.heroLine2">Your Language</span></h1>
+        <p data-i18n="home.heroDesc">The smartest AI-powered manga translator extension. Translate raw manga directly in your browser with zero friction.</p>
+        <a href="https://chromewebstore.google.com/detail/kanfan-manga-translator/ffjpelbfmecoidnkjapdhpcbeianmkpp" target="_blank" class="lp-btn" data-i18n="home.chromeStore">Chrome Web Store</a>
+        <a href="https://microsoftedge.microsoft.com/addons/detail/kanfan-manga-translator/hjdegcejfgbcikdcgafigaoieicofada" target="_blank" class="lp-btn" style="background: var(--dark);" data-i18n="home.edgeAddons">Edge Add-ons</a>
     </div>
     <div class="lp-app-preview">
         <div class="lp-mockup-frame">
@@ -209,49 +209,49 @@
 </header>
 
 <section class="lp-pricing" id="pricing">
-    <h2>Pricing</h2>
+    <h2 data-i18n="home.pricing">Pricing</h2>
     <div class="lp-price-grid">
 
         <div class="lp-plan">
-            <h3>Free</h3>
-            <div class="lp-plan-price">$0<span>/month</span></div>
+            <h3 data-i18n="home.plan.free">Free</h3>
+            <div class="lp-plan-price">$0<span data-i18n="home.perMonth">/month</span></div>
             <ul class="lp-features-list">
-                <li><span class="lp-check">✓</span> 200 Images Weekly </li>
+                <li><span class="lp-check">✓</span> <span data-i18n="home.plan.freeFeature">200 Images Weekly</span></li>
             </ul>
-            <a href="https://chromewebstore.google.com/detail/kanfan-manga-translator/ffjpelbfmecoidnkjapdhpcbeianmkpp" target="_blank" class="lp-btn" style="background:var(--slate); width:100%; justify-content:center;">Install</a>
+            <a href="https://chromewebstore.google.com/detail/kanfan-manga-translator/ffjpelbfmecoidnkjapdhpcbeianmkpp" target="_blank" class="lp-btn" style="background:var(--slate); width:100%; justify-content:center;"> <span data-i18n="home.install">Install</span></a>
         </div>
 
         <div class="lp-plan" style="border-color: #94a3b8;">
-            <h3 style="color: #475569;">Flex</h3>
+            <h3 style="color: #475569;" data-i18n="home.plan.flex">Flex</h3>
             <div class="lp-plan-price" style="font-size: 1.8rem;">$1.99<span>/1000 img</span></div>
             <ul class="lp-features-list">
-                <li><span class="lp-check">✓</span> No monthly fees</li>
-                <li><span class="lp-check">✓</span> Pay only for usage</li>
-                <li><span class="lp-check">✓</span> Billed monthly</li>
+                <li><span class="lp-check">✓</span> <span data-i18n="home.plan.flexF1">No monthly fees</span></li>
+                <li><span class="lp-check">✓</span> <span data-i18n="home.plan.flexF2">Pay only for usage</span></li>
+                <li><span class="lp-check">✓</span> <span data-i18n="home.plan.flexF3">Billed monthly</span></li>
             </ul>
-            <a onclick="handleMeteredCheckout(event)" class="lp-btn" ...>Start Flex</a>
+            <a onclick="handleMeteredCheckout(event)" class="lp-btn" ...> <span data-i18n="home.plan.startFlex">Start Flex</span></a>
         </div>
 
         <div class="lp-plan popular">
-            <div class="lp-badge">POPULAR</div>
+            <div class="lp-badge" data-i18n="home.popular">POPULAR</div>
             <h3 style="color:var(--primary);">Pro</h3>
-            <div class="lp-plan-price">$2.99<span>/month</span></div>
+            <div class="lp-plan-price">$2.99<span data-i18n="home.perMonth">/month</span></div>
             <ul class="lp-features-list">
-                <li><span class="lp-check">✓</span> 2,000 Weekly Images</li>
+                <li><span class="lp-check">✓</span> <span data-i18n="home.plan.proFeature">2,000 Weekly Images</span></li>
             </ul>
             <a onclick="handleProMaxCheckout(event, LK_PRO, this)" class="lp-btn" style="width:100%; justify-content:center;">
-                Subscribe Pro
+                <span data-i18n="home.plan.subscribePro">Subscribe Pro</span>
             </a>
         </div>
 
         <div class="lp-plan">
             <h3 style="color:var(--lp-purple);">Max</h3>
-            <div class="lp-plan-price">$6.99<span>/month</span></div>
+            <div class="lp-plan-price">$6.99<span data-i18n="home.perMonth">/month</span></div>
             <ul class="lp-features-list">
-                <li><span class="lp-check">✓</span> Unlimited Images</li>
+                <li><span class="lp-check">✓</span> <span data-i18n="home.plan.maxFeature">Unlimited Images</span></li>
             </ul>
             <a onclick="handleProMaxCheckout(event, LK_MAX, this)" class="lp-btn" style="background:var(--lp-purple); width:100%; justify-content:center;">
-                Subscribe Max
+                <span data-i18n="home.plan.subscribeMax">Subscribe Max</span>
             </a>
         </div>
 
@@ -259,25 +259,25 @@
 </section>
 
 <section class="lp-features">
-    <div class="lp-feature-card"><h3>⚡ Smart OCR</h3><p>High-speed text recognition optimized for manga fonts.</p></div>
-    <div class="lp-feature-card"><h3>🎨 In-paint Cleaning</h3><p>Automatically removes original text and restores art.</p></div>
-    <div class="lp-feature-card"><h3>🌍 Multi-Language</h3><p>Instant translation into 20+ other languages.</p></div>
+    <div class="lp-feature-card"><h3 data-i18n="home.feature.ocrTitle">⚡ Smart OCR</h3><p data-i18n="home.feature.ocrDesc">High-speed text recognition optimized for manga fonts.</p></div>
+    <div class="lp-feature-card"><h3 data-i18n="home.feature.cleanTitle">🎨 In-paint Cleaning</h3><p data-i18n="home.feature.cleanDesc">Automatically removes original text and restores art.</p></div>
+    <div class="lp-feature-card"><h3 data-i18n="home.feature.langTitle">🌍 Multi-Language</h3><p data-i18n="home.feature.langDesc">Instant translation into 20+ other languages.</p></div>
 </section>
 
 <footer class="lp-footer">
-    <p>&copy; 2026 Kanfan Project.</p>
+    <p data-i18n="home.footer.copyright">&copy; 2026 Kanfan Project.</p>
     <div style="margin-top: 15px;">
-        <a href="mailto:support@kanfan.site">Contact</a> |
-        <a onclick="openModal('agreementModal')">Terms</a> |
-        <a onclick="openModal('refundModal')">Refunds</a>
+        <a href="mailto:support@kanfan.site" data-i18n="home.footer.contact">Contact</a> |
+        <a onclick="openModal('agreementModal')" data-i18n="home.footer.terms">Terms</a> |
+        <a onclick="openModal('refundModal')" data-i18n="home.footer.refunds">Refunds</a>
     </div>
 </footer>
 
 <div id="agreementModal" class="modal">
-    <div class="modal-content"><span class="close-btn" onclick="closeModal('agreementModal')">&times;</span><h2>Terms</h2><p>User agreement text...</p></div>
+    <div class="modal-content"><span class="close-btn" onclick="closeModal('agreementModal')">&times;</span><h2 data-i18n="home.modal.termsTitle">Terms</h2><p data-i18n="home.modal.termsBody">User agreement text...</p></div>
 </div>
 <div id="refundModal" class="modal">
-    <div class="modal-content"><span class="close-btn" onclick="closeModal('refundModal')">&times;</span><h2>Refund Policy</h2><p>Refund policy text...</p></div>
+    <div class="modal-content"><span class="close-btn" onclick="closeModal('refundModal')">&times;</span><h2 data-i18n="home.modal.refundTitle">Refund Policy</h2><p data-i18n="home.modal.refundBody">Refund policy text...</p></div>
 </div>
 
 <script>
