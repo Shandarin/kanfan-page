@@ -6,8 +6,8 @@
     <title>Uninstall Feedback - Kanfan</title>
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../../style.css">
-    <script src="../../i18n.js"></script>
+    <link rel="stylesheet" href="../style.css">
+    <script src="../i18n.js"></script>
 
     <style>
         .feedback-container {
@@ -108,79 +108,79 @@
         <div class="radio-group">
             <label class="radio-label">
                 <input type="checkbox" name="reason" value="performance">
-                <span>Too slow</span>
+                <span data-i18n="uninstall.reason.performance">Too slow</span>
             </label>
 
             <label class="radio-label">
                 <input type="checkbox" name="reason" value="pricing">
-                <span>Too expensive</span>
+                <span data-i18n="uninstall.reason.pricing">Too expensive</span>
             </label>
 
             <label class="radio-label">
                 <input type="checkbox" name="reason" value="translation">
-                <span>Translation quality</span>
+                <span data-i18n="uninstall.reason.translation">Translation quality</span>
             </label>
 
             <label class="radio-label">
                 <input type="checkbox" name="reason" value="ocr_accuracy">
-                <span>Image recognition accuracy</span>
+                <span data-i18n="uninstall.reason.ocr_accuracy">Image recognition accuracy</span>
             </label>
 
             <label class="radio-label">
                 <input type="checkbox" name="reason" value="display_quality">
-                <span>Display quality</span>
+                <span data-i18n="uninstall.reason.display_quality">Display quality</span>
             </label>
 
             <label class="radio-label">
                 <input type="checkbox" name="reason" value="missing_feature">
-                <span>Missing features</span>
+                <span data-i18n="uninstall.reason.missing_feature">Missing features</span>
             </label>
 
             <label class="radio-label">
                 <input type="checkbox" name="reason" value="site_not_supported">
-                <span>Some websites are not supported</span>
+                <span data-i18n="uninstall.reason.site_not_supported">Some websites are not supported</span>
             </label>
 
             <label class="radio-label">
                 <input type="checkbox" name="reason" value="alternative">
-                <span>Found an alternative</span>
+                <span data-i18n="uninstall.reason.alternative">Found an alternative</span>
             </label>
 
             <label class="radio-label">
                 <input type="checkbox" name="reason" value="bug">
-                <span>Bug</span>
+                <span data-i18n="uninstall.reason.bug">Bug</span>
             </label>
 
             <label class="radio-label">
                 <input type="checkbox" name="reason" value="not_needed">
-                <span>No longer needed</span>
+                <span data-i18n="uninstall.reason.not_needed">No longer needed</span>
             </label>
 
             <label class="radio-label">
                 <input type="checkbox" name="reason" value="other">
-                <span>Other</span>
+                <span data-i18n="uninstall.reason.other">Other</span>
             </label>
         </div>
 
         <textarea
                 id="comment"
                 class="textarea-box"
-                placeholder="How can we make it better?"
+                placeholder="How can we make it better?" data-i18n-placeholder="uninstall.commentPlaceholder"
         ></textarea>
 
-        <button type="submit" id="submit-btn" class="submit-btn">
+        <button type="submit" id="submit-btn" class="submit-btn" data-i18n="uninstall.submit">
             Submit feedback
         </button>
 
-        <div id="success-msg">Thank you! You can safely close this tab.</div>
-        <div id="error-msg">Failed to submit. Please try again later.</div>
+        <div id="success-msg" data-i18n="uninstall.success">Thank you! Hope to see you again.</div>
+        <div id="error-msg" data-i18n="uninstall.error">Failed to submit. Please try again later.</div>
     </form>
 </div>
 
 <script>
-    KanfanI18n.apply();
-    KanfanI18n.renderSelect(document.querySelector('[data-lang-switcher]'));
 
+    KanfanI18n.renderSelect(document.querySelector('[data-lang-switcher]'));
+    KanfanI18n.apply();
     const API_URL = 'https://api.kanfan.site/feedback/uninstall';
 
     document.getElementById('uninstall-form').addEventListener('submit', async (e) => {
