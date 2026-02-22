@@ -1,317 +1,90 @@
-<!doctype html>
-<html lang="en">
+<!DOCTYPE html>
+<html lang="zh-CN">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Kanfan Support</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技术支持与反馈 - Kanfan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root{
-            --bg:#0b0f17;
-            --card:rgba(255,255,255,0.06);
-            --card2:rgba(255,255,255,0.08);
-            --border:rgba(255,255,255,0.12);
-            --text:rgba(255,255,255,0.92);
-            --muted:rgba(255,255,255,0.68);
-            --primary:#f97316;
-            --primary2:#ea580c;
-            --ok:#10b981;
-            --shadow:0 14px 40px rgba(0,0,0,0.35);
-            --radius:18px;
-        }
-        *{ box-sizing:border-box; }
-        body{
-            margin:0;
-            font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
-            background: radial-gradient(1200px 600px at 20% -10%, rgba(249,115,22,0.35), transparent 60%),
-            radial-gradient(900px 600px at 90% 10%, rgba(234,88,12,0.22), transparent 60%),
-            var(--bg);
-            color:var(--text);
-            min-height:100vh;
-        }
-        .container{ max-width:980px; margin:0 auto; padding:22px 16px 40px; }
-        .nav{ display:flex; align-items:center; justify-content:space-between; gap:14px; padding:10px 0 18px; }
-        .brand{ display:flex; align-items:center; gap:10px; font-weight:900; letter-spacing:-0.02em; }
-        .logo{ width:34px; height:34px; border-radius:10px; background:linear-gradient(135deg,var(--primary),var(--primary2)); box-shadow:0 10px 22px rgba(249,115,22,0.22); }
-        .nav-right{ display:flex; align-items:center; gap:10px; flex-wrap:wrap; justify-content:flex-end; }
-        .pill{
-            display:flex; align-items:center; gap:8px;
-            padding:8px 10px;
-            border:1px solid var(--border);
-            border-radius:999px;
-            background:rgba(255,255,255,0.06);
-            color:var(--muted);
-            font-size:12px;
-            max-width:56vw;
-        }
-        .dot{ width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,0.35); }
-        .dot.ok{ background:var(--ok); }
-        .btn{
-            border:1px solid var(--border);
-            background:rgba(255,255,255,0.06);
-            color:var(--text);
-            padding:10px 12px;
-            border-radius:12px;
-            cursor:pointer;
-            font-weight:800;
-            font-size:13px;
-            transition:0.15s ease;
-            white-space:nowrap;
-        }
-        .btn:hover{ transform:translateY(-1px); background:rgba(255,255,255,0.09); }
-        .btn.primary{
-            border:none;
-            background:linear-gradient(135deg,var(--primary),var(--primary2));
-            box-shadow:0 12px 26px rgba(249,115,22,0.18);
-        }
-        .btn.primary:hover{ filter:brightness(1.05); }
-
-        .hero{ display:grid; grid-template-columns:1.2fr 0.8fr; gap:14px; margin-top:6px; }
-        @media (max-width:860px){ .hero{ grid-template-columns:1fr; } }
-        .card{
-            background:var(--card);
-            border:1px solid var(--border);
-            border-radius:var(--radius);
-            box-shadow:var(--shadow);
-            padding:18px;
-        }
-        .title{ font-size:26px; font-weight:950; letter-spacing:-0.03em; margin:0 0 6px 0; line-height:1.15; }
-        .subtitle{ margin:0; color:var(--muted); line-height:1.5; font-size:14px; }
-        .kv{ margin-top:14px; display:grid; grid-template-columns:140px 1fr; gap:10px 12px; font-size:13px; color:var(--muted); }
-        .k{ color:rgba(255,255,255,0.78); font-weight:700; }
-        .v{ color:rgba(255,255,255,0.86); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
-        .hint{
-            margin-top:12px; padding:12px;
-            border-radius:14px;
-            border:1px solid rgba(249,115,22,0.25);
-            background:rgba(249,115,22,0.08);
-            color:rgba(255,255,255,0.85);
-            font-size:13px; line-height:1.5;
-        }
-        .widget-card{
-            margin-top:16px;
-            background:var(--card2);
-            border:1px solid var(--border);
-            border-radius:var(--radius);
-            padding:16px;
-            box-shadow:var(--shadow);
-            min-height:160px;
-        }
-        .widget-head{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
-        .widget-title{ font-weight:950; letter-spacing:-0.02em; font-size:14px; }
-        .small{ color:var(--muted); font-size:12px; line-height:1.35; }
-        .mono{ font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace; }
-        .footer{ margin-top:18px; color:rgba(255,255,255,0.55); font-size:12px; text-align:center; }
-        .fallback{
-            display:none;
-            margin-top:10px;
-            padding:12px;
-            border-radius:14px;
-            border:1px solid rgba(239,68,68,0.35);
-            background:rgba(239,68,68,0.08);
-            color:rgba(255,255,255,0.86);
-            font-size:13px;
-            line-height:1.5;
-        }
+        /* 自定义一些简单的加载动画或样式 */
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
     </style>
 </head>
-<body>
-<div class="container">
-    <div class="nav">
-        <div class="brand">
-            <div class="logo" aria-hidden="true"></div>
-            <div>Kanfan</div>
-        </div>
-        <div class="nav-right">
-            <div class="pill" id="pill-auth">
-                <span class="dot" id="auth-dot"></span>
-                <span id="auth-text">Guest</span>
-            </div>
-            <button class="btn" id="btn-open-widget" type="button">Open Support Form</button>
-            <button class="btn primary" id="btn-signin" type="button" style="display:none;">Sign In</button>
-        </div>
+<body class="bg-gray-50 min-h-screen flex flex-col items-center justify-center p-4">
+
+<div class="max-w-md w-full bg-white rounded-xl shadow-lg p-8 text-center space-y-6">
+    <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path>
+        </svg>
     </div>
 
-    <div class="hero">
-        <div class="card">
-            <h1 class="title">Support</h1>
-            <p class="subtitle">Leave a message (ticket). We’ll reply when we see it.</p>
+    <h1 class="text-2xl font-bold text-gray-800">提交工单 / 留言反馈</h1>
+    <p class="text-gray-500 text-sm">
+        我们已接收到您的环境信息，请点击右下角的聊天图标提交您的问题，我们看到后会尽快回复您。
+    </p>
 
-            <div class="kv">
-                <div class="k">From</div>
-                <div class="v mono" id="v-from">-</div>
-
-                <div class="k">Extension</div>
-                <div class="v mono" id="v-version">-</div>
-
-                <div class="k">Page</div>
-                <div class="v mono" id="v-url">-</div>
-
-                <div class="k">User</div>
-                <div class="v mono" id="v-user">-</div>
-            </div>
-
-            <div class="hint">
-                Tip: You can submit a ticket without signing in. Signing in helps us locate your account faster.
-            </div>
-        </div>
-
-        <div class="card">
-            <div style="font-weight:950; letter-spacing:-0.02em;">What we send</div>
-            <div class="small" style="margin-top:10px;">
-                We pass context (extension version, current page URL, user id/email if available) to support.
-                This is only used to troubleshoot your issue.
-            </div>
-
-            <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
-                <button class="btn" type="button" id="btn-copy-context">Copy Context</button>
-                <button class="btn" type="button" id="btn-back-home">Home</button>
-            </div>
-
-            <div class="fallback" id="fallback-box">
-                The embedded widget didn’t load (blocked by network/adblock). Please allow this site and refresh.
-            </div>
-        </div>
-    </div>
-
-    <div class="widget-card">
-        <div class="widget-head">
-            <div>
-                <div class="widget-title">Support Form</div>
-                <div class="small">If you see live chat, enable Ticketing / Offline form in Tawk settings.</div>
-            </div>
-            <button class="btn" type="button" id="btn-maximize">Open</button>
-        </div>
-        <div class="small" style="margin-top:10px;">
-            The widget loads at bottom-right. Click “Open” if it doesn’t pop up.
-        </div>
-    </div>
-
-    <div class="footer">
-        Kanfan Support · <span class="mono" id="v-debug"></span>
+    <div id="debug-info" class="text-left bg-gray-50 p-4 rounded-lg text-xs text-gray-600 space-y-2 border">
+        <p><strong>来源:</strong> <span id="info-from">-</span></p>
+        <p><strong>插件版本:</strong> <span id="info-v">-</span></p>
+        <p><strong>遇到问题的页面:</strong> <span class="break-all" id="info-url">-</span></p>
+        <p><strong>账号邮箱:</strong> <span id="info-email">-</span></p>
     </div>
 </div>
 
-<script>
-    // --------- Read query params ---------
-    const u = new URL(location.href);
-    const from = u.searchParams.get("from") || "";
-    const v = u.searchParams.get("v") || "";
-    const pageUrl = u.searchParams.get("url") || "";
-    const uid = u.searchParams.get("uid") || "";
-    const email = u.searchParams.get("email") || "";
+<script type="text/javascript">
+    // 1. 读取 URL 参数
+    const urlParams = new URLSearchParams(window.location.search);
+    const sourceFrom = urlParams.get('from') || 'web';
+    const extVersion = urlParams.get('v') || '未知';
+    const issueUrl = urlParams.get('url') || '未知';
+    const userId = urlParams.get('uid') || '';
+    const userEmail = urlParams.get('email') || '';
 
-    const contextText =
-        `Kanfan Support Context
-- from: ${from || "-"}
-- extension: ${v || "-"}
-- page: ${pageUrl || "-"}
-- uid: ${uid || "-"}
-- email: ${email || "-"}`;
+    // 更新页面上的显示（可选，仅为了用户体验）
+    document.getElementById('info-from').textContent = sourceFrom === 'ext' ? '浏览器插件' : '网页端';
+    document.getElementById('info-v').textContent = extVersion;
+    document.getElementById('info-url').textContent = issueUrl;
+    document.getElementById('info-email').textContent = userEmail || '未登录';
 
-    // Render
-    document.getElementById("v-from").textContent = from || "-";
-    document.getElementById("v-version").textContent = v || "-";
-    document.getElementById("v-url").textContent = pageUrl || "-";
-    document.getElementById("v-user").textContent = (email || uid) ? (email || uid) : "Guest";
-
-    // Auth pill
-    const authDot = document.getElementById("auth-dot");
-    const authText = document.getElementById("auth-text");
-    const btnSignin = document.getElementById("btn-signin");
-    if (email || uid) {
-        authDot.classList.add("ok");
-        authText.textContent = `Signed in as ${email || uid}`;
-        btnSignin.style.display = "none";
-    } else {
-        authText.textContent = "Guest";
-        btnSignin.style.display = "inline-block";
-    }
-
-    // Sign in: keep redirect back with current query
-    btnSignin?.addEventListener("click", () => {
-        const redirect = u.pathname + u.search; // /support or /support.html?...
-        const loginUrl = new URL("login.html", location.origin + location.pathname.replace(/\/[^\/]*$/, "/"));
-        loginUrl.searchParams.set("redirect", redirect);
-        location.href = loginUrl.toString();
-    });
-
-    document.getElementById("btn-back-home")?.addEventListener("click", () => {
-        location.href = location.origin + "/";
-    });
-
-    document.getElementById("btn-copy-context")?.addEventListener("click", async () => {
-        try{
-            await navigator.clipboard.writeText(contextText);
-            const el = document.getElementById("btn-copy-context");
-            const old = el.textContent;
-            el.textContent = "Copied!";
-            setTimeout(() => el.textContent = old, 1200);
-        }catch(e){
-            alert(contextText);
-        }
-    });
-
-    // --------- Tawk init (your ids) ---------
-    // property id: 699ad0a49f81c11c340d8ed3
-    // js api:      969444192a9c00547e72a126d3c5ab93a0753801
+    // 2. 初始化 Tawk API
     var Tawk_API = Tawk_API || {};
     var Tawk_LoadStart = new Date();
 
-    // Put context into visitor info + custom attributes
-    (function attachVisitorContext(){
-        // Some methods only work after widget loads; we also repeat in onLoad
-        const name = email ? email : (uid ? `user:${uid}` : "guest");
-        try {
-            Tawk_API.visitor = { name, email: email || undefined };
-        } catch (_) {}
-        // Expose for debugging
-        document.getElementById("v-debug").textContent = `from=${from || "-"} v=${v || "-"}`;
-    })();
+    // 预填充用户信息（如果存在邮箱）
+    if (userEmail) {
+        Tawk_API.visitor = {
+            name: userEmail.split('@')[0],
+            email: userEmail
+        };
+    }
 
-    // Load script
+    // 当 Tawk.to 加载完成后，将插件带来的参数作为自定义属性附加到此工单/会话上
+    Tawk_API.onLoad = function() {
+        Tawk_API.setAttributes({
+            'source': sourceFrom,
+            'extension_version': extVersion,
+            'issue_url': issueUrl,
+            'user_id': userId
+        }, function (error) {
+            if(error) console.error("[Tawk] Error setting attributes", error);
+        });
+
+        // 可选：自动打开留言窗口
+        // Tawk_API.maximize();
+    };
+
+    // 3. 注入 Tawk.to 核心代码
     (function(){
-        var s1=document.createElement("script"), s0=document.getElementsByTagName("script")[0];
-        s1.async=true;
-        s1.src='https://embed.tawk.to/699ad0a49f81c11c340d8ed3/1ji2bu1im'; // <-- IMPORTANT: replace this path if your Tawk dashboard gives a different widget URL
-        s1.charset='UTF-8';
+        var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
+        s1.async = true;
+        // 你的 Property ID : 699ad0a49f81c11c340d8ed3
+        // 你的 Widget ID (js api) : 969444192a9c00547e72a126d3c5ab93a0753801
+        s1.src = 'https://embed.tawk.to/699ad0a49f81c11c340d8ed3/1ji2bu1im';
+        s1.charset = 'UTF-8';
         s1.setAttribute('crossorigin','*');
         s0.parentNode.insertBefore(s1,s0);
     })();
-
-    // After load: set attributes + optionally open widget
-    Tawk_API.onLoad = function() {
-        // Set custom attributes (shows in ticket details)
-        try {
-            Tawk_API.setAttributes({
-                from: from || "",
-                extension_version: v || "",
-                page_url: pageUrl || "",
-                uid: uid || "",
-                email: email || "",
-            }, function(){});
-        } catch(e){}
-
-        // If user came from extension, gently open it
-        if (from === "ext") {
-            try { Tawk_API.maximize(); } catch(_){}
-        }
-    };
-
-    // Buttons to open widget
-    function openWidget(){
-        try { Tawk_API.maximize(); } catch(_) {}
-    }
-    document.getElementById("btn-open-widget")?.addEventListener("click", openWidget);
-    document.getElementById("btn-maximize")?.addEventListener("click", openWidget);
-
-    // Fallback detection: if widget not loaded in 6s, show warning
-    setTimeout(() => {
-        // Tawk script typically defines Tawk_API.maximize; if missing, assume blocked
-        if (!Tawk_API || typeof Tawk_API.maximize !== "function") {
-            const fb = document.getElementById("fallback-box");
-            if (fb) fb.style.display = "block";
-        }
-    }, 6000);
 </script>
 </body>
 </html>
