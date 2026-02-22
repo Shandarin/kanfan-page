@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Kanfan Support</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="i18n.js"></script>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        /* 跟主页类似的 sticky nav 视觉 */
+        .lp-nav {
+            padding: 1.25rem 8%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            z-index: 1000;
+            border-bottom: 1px solid #fed7aa;
+        }
+        .lp-logo {
+            font-size: 1.5rem; font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+            display: flex; align-items: center; gap: 8px;
+        }
+        .lp-nav-right { display:flex; gap: 15px; align-items:center; }
+        .lp-language-select {
+            padding: 10px 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 10px;
+            background: #fff;
+            color: var(--dark);
+            font-size: 0.95rem;
+            width: 185px;
+            padding-right: 34px;
+        }
+
+        .support-wrap {
+            flex: 1;
+            width: 100%;
+            max-width: 980px;
+            margin: 34px auto;
+            padding: 0 20px 60px;
+        }
+
+        .hero {
+            background: radial-gradient(circle at top right, #fff7ed, #ffffff);
+            border: 1px solid #fed7aa;
+            border-radius: 18px;
+            padding: 22px 22px;
+            margin-bottom: 16px;
+        }
+        .hero h1 {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 8px;
+            color: var(--dark);
+        }
+        .hero p {
+            color: var(--slate);
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+            align-items: start;
+        }
+        @media (max-width: 860px) {
+            .grid { grid-template-columns: 1fr; }
+        }
+
+        .card-like {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 18px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        }
+        .card-like h3 {
+            font-size: 1.05rem;
+            font-weight: 800;
+            margin-bottom: 10px;
+            color: var(--dark);
+        }
+        .muted { color: var(--slate); font-size: 0.95rem; line-height: 1.55; }
+
+        .diag {
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 12px;
+            background: #0b1220;
+            color: #e2e8f0;
+            border-radius: 12px;
+            padding: 12px;
+            overflow: auto;
+            border: 1px solid #1f2937;
+            white-space: pre-wrap;
+            word-break: break-word;
+            margin-top: 10px;
+        }
+
+        .row { display:flex; gap: 10px; align-items:center; flex-wrap: wrap; }
+        .btn-outline {
+            background: white;
+            border: 1px solid #cbd5e1;
+            color: var(--slate);
+            padding: 10px 16px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.2s;
+        }
+        .btn-outline:hover { border-color: var(--dark); color: var(--dark); }
+
+        /* tawk 容器（你也可以不用容器，直接让 widget 浮动） */
+        .chat-holder {
+            min-height: 360px;
+            border-radius: 12px;
+            border: 1px dashed #fed7aa;
+            background: #fff;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--slate);
+            padding: 18px;
+            text-align: center;
+        }
+
+        .pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            border: 1px solid #e2e8f0;
+            background: #fff;
+            color: var(--slate);
+        }
+        .pill strong { color: var(--dark); }
+    </style>
+</head>
+
+<body>
+<nav class="lp-nav">
+    <a href="index.html" class="lp-logo">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+            <polygon points="12 2 2 7 12 12 22 7 12 2"></polygon>
+            <polyline points="2 17 12 22 22 17"></polyline>
+            <polyline points="2 12 12 17 22 12"></polyline>
+        </svg>
+        Kanfan
+    </a>
+
+    <div class="lp-nav-right">
+        <select class="lp-language-select" aria-label="Supported translation languages" id="langSel">
+            <option value="zh_CN">简体中文</option>
+            <option value="zh_TW">繁體中文</option>
+            <option value="en">English</option>
+            <option value="ja">日本語</option>
+            <option value="ko">한국어</option>
+            <option value="de">Deutsch</option>
+            <option value="es">Español</option>
+            <option value="fr">Français</option>
+            <option value="it">Italiano</option>
+            <option value="pl">Polski</option>
+            <option value="pt">Português</option>
+            <option value="pt_BR">Português (Brasil)</option>
+            <option value="ru">Русский</option>
+            <option value="th">ไทย</option>
+            <option value="vi">Tiếng Việt</option>
+            <option value="id">Bahasa Indonesia</option>
+            <option value="ar">العربية</option>
+            <option value="hi">हिन्दी</option>
+        </select>
+
+        <span class="pill" id="navUserPill" style="display:none;">
+        <span data-i18n="support.signedInAs">Signed in as</span>
+        <strong id="navUserEmail"></strong>
+      </span>
+
+        <a href="login.html" id="navLoginBtn" style="color: var(--dark); text-decoration: none; font-weight: 700; font-size: 0.95rem;" data-i18n="nav.signin">Sign In</a>
+        <a href="account.html" id="navAccountBtn" style="display:none; color: var(--dark); text-decoration: none; font-weight: 700; font-size: 0.95rem;" data-i18n="support.myAccount">My Account</a>
+    </div>
+</nav>
+
+<main class="support-wrap">
+    <section class="hero">
+        <h1 data-i18n="support.title">Support & Feedback</h1>
+        <p data-i18n="support.desc">Send us a message about bugs, translation issues, or feature requests. We’ll reply as soon as possible.</p>
+    </section>
+
+    <section class="grid">
+        <!-- 左侧：诊断信息 + 登录提示 -->
+        <div class="card-like">
+            <h3 data-i18n="support.contextTitle">Context</h3>
+            <div class="muted" data-i18n="support.contextDesc">
+                We automatically attach some basic context to help us debug faster.
+            </div>
+
+            <div class="diag" id="diagBox">Loading...</div>
+
+            <div class="row" style="margin-top:12px;">
+                <button class="btn-outline" id="btnCopy" type="button" data-i18n="support.copy">Copy</button>
+                <div id="copyMsg" class="muted" style="display:none;" data-i18n="support.copied">Copied</div>
+            </div>
+
+            <div id="loginGate" style="margin-top:14px; display:none;">
+                <div class="msg error" style="display:block;">
+                    <span data-i18n="support.loginToSend">Please sign in to send a message.</span>
+                </div>
+                <button class="btn" id="btnGoLogin" type="button" style="margin-top:10px;">
+                    <span data-i18n="support.signIn">Sign In</span>
+                </button>
+            </div>
+        </div>
+
+        <!-- 右侧：tawk widget -->
+        <div class="card-like">
+            <h3 data-i18n="support.ticketTitle">Send a message</h3>
+            <div class="muted" data-i18n="support.ticketDesc">
+                This will create a support ticket. You can come back later to see replies.
+            </div>
+
+            <div id="chatHolder" class="chat-holder" style="margin-top:12px;">
+                <span data-i18n="support.chatLoading">Loading support widget...</span>
+            </div>
+        </div>
+    </section>
+</main>
+
+<script>
+    // ===== Supabase Config（跟你现有页面一致）=====
+    const SUPABASE_URL = "https://ikriqgjylpbwqihwpsho.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_xdQsvfTfJEwfNjF5KYvxLA_y4QiKqFo";
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // ===== i18n: 跟你现有 i18n.js 一样 =====
+    const langSel = document.getElementById("langSel");
+    if (langSel && window.KanfanI18n) {
+        langSel.value = KanfanI18n.getLang();
+        langSel.addEventListener("change", () => { KanfanI18n.setLang(langSel.value); KanfanI18n.apply(); });
+        KanfanI18n.apply();
+    }
+
+    // ===== 读取扩展带来的 query 参数 =====
+    const qs = new URLSearchParams(location.search);
+    const ctx = {
+        from: qs.get("from") || "",
+        v: qs.get("v") || "",
+        url: qs.get("url") || "",
+        uid_qs: qs.get("uid") || "",
+        email_qs: qs.get("email") || ""
+    };
+
+    function buildDiagText(user) {
+        const lines = [];
+        lines.push(`from: ${ctx.from || "-"}`);
+        lines.push(`extensionVersion: ${ctx.v || "-"}`);
+        lines.push(`pageUrl: ${ctx.url || "-"}`);
+        lines.push(`userId: ${(user?.id || ctx.uid_qs) || "-"}`);
+        lines.push(`email: ${(user?.email || ctx.email_qs) || "-"}`);
+        lines.push(`lang: ${KanfanI18n?.getLang?.() || "en"}`);
+        lines.push(`time: ${new Date().toISOString()}`);
+        return lines.join("\\n");
+    }
+
+    function preserveQueryForLogin() {
+        // 当前完整 URL
+        const cur = new URL(location.href);
+
+        // 约定：redirect=/support.html?xxx
+        const redirect = cur.pathname + cur.search;
+
+        // 用当前页面作为 base，最稳
+        const url = new URL("login.html", location.href);
+
+        url.searchParams.set("redirect", redirect);
+
+        // 同时把 lang 带过去
+        const lang = KanfanI18n?.getLang?.() || "en";
+        url.searchParams.set("lang", lang);
+
+        return url.toString();
+    }
+
+    // ===== tawk 注入（你需要把下面占位符替换成你自己的）=====
+    // 1) 在 tawk.to 后台拿到 embed code，里面会有类似：
+    // s1.src='https://embed.tawk.to/XXXXXXXX/1YYYYYYY';
+    // 把 XXXXXXXX/1YYYYYYY 替换到这里
+    const TAWK_EMBED_SRC = "https://embed.tawk.to/699ad0a49f81c11c340d8ed3/default";
+
+    // tawk 官方常用方式：先定义 Tawk_API，再加载脚本
+    window.Tawk_API = window.Tawk_API || {};
+    window.Tawk_LoadStart = new Date();
+
+    function loadTawkWidget({ user }) {
+        // 把用户信息给 tawk（如果已登录）
+        const email = user?.email || ctx.email_qs || "";
+        const uid = user?.id || ctx.uid_qs || "";
+        const name = email ? email.split("@")[0] : "Guest";
+
+        // visitor（常见用法）
+        window.Tawk_API.visitor = {
+            name: name,
+            email: email || undefined
+        };
+
+        // custom attrs（常见用法）
+        // 注意：某些属性名在后台显示为自定义字段
+        window.Tawk_API.onLoad = function() {
+            try {
+                window.Tawk_API.setAttributes?.({
+                    userId: uid || "",
+                    extensionVersion: ctx.v || "",
+                    pageUrl: ctx.url || "",
+                    lang: (KanfanI18n?.getLang?.() || "en"),
+                    source: "support_page"
+                }, function(error){});
+            } catch (e) {}
+            const holder = document.getElementById("chatHolder");
+            if (holder) holder.style.display = "none"; // widget 自己会浮动显示
+        };
+
+        // 加载脚本（只加载一次）
+        if (document.getElementById("tawkScript")) return;
+        const s1 = document.createElement("script");
+        s1.id = "tawkScript";
+        s1.async = true;
+        s1.src = TAWK_EMBED_SRC;
+        s1.charset = "UTF-8";
+        s1.setAttribute("crossorigin", "*");
+        document.body.appendChild(s1);
+    }
+
+    async function init() {
+        // 1) 先拿 session，更新 nav
+        const { data: { session } } = await sb.auth.getSession();
+        const user = session?.user || null;
+
+        const navUserPill = document.getElementById("navUserPill");
+        const navUserEmail = document.getElementById("navUserEmail");
+        const navLoginBtn = document.getElementById("navLoginBtn");
+        const navAccountBtn = document.getElementById("navAccountBtn");
+
+        if (user) {
+            if (navUserEmail) navUserEmail.textContent = user.email || "";
+            if (navUserPill) navUserPill.style.display = "inline-flex";
+            if (navLoginBtn) navLoginBtn.style.display = "none";
+            if (navAccountBtn) navAccountBtn.style.display = "inline-block";
+        } else {
+            if (navUserPill) navUserPill.style.display = "none";
+            if (navLoginBtn) navLoginBtn.style.display = "inline-block";
+            if (navAccountBtn) navAccountBtn.style.display = "none";
+        }
+
+        // 2) 诊断信息渲染
+        const diagText = buildDiagText(user);
+        document.getElementById("diagBox").textContent = diagText;
+
+        // 3) Copy
+        document.getElementById("btnCopy").addEventListener("click", async () => {
+            try {
+                await navigator.clipboard.writeText(diagText);
+                const m = document.getElementById("copyMsg");
+                m.style.display = "block";
+                setTimeout(() => (m.style.display = "none"), 1500);
+            } catch (e) {}
+        });
+
+        // 4) 未登录 -> gate（提示先登录再发送）
+        const loginGate = document.getElementById("loginGate");
+        const btnGoLogin = document.getElementById("btnGoLogin");
+        if (!user) {
+            loginGate.style.display = "block";
+            btnGoLogin.addEventListener("click", () => {
+                location.href = preserveQueryForLogin();
+            });
+            // 你也可以选择：未登录也允许留言（把这里删掉），但你说“登录后再发送”
+            return;
+        }
+
+        // 5) 已登录 -> 加载 tawk widget（ticketing）
+        loadTawkWidget({ user });
+    }
+
+    init();
+</script>
+</body>
+</html>
