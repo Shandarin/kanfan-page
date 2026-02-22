@@ -61,7 +61,6 @@
 </div>
 
 <script>
-    // 1. 解析 URL 参数
     const urlParams = new URLSearchParams(window.location.search);
     const email = urlParams.get('email') || '';
     const uid = urlParams.get('uid') || '';
@@ -69,22 +68,19 @@
     const sourceUrl = urlParams.get('url') || 'unknown';
     const isFromExt = urlParams.get('from') === 'ext';
 
-    // 2. 如果是从插件跳过来的，展示一下调试信息（可选，提升专业感）
     if (isFromExt) {
         const debugBox = document.getElementById('debug-info');
         debugBox.style.display = 'block';
         debugBox.innerHTML = `
-                附带排错信息自动提交：<br>
+                已自动附带排错信息：<br>
                 <span>Version:</span> ${version}<br>
-                <span>Account:</span> ${email || 'Guest'}<br>
+                <span>Account:</span> ${email || '未登录'}<br>
                 <span>Page:</span> ${sourceUrl}
             `;
     }
 
-    // 3. 配置 Tawk.to API
     var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
 
-    // 预设访客姓名和邮箱（如果有的话）
     if (email) {
         Tawk_API.visitor = {
             name: email.split('@')[0],
@@ -92,7 +88,6 @@
         };
     }
 
-    // 当 Widget 加载完，注入自定义属性 (方便你在后台直接看到上下文)
     Tawk_API.onLoad = function() {
         Tawk_API.setAttributes({
             'userId': uid,
@@ -103,10 +98,10 @@
         });
     };
 
-    // 4. 加载 Tawk.to 核心脚本 (使用你提供的 Property ID 和 Widget ID)
     (function(){
         var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
         s1.async = true;
+        // 你的 Property ID 和 JS API 已经写入这里
         s1.src = 'https://embed.tawk.to/699ad0a49f81c11c340d8ed3/969444192a9c00547e72a126d3c5ab93a0753801';
         s1.charset = 'UTF-8';
         s1.setAttribute('crossorigin','*');
