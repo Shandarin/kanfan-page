@@ -3,110 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kanfan Support</title>
+    <title>技术支持与反馈 - Kanfan</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-            background-color: #f7f9fc;
-            color: #333;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
-        .container {
-            background: #fff;
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
-            max-width: 500px;
-            text-align: center;
-        }
-        h1 {
-            font-size: 24px;
-            margin-bottom: 16px;
-            color: #111;
-        }
-        p {
-            font-size: 15px;
-            line-height: 1.6;
-            color: #555;
-            margin-bottom: 24px;
-        }
-        .info-box {
-            background: #f0f4f8;
-            padding: 16px;
-            border-radius: 8px;
-            font-size: 13px;
-            text-align: left;
-            color: #666;
-            word-break: break-all;
-        }
-        .info-box span {
-            font-weight: 600;
-            color: #333;
-        }
+        /* 自定义一些简单的加载动画或样式 */
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
     </style>
 </head>
-<body>
+<body class="bg-gray-50 min-h-screen flex flex-col items-center justify-center p-4">
 
-<div class="container">
-    <h1>联系技术支持</h1>
-    <p>请点击页面右下角的聊天图标给我们留言。<br>我们将收到您的反馈，并通过邮件尽快回复您。</p>
+<div class="max-w-md w-full bg-white rounded-xl shadow-lg p-8 text-center space-y-6">
+    <div class="w-16 h-16 bg-blue-100 text-blue-600 rounded-full flex items-center justify-center mx-auto mb-4">
+        <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z"></path>
+        </svg>
+    </div>
 
-    <div class="info-box" id="debug-info" style="display: none;">
+    <h1 class="text-2xl font-bold text-gray-800">提交工单 / 留言反馈</h1>
+    <p class="text-gray-500 text-sm">
+        我们已接收到您的环境信息，请点击右下角的聊天图标提交您的问题，我们看到后会尽快回复您。
+    </p>
+
+    <div id="debug-info" class="text-left bg-gray-50 p-4 rounded-lg text-xs text-gray-600 space-y-2 border">
+        <p><strong>来源:</strong> <span id="info-from">-</span></p>
+        <p><strong>插件版本:</strong> <span id="info-v">-</span></p>
+        <p><strong>遇到问题的页面:</strong> <span class="break-all" id="info-url">-</span></p>
+        <p><strong>账号邮箱:</strong> <span id="info-email">-</span></p>
     </div>
 </div>
 
-<script>
-    // 1. 解析 URL 参数
+<script type="text/javascript">
+    // 1. 读取 URL 参数
     const urlParams = new URLSearchParams(window.location.search);
-    const email = urlParams.get('email') || '';
-    const uid = urlParams.get('uid') || '';
-    const version = urlParams.get('v') || 'unknown';
-    const sourceUrl = urlParams.get('url') || 'unknown';
-    const isFromExt = urlParams.get('from') === 'ext';
+    const sourceFrom = urlParams.get('from') || 'web';
+    const extVersion = urlParams.get('v') || '未知';
+    const issueUrl = urlParams.get('url') || '未知';
+    const userId = urlParams.get('uid') || '';
+    const userEmail = urlParams.get('email') || '';
 
-    // 2. 如果是从插件跳过来的，展示一下调试信息（可选，提升专业感）
-    if (isFromExt) {
-        const debugBox = document.getElementById('debug-info');
-        debugBox.style.display = 'block';
-        debugBox.innerHTML = `
-                附带排错信息自动提交：<br>
-                <span>Version:</span> ${version}<br>
-                <span>Account:</span> ${email || 'Guest'}<br>
-                <span>Page:</span> ${sourceUrl}
-            `;
-    }
+    // 更新页面上的显示（可选，仅为了用户体验）
+    document.getElementById('info-from').textContent = sourceFrom === 'ext' ? '浏览器插件' : '网页端';
+    document.getElementById('info-v').textContent = extVersion;
+    document.getElementById('info-url').textContent = issueUrl;
+    document.getElementById('info-email').textContent = userEmail || '未登录';
 
-    // 3. 配置 Tawk.to API
-    var Tawk_API = Tawk_API || {}, Tawk_LoadStart = new Date();
+    // 2. 初始化 Tawk API
+    var Tawk_API = Tawk_API || {};
+    var Tawk_LoadStart = new Date();
 
-    // 预设访客姓名和邮箱（如果有的话）
-    if (email) {
+    // 预填充用户信息（如果存在邮箱）
+    if (userEmail) {
         Tawk_API.visitor = {
-            name: email.split('@')[0],
-            email: email
+            name: userEmail.split('@')[0],
+            email: userEmail
         };
     }
 
-    // 当 Widget 加载完，注入自定义属性 (方便你在后台直接看到上下文)
+    // 当 Tawk.to 加载完成后，将插件带来的参数作为自定义属性附加到此工单/会话上
     Tawk_API.onLoad = function() {
         Tawk_API.setAttributes({
-            'userId': uid,
-            'extension_version': version,
-            'source_url': sourceUrl
-        }, function(error) {
-            if(error) console.warn("Tawk attributes set error:", error);
+            'source': sourceFrom,
+            'extension_version': extVersion,
+            'issue_url': issueUrl,
+            'user_id': userId
+        }, function (error) {
+            if(error) console.error("[Tawk] Error setting attributes", error);
         });
+
+        // 可选：自动打开留言窗口
+        // Tawk_API.maximize();
     };
 
-    // 4. 加载 Tawk.to 核心脚本 (使用你提供的 Property ID 和 Widget ID)
+    // 3. 注入 Tawk.to 核心代码
     (function(){
         var s1 = document.createElement("script"), s0 = document.getElementsByTagName("script")[0];
         s1.async = true;
+        // 你的 Property ID : 699ad0a49f81c11c340d8ed3
+        // 你的 Widget ID (js api) : 969444192a9c00547e72a126d3c5ab93a0753801
         s1.src = 'https://embed.tawk.to/699ad0a49f81c11c340d8ed3/969444192a9c00547e72a126d3c5ab93a0753801';
         s1.charset = 'UTF-8';
         s1.setAttribute('crossorigin','*');
