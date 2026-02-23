@@ -7,6 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
+    <script src="i18n.js"></script>
     <style>
         /* 确保 body 使用项目定义的字体和背景色变量 */
         body {
@@ -30,16 +31,16 @@
         <span class="text-3xl font-extrabold text-[color:var(--primary)] tracking-tight">Kanfan</span>
     </div>
 
-    <h1 class="text-2xl font-bold text-[color:var(--dark)]">留言反馈</h1>
-    <p class="text-[color:var(--slate)] text-sm leading-relaxed">
+    <h1 class="text-2xl font-bold text-[color:var(--dark)]" data-i18n="support.title">留言反馈</h1>
+    <p class="text-[color:var(--slate)] text-sm leading-relaxed" data-i18n="support.desc">
         请在下方填写您的留言，提交后我们会通过邮件尽快回复您。
     </p>
 
     <div id="debug-info" class="text-left bg-[color:var(--light)] p-4 rounded-xl text-xs space-y-2 border border-slate-200">
-        <p><span class="debug-info-label">来源:</span> <span id="info-from" class="debug-info-value">-</span></p>
-        <p><span class="debug-info-label">插件版本:</span> <span id="info-v" class="debug-info-value">-</span></p>
-        <p><span class="debug-info-label">来源页面:</span> <span class="break-all debug-info-value" id="info-url">-</span></p>
-        <p><span class="debug-info-label">账号邮箱:</span> <span id="info-email" class="debug-info-value">-</span></p>
+        <p><span class="debug-info-label" data-i18n="support.debug.source">来源:</span> <span id="info-from" class="debug-info-value">-</span></p>
+        <p><span class="debug-info-label" data-i18n="support.debug.version">插件版本:</span> <span id="info-v" class="debug-info-value">-</span></p>
+        <p><span class="debug-info-label" data-i18n="support.debug.page">来源页面:</span> <span class="break-all debug-info-value" id="info-url">-</span></p>
+        <p><span class="debug-info-label" data-i18n="support.debug.email">账号邮箱:</span> <span id="info-email" class="debug-info-value">-</span></p>
     </div>
 
     <form action="https://formspree.io/f/mojnpvva" method="POST" class="space-y-5 text-left mt-6">
@@ -50,20 +51,21 @@
         <input type="hidden" name="user_id" id="input-uid">
 
         <div>
-            <label class="block text-sm font-semibold text-[color:var(--dark)] mb-2">您的邮箱</label>
-            <input type="email" name="email" id="input-email" required placeholder="name@example.com"
+            <label class="block text-sm font-semibold text-[color:var(--dark)] mb-2" data-i18n="support.form.emailLabel">您的邮箱</label>
+            <input type="email" name="email" id="input-email" required placeholder="name@example.com" data-i18n-placeholder="support.form.emailPlaceholder"
                    class="w-full px-4 py-3 border border-slate-200 rounded-lg text-sm shadow-sm
                           focus:ring-2 focus:ring-[color:var(--primary)] focus:border-[color:var(--primary)] focus:ring-opacity-20 outline-none transition-all">
         </div>
 
         <div>
-            <label class="block text-sm font-semibold text-[color:var(--dark)] mb-2">留言内容</label>
-            <textarea name="message" required rows="4" placeholder="请详细描述您遇到的情况或建议..."
+            <label class="block text-sm font-semibold text-[color:var(--dark)] mb-2" data-i18n="support.form.messageLabel">留言内容</label>
+            <textarea name="message" required rows="4" placeholder="请详细描述您遇到的情况或建议..." data-i18n-placeholder="support.form.messagePlaceholder"
                       class="w-full px-4 py-3 border border-slate-200 rounded-lg text-sm shadow-sm
                              focus:ring-2 focus:ring-[color:var(--primary)] focus:border-[color:var(--primary)] focus:ring-opacity-20 outline-none transition-all resize-none"></textarea>
         </div>
 
         <button type="submit"
+                data-i18n="support.form.submit"
                 class="w-full bg-[color:var(--primary)] hover:bg-[color:var(--primary-hover)] text-white font-bold py-3 px-6 rounded-full
                        shadow-md hover:shadow-[0_10px_15px_-3px_rgba(249,115,22,0.4)] transition-all duration-200 transform hover:-translate-y-1">
             发送留言
@@ -72,12 +74,14 @@
 </div>
 
 <script type="text/javascript">
+    KanfanI18n.apply();
+    document.title = KanfanI18n.t('support.pageTitle');
     // 1. 读取 URL 参数
     const urlParams = new URLSearchParams(window.location.search);
     const sourceFrom = urlParams.get('from') || 'web';
-    const extVersion = urlParams.get('v') || '未知';
+    const extVersion = urlParams.get('v') ||  KanfanI18n.t('support.meta.unknown');
     // 如果 url 太长，截断显示，但保留完整值用于提交
-    const rawIssueUrl = urlParams.get('url') || '未知';
+    const rawIssueUrl = urlParams.get('url') || KanfanI18n.t('support.meta.unknown');
     let displayIssueUrl = rawIssueUrl;
     if (displayIssueUrl.length > 100) {
         displayIssueUrl = displayIssueUrl.substring(0, 97) + '...';
@@ -87,13 +91,15 @@
     const userEmail = urlParams.get('email') || '';
 
     // 2. 更新页面上的 UI 显示
-    document.getElementById('info-from').textContent = sourceFrom === 'ext' ? '浏览器插件' : '网页端';
+    document.getElementById('info-from').textContent = sourceFrom === 'ext'
+        ? KanfanI18n.t('support.source.ext')
+        : KanfanI18n.t('support.source.web');
     document.getElementById('info-v').textContent = extVersion;
     // 显示截断后的 URL
     document.getElementById('info-url').textContent = displayIssueUrl;
     // 设置完整 URL 的 title，鼠标悬停可见
     document.getElementById('info-url').title = rawIssueUrl;
-    document.getElementById('info-email').textContent = userEmail || '未登录';
+    document.getElementById('info-email').textContent = userEmail || KanfanI18n.t('support.meta.notLoggedIn');
 
     // 3. 将参数填入 Formspree 的隐藏表单字段中 (提交完整值)
     document.getElementById('input-from').value = sourceFrom;
