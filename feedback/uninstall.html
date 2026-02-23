@@ -32,7 +32,6 @@
             margin-bottom: 24px;
         }
 
-        /* 原来叫 radio-group，这里保留 class 名不影响样式 */
         .radio-group {
             display: flex;
             flex-direction: column;
@@ -103,8 +102,14 @@
     <h1 class="feedback-title" data-i18n="uninstall.title">We're sorry to see you go</h1>
     <p class="feedback-desc" data-i18n="uninstall.desc">Could you tell us why you uninstalled Kanfan?</p>
 
-    <form id="uninstall-form">
-        <!-- 多选：卸载原因 -->
+    <form id="uninstall-form" action="https://formspree.io/f/xlgwodga" method="POST">
+
+        <input type="hidden" name="language" id="meta-lang">
+        <input type="hidden" name="page" value="uninstall">
+        <input type="hidden" name="user_agent" id="meta-ua">
+        <input type="hidden" name="timezone" id="meta-tz">
+        <input type="hidden" name="referrer" id="meta-ref">
+
         <div class="radio-group">
             <label class="radio-label">
                 <input type="checkbox" name="reason" value="performance">
@@ -164,6 +169,7 @@
 
         <textarea
                 id="comment"
+                name="comment"
                 class="textarea-box"
                 placeholder="How can we make it better?" data-i18n-placeholder="uninstall.commentPlaceholder"
         ></textarea>
@@ -171,61 +177,57 @@
         <button type="submit" id="submit-btn" class="submit-btn" data-i18n="uninstall.submit">
             Submit feedback
         </button>
-
-
     </form>
 
     <div id="success-msg" data-i18n="uninstall.success">Thank you! Hope to see you again.</div>
     <div id="error-msg" data-i18n="uninstall.error">Failed to submit. Please try again later.</div>
 </div>
 
-
-
 <script>
-
+    // 初始化多语言
     KanfanI18n.renderSelect(document.querySelector('[data-lang-switcher]'));
     KanfanI18n.apply();
-    const API_URL = 'https://api.kanfan.site/feedback/uninstall';
 
-    document.getElementById('uninstall-form').addEventListener('submit', async (e) => {
+    // 页面加载时填充隐藏的环境变量
+    document.getElementById('meta-lang').value = KanfanI18n.getLang();
+    document.getElementById('meta-ua').value = navigator.userAgent;
+    document.getElementById('meta-tz').value = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    document.getElementById('meta-ref').value = document.referrer || '';
+
+    const form = document.getElementById('uninstall-form');
+    form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
         const btn = document.getElementById('submit-btn');
         const successMsg = document.getElementById('success-msg');
         const errorMsg = document.getElementById('error-msg');
 
-        const comment = document.getElementById('comment').value.trim();
-
-        // 多选 reasons
-        const checked = document.querySelectorAll('input[name="reason"]:checked');
-        const reasons = Array.from(checked).map(el => el.value);
-
-        // 产品友好：允许空 reasons + 空 comment（不拦用户）
-        const payload = {
-            reasons,                 // <-- 改为数组
-            comment,
-            lang: KanfanI18n.getLang(),
-            page: 'uninstall',
-            ua: navigator.userAgent,
-            tz: Intl.DateTimeFormat().resolvedOptions().timeZone,
-            ref: document.referrer || ''
-        };
-
         btn.disabled = true;
         errorMsg.style.display = 'none';
 
+        // 使用 FormData 自动收集表单内的所有数据（包括勾选的多选框和输入框）
+        const formData = new FormData(form);
+
         try {
-            await fetch(API_URL, {
+            // 向 Formspree 提交，带上 Accept: 'application/json' 以获取 JSON 响应而不是页面跳转
+            const response = await fetch(form.action, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
             });
 
-            document.getElementById('uninstall-form').style.display = 'none';
-            successMsg.style.display = 'block';
+            if (response.ok) {
+                // 提交成功，隐藏表单，显示感谢信息
+                form.style.display = 'none';
+                successMsg.style.display = 'block';
+            } else {
+                throw new Error('Formspree returned an error');
+            }
         } catch (err) {
             console.warn('Feedback submit failed', err);
-            // 不打扰卸载用户：这里你也可以选择直接当成功
+            // 失败时恢复按钮并报错（如果不拦用户，你也可以选择在 catch 里直接当成功处理）
             btn.disabled = false;
             errorMsg.style.display = 'block';
         }
