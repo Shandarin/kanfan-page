@@ -169,6 +169,9 @@
         const lang = (qs.get("lang") || "").trim();
         if (!lang) return;
 
+        // 核心新增：动态修改 <html> 标签的 lang 属性
+        document.documentElement.lang = lang;
+
         // 1) store into hidden input
         setIfExists("meta-lang", lang);
 
