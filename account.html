@@ -152,7 +152,7 @@
             </div>
         </div>
 
-        <p style="color: var(--slate); font-size: 0.95rem; margin-bottom: 20px;">
+        <p style="color: var(--slate); font-size: 0.95rem; margin-bottom: 20px;" data-i18n="account.billingHint">
             You will be redirected to our secure billing portal hosted by Stripe.
         </p>
 
@@ -247,10 +247,10 @@
         const btn = this;
         const msg = document.getElementById('pw-msg');
 
-        if(!confirm(KanfanI18n.getLang().startsWith("zh") ? "向你的邮箱发送重置密码邮件？" : "Send password reset instructions to your email?")) return;
+        if(!confirm(KanfanI18n.t('account.resetConfirm'))) return;
 
         btn.disabled = true;
-        btn.textContent = KanfanI18n.getLang().startsWith("zh") ? "发送中..." : "Sending...";
+        btn.textContent = KanfanI18n.t('account.resetSending');
         msg.style.display = 'none';
 
         const { error } = await sb.auth.resetPasswordForEmail(currentUser.email, {
@@ -259,18 +259,18 @@
         });
 
         if (error) {
-            msg.textContent = "Error: " + error.message;
+            msg.textContent = KanfanI18n.t('account.errorPrefix') + error.message;
             // 更新为 style.css 的类名
             msg.className = "msg error";
             msg.style.display = "block";
             btn.disabled = false;
-            btn.textContent = "Change";
+            btn.textContent = KanfanI18n.t('account.change');
         } else {
-            msg.textContent = KanfanI18n.getLang().startsWith("zh") ? "重置链接已发送，请检查邮箱。" : "Reset link sent! Please check your email inbox.";
+            msg.textContent = KanfanI18n.t('account.resetSent');
             // 更新为 style.css 的类名
             msg.className = "msg success";
             msg.style.display = "block";
-            btn.textContent = KanfanI18n.getLang().startsWith("zh") ? "已发送" : "Sent";
+            btn.textContent = KanfanI18n.t('account.resetSentLabel');
         }
     });
 
@@ -279,7 +279,7 @@
         const msg = document.getElementById('portal-msg');
 
         btn.disabled = true;
-        btn.innerHTML = `<span class="spinner"></span> ${KanfanI18n.getLang().startsWith('zh') ? '跳转中...' : 'Redirecting...'}`;
+        btn.innerHTML = `<span class="spinner"></span> ${KanfanI18n.t('account.portalRedirecting')}`;
         msg.style.display = 'none';
 
         try {
@@ -311,7 +311,7 @@
             form.submit();
         } catch (err) {
             console.error(err);
-            msg.textContent = (KanfanI18n.getLang().startsWith("zh") ? "无法打开账单页面。" : "Could not open billing portal. ") + err.message;
+            msg.textContent = KanfanI18n.t('account.portalError') + " " + err.message;
             msg.className = "msg error";
             msg.style.display = "block";
             btn.disabled = false;
