@@ -402,7 +402,8 @@
     sb.auth.getSession().then(({ data: { session } }) => {
         if (session) {
             const navBtn = document.getElementById('nav-login-btn');
-            navBtn.textContent = "My Account";
+            navBtn.dataset.i18n = "nav.myAccount";
+            navBtn.textContent = KanfanI18n.t("nav.myAccount");
             navBtn.href = "account.html";
         }
     });
