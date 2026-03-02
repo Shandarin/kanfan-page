@@ -22,7 +22,7 @@
 
     const I18N = {
         en: {
-            "nav.signin": "Sign In", "nav.install": "Install Extension",
+            "nav.signin": "Sign In", "nav.install": "Install Extension", "nav.myAccount": "My Account",
             "home.heroLine1": "Read Manga in", "home.heroLine2": "Your Language", "home.heroDesc": "The smartest AI-powered manga translator extension. Translate raw manga directly in your browser with zero friction.", "home.chromeStore": "Chrome Web Store", "home.edgeAddons": "Edge Add-ons", "home.pricing": "Pricing", "home.perMonth": "/month", "home.install": "Install", "home.popular": "POPULAR", "home.plan.free": "Free", "home.plan.freeFeature": "200 Images Weekly", "home.plan.flex": "Flex", "home.plan.flexF1": "No monthly fees", "home.plan.flexF2": "Pay only for usage", "home.plan.flexF3": "Billed monthly", "home.plan.startFlex": "Start Flex", "home.plan.proFeature": "2,000 Weekly Images", "home.plan.subscribePro": "Subscribe Pro", "home.plan.maxFeature": "Unlimited Images", "home.plan.subscribeMax": "Subscribe Max", "home.feature.ocrTitle": "⚡ Smart OCR", "home.feature.ocrDesc": "High-speed text recognition optimized for manga fonts.", "home.feature.cleanTitle": "🎨 In-paint Cleaning", "home.feature.cleanDesc": "Automatically removes original text and restores art.", "home.feature.langTitle": "🌍 Multi-Language", "home.feature.langDesc": "Instant translation into 20+ other languages.", "home.footer.copyright": "© 2026 Kanfan Project.", "home.footer.contact": "Contact", "home.footer.terms": "Terms", "home.footer.refunds": "Refunds", "home.modal.termsTitle": "Terms", "home.modal.termsBody": "User agreement text...", "home.modal.refundTitle": "Refund Policy", "home.modal.refundBody": "Refund policy text...",
             "login.title": "Welcome Back", "login.subtitle": "Sign in to manage your subscription", "login.google": "Continue with Google", "login.or": "or", "login.email": "Email", "login.password": "Password", "login.submitIn": "Sign In", "login.submitUp": "Sign Up", "login.noAccount": "Don't have an account?", "login.haveAccount": "Already have an account?", "login.create": "Create one", "login.forgot": "Forgot Password?", "login.successTitle": "Successfully Signed In", "login.successDesc": "You have successfully logged in. Your extension is now synced.", "login.successTip": "You can verify your status in the extension popup.", "login.close": "Close Window",
             "account.title": "Account Settings", "account.signout": "Sign Out", "account.profile": "Profile", "account.profileDesc": "Manage your login information", "account.email": "Email", "account.password": "Password", "account.change": "Change", "account.billing": "Subscription & Billing", "account.billingDesc": "Manage your plan, payment methods, and invoices via Stripe", "account.billingHint": "You will be redirected to our secure billing portal hosted by Stripe.", "account.manage": "Manage Subscription", "account.syncTitle": "Extension Connected", "account.syncDesc": "Your account is now synced with the Kanfan browser extension.",
@@ -31,7 +31,7 @@
             "uninstall.title": "We're sorry to see you go", "uninstall.desc": "Could you tell us why you uninstalled Kanfan?", "uninstall.reason.performance": "Too slow", "uninstall.reason.pricing": "Too expensive", "uninstall.reason.translation": "Translation quality", "uninstall.reason.ocr_accuracy": "Image recognition accuracy", "uninstall.reason.display_quality": "Display quality", "uninstall.reason.missing_feature": "Missing features", "uninstall.reason.site_not_supported": "Some websites are not supported", "uninstall.reason.alternative": "Found an alternative", "uninstall.reason.bug": "Bug", "uninstall.reason.not_needed": "No longer needed", "uninstall.reason.other": "Other", "uninstall.commentPlaceholder": "How can we make it better?", "uninstall.submit": "Submit feedback", "uninstall.success": "Thank you! We hope to see you again.", "uninstall.error": "Failed to submit. Please try again later."
         },
         zh_CN: {
-            "nav.signin": "登录", "nav.install": "安装扩展",
+            "nav.signin": "登录", "nav.install": "安装扩展", "nav.myAccount": "我的账户",
             "home.heroLine1": "阅读漫画，", "home.heroLine2": "用你的语言", "home.heroDesc": "最智能的 AI 漫画翻译扩展，直接在浏览器中翻译生肉漫画，丝滑无阻。", "home.chromeStore": "Chrome 商店", "home.edgeAddons": "Edge 插件", "home.pricing": "价格", "home.perMonth": "/月", "home.install": "安装", "home.popular": "热门", "home.plan.free": "免费", "home.plan.freeFeature": "每周 200 张图片", "home.plan.flex": "灵活包", "home.plan.flexF1": "无需月费", "home.plan.flexF2": "按量付费", "home.plan.flexF3": "按月结算", "home.plan.startFlex": "开始使用灵活包", "home.plan.proFeature": "每周 2,000 张图片", "home.plan.subscribePro": "订阅 Pro", "home.plan.maxFeature": "无限图片", "home.plan.subscribeMax": "订阅 Max", "home.feature.ocrTitle": "⚡ 智能 OCR", "home.feature.ocrDesc": "针对漫画字体优化的高速文字识别。", "home.feature.cleanTitle": "🎨 智能修复", "home.feature.cleanDesc": "自动去除原文并修复画面。", "home.feature.langTitle": "🌍 多语言", "home.feature.langDesc": "一键翻译为 20+ 种语言。", "home.footer.copyright": "© 2026 Kanfan 项目。", "home.footer.contact": "联系我们", "home.footer.terms": "条款", "home.footer.refunds": "退款", "home.modal.termsTitle": "服务条款", "home.modal.termsBody": "用户协议内容...", "home.modal.refundTitle": "退款政策", "home.modal.refundBody": "退款政策内容...",
             "login.title": "欢迎回来", "login.subtitle": "登录以管理你的订阅", "login.google": "使用 Google 继续", "login.or": "或", "login.email": "邮箱", "login.password": "密码", "login.submitIn": "登录", "login.submitUp": "注册", "login.noAccount": "还没有账号？", "login.haveAccount": "已有账号？", "login.create": "立即创建", "login.forgot": "忘记密码？", "login.successTitle": "登录成功", "login.successDesc": "你已成功登录，扩展账号已同步。", "login.successTip": "你可以在扩展弹窗中查看状态。", "login.close": "关闭窗口",
             "account.title": "账户设置", "account.signout": "退出登录", "account.profile": "个人资料", "account.profileDesc": "管理你的登录信息", "account.email": "邮箱", "account.password": "密码", "account.change": "修改", "account.billing": "订阅与账单", "account.billingDesc": "通过 Stripe 管理套餐、支付方式与账单", "account.billingHint": "你将跳转到 Stripe 托管的安全账单门户。", "account.manage": "管理订阅", "account.syncTitle": "扩展已连接", "account.syncDesc": "你的账户已与 Kanfan 浏览器扩展同步。",
@@ -40,13 +40,14 @@
             "uninstall.title": "很遗憾看到你离开", "uninstall.desc": "可以告诉我们你为什么卸载 Kanfan 吗？", "uninstall.reason.performance": "速度太慢", "uninstall.reason.pricing": "价格太贵", "uninstall.reason.translation": "翻译质量", "uninstall.reason.ocr_accuracy": "图像识别准确率", "uninstall.reason.display_quality": "显示效果", "uninstall.reason.missing_feature": "功能缺失", "uninstall.reason.site_not_supported": "部分网站不支持", "uninstall.reason.alternative": "找到了替代品", "uninstall.reason.bug": "存在 Bug", "uninstall.reason.not_needed": "不再需要", "uninstall.reason.other": "其他", "uninstall.commentPlaceholder": "我们怎样可以做得更好？", "uninstall.submit": "提交反馈", "uninstall.success": "感谢反馈！期待与你再见。", "uninstall.error": "提交失败，请稍后重试。"
         },
         zh_TW: {
-            "nav.signin": "登入", "nav.install": "安裝擴充",
+            "nav.signin": "登入", "nav.install": "安裝擴充", "nav.myAccount": "我的帳戶",
             "home.heroLine1": "閱讀漫畫，", "home.heroLine2": "用你的語言", "home.heroDesc": "最聰明的 AI 漫畫翻譯擴充，直接在瀏覽器翻譯生肉漫畫，流暢零阻力。", "home.chromeStore": "Chrome 商店", "home.edgeAddons": "Edge 附加元件", "home.pricing": "價格", "home.perMonth": "/月", "home.install": "安裝", "home.popular": "熱門", "home.plan.free": "免費", "home.plan.freeFeature": "每週 200 張圖片", "home.plan.flex": "彈性包", "home.plan.flexF1": "免月費", "home.plan.flexF2": "按用量付費", "home.plan.flexF3": "每月結算", "home.plan.startFlex": "開始使用彈性包", "home.plan.proFeature": "每週 2,000 張圖片", "home.plan.subscribePro": "訂閱 Pro", "home.plan.maxFeature": "無限圖片", "home.plan.subscribeMax": "訂閱 Max", "home.feature.ocrTitle": "⚡ 智慧 OCR", "home.feature.ocrDesc": "針對漫畫字體優化的高速文字辨識。", "home.feature.cleanTitle": "🎨 智慧修復", "home.feature.cleanDesc": "自動移除原文並修復畫面。", "home.feature.langTitle": "🌍 多語言", "home.feature.langDesc": "即時翻譯成 20+ 種語言。", "home.footer.copyright": "© 2026 Kanfan 專案。", "home.footer.contact": "聯絡我們", "home.footer.terms": "條款", "home.footer.refunds": "退款", "home.modal.termsTitle": "服務條款", "home.modal.termsBody": "使用者協議內容...", "home.modal.refundTitle": "退款政策", "home.modal.refundBody": "退款政策內容...",
             "login.title": "歡迎回來", "login.subtitle": "登入以管理你的訂閱", "login.google": "使用 Google 繼續", "login.or": "或", "login.email": "Email", "login.password": "密碼", "login.submitIn": "登入", "login.submitUp": "註冊", "login.noAccount": "還沒有帳號？", "login.haveAccount": "已有帳號？", "login.create": "立即建立", "login.forgot": "忘記密碼？", "login.successTitle": "登入成功", "login.successDesc": "你已成功登入，擴充套件帳號已同步。", "login.successTip": "你可以在擴充套件彈窗中查看狀態。", "login.close": "關閉視窗", "account.title": "帳戶設定", "account.signout": "登出", "account.profile": "個人資料", "account.profileDesc": "管理你的登入資訊", "account.email": "Email", "account.password": "密碼", "account.change": "修改", "account.billing": "訂閱與帳單", "account.billingDesc": "透過 Stripe 管理方案、付款方式與帳單", "account.billingHint": "你將被導向 Stripe 託管的安全帳單入口。", "account.manage": "管理訂閱", "account.syncTitle": "擴充套件已連線", "account.syncDesc": "你的帳戶已與 Kanfan 瀏覽器擴充套件同步。", "reset.verifying": "正在驗證連結...", "reset.title": "重設密碼", "reset.subtitle": "請輸入你的新密碼。", "reset.new": "新密碼", "reset.confirm": "確認密碼", "reset.pwPlaceholder": "至少 6 個字元", "reset.pw2Placeholder": "再次輸入新密碼", "reset.update": "更新密碼", "reset.updating": "更新中...", "reset.doneTitle": "密碼已更新", "reset.doneDesc": "你現在可以關閉此頁，並使用新密碼登入。", "reset.gotoLogin": "前往登入", "pay.successTitle": "付款成功！", "pay.successDesc": "感謝你支持 Kanfan。你的帳號已升級。", "pay.cancelTitle": "付款已取消", "pay.cancelDesc": "本次未扣款。若你遇到錯誤或對方案有疑問，歡迎聯絡我們。", "pay.returnHome": "返回首頁", "uninstall.title": "很遺憾看到你離開", "uninstall.desc": "可以告訴我們你為什麼解除安裝 Kanfan 嗎？", "uninstall.reason.performance": "速度太慢", "uninstall.reason.pricing": "價格太高", "uninstall.reason.translation": "翻譯品質", "uninstall.reason.ocr_accuracy": "影像辨識準確度", "uninstall.reason.display_quality": "顯示品質", "uninstall.reason.missing_feature": "缺少功能", "uninstall.reason.site_not_supported": "部分網站不支援", "uninstall.reason.alternative": "找到替代方案", "uninstall.reason.bug": "有 Bug", "uninstall.reason.not_needed": "不再需要", "uninstall.reason.other": "其他", "uninstall.commentPlaceholder": "我們可以如何做得更好？", "uninstall.submit": "提交回饋", "uninstall.success": "感謝你的回饋！期待與你再見。", "uninstall.error": "提交失敗，請稍後再試。"
         },
         ja: {
             "nav.signin": "ログイン",
             "nav.install": "拡張機能をインストール",
+            "nav.myAccount": "マイアカウント",
 
             "home.heroLine1": "母国語で",
             "home.heroLine2": "マンガを読む",
@@ -159,6 +160,7 @@
         ko: {
             "nav.signin": "로그인",
             "nav.install": "확장 프로그램 설치",
+            "nav.myAccount": "내 계정",
 
             "home.heroLine1": "당신의 언어로",
             "home.heroLine2": "만화를 읽다",
@@ -271,6 +273,7 @@
         de: {
             "nav.signin": "Anmelden",
             "nav.install": "Erweiterung installieren",
+            "nav.myAccount": "Mein Konto",
 
             "home.heroLine1": "Manga lesen in",
             "home.heroLine2": "deiner Sprache",
@@ -383,6 +386,7 @@
         es: {
             "nav.signin": "Iniciar sesión",
             "nav.install": "Instalar extensión",
+            "nav.myAccount": "Mi cuenta",
 
             "home.heroLine1": "Lee manga en",
             "home.heroLine2": "tu idioma",
@@ -495,6 +499,7 @@
         fr: {
             "nav.signin": "Se connecter",
             "nav.install": "Installer l’extension",
+            "nav.myAccount": "Mon compte",
 
             "home.heroLine1": "Lire des mangas dans",
             "home.heroLine2": "votre langue",
@@ -607,6 +612,7 @@
         it: {
             "nav.signin": "Accedi",
             "nav.install": "Installa estensione",
+            "nav.myAccount": "Il mio account",
 
             "home.heroLine1": "Leggi manga nella",
             "home.heroLine2": "tua lingua",
@@ -719,6 +725,7 @@
         pl: {
             "nav.signin": "Zaloguj się",
             "nav.install": "Zainstaluj rozszerzenie",
+            "nav.myAccount": "Moje konto",
 
             "home.heroLine1": "Czytaj mangę w",
             "home.heroLine2": "swoim języku",
@@ -831,6 +838,7 @@
         pt: {
             "nav.signin": "Entrar",
             "nav.install": "Instalar extensão",
+            "nav.myAccount": "Minha conta",
 
             "home.heroLine1": "Leia mangás em",
             "home.heroLine2": "seu idioma",
@@ -943,6 +951,7 @@
         pt_BR: {
             "nav.signin": "Entrar",
             "nav.install": "Instalar extensão",
+            "nav.myAccount": "Minha conta",
 
             "home.heroLine1": "Leia mangás no",
             "home.heroLine2": "seu idioma",
@@ -1055,6 +1064,7 @@
         ru: {
             "nav.signin": "Войти",
             "nav.install": "Установить расширение",
+            "nav.myAccount": "Мой аккаунт",
 
             "home.heroLine1": "Читайте мангу на",
             "home.heroLine2": "вашем языке",
@@ -1167,6 +1177,7 @@
         vi: {
             "nav.signin": "Đăng nhập",
             "nav.install": "Cài đặt tiện ích",
+            "nav.myAccount": "Tài khoản của tôi",
 
             "home.heroLine1": "Đọc manga bằng",
             "home.heroLine2": "ngôn ngữ của bạn",
@@ -1279,6 +1290,7 @@
         id: {
             "nav.signin": "Masuk",
             "nav.install": "Pasang ekstensi",
+            "nav.myAccount": "Akun saya",
 
             "home.heroLine1": "Baca manga dalam",
             "home.heroLine2": "bahasa Anda",
@@ -1391,6 +1403,7 @@
         ar: {
             "nav.signin": "تسجيل الدخول",
             "nav.install": "تثبيت الإضافة",
+            "nav.myAccount": "حسابي",
 
             "home.heroLine1": "اقرأ المانغا بـ",
             "home.heroLine2": "لغتك",
@@ -1503,6 +1516,7 @@
         hi: {
             "nav.signin": "लॉग इन करें",
             "nav.install": "एक्सटेंशन इंस्टॉल करें",
+            "nav.myAccount": "मेरा खाता",
 
             "home.heroLine1": "मंगा पढ़ें",
             "home.heroLine2": "अपनी भाषा में",
