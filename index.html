@@ -150,6 +150,20 @@
         /* Modal */
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); }
         .modal-content { background-color: #ffffff; margin: 5vh auto; padding: 40px; border-radius: 24px; width: 90%; max-width: 800px; max-height: 85vh; overflow-y: auto; position: relative; }
+
+        /* VPN Warning Modal */
+        .vpn-modal-overlay { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); align-items: center; justify-content: center; }
+        .vpn-modal-overlay.active { display: flex; }
+        .vpn-modal { background: #fff; border-radius: 20px; padding: 32px; max-width: 420px; width: 90%; text-align: center; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
+        .vpn-modal-icon { font-size: 2.5rem; margin-bottom: 12px; }
+        .vpn-modal h3 { font-size: 1.15rem; margin: 0 0 12px; color: var(--dark); }
+        .vpn-modal p { font-size: 0.95rem; color: var(--slate); line-height: 1.6; margin: 0 0 24px; }
+        .vpn-modal-btns { display: flex; gap: 12px; justify-content: center; }
+        .vpn-modal-btns button { padding: 10px 24px; border-radius: 50px; font-weight: 600; font-size: 0.9rem; cursor: pointer; border: none; transition: all 0.2s; }
+        .vpn-modal-btns .vpn-btn-continue { background: var(--primary); color: #fff; }
+        .vpn-modal-btns .vpn-btn-continue:hover { background: var(--primary-hover); }
+        .vpn-modal-btns .vpn-btn-cancel { background: #f1f5f9; color: var(--dark); }
+        .vpn-modal-btns .vpn-btn-cancel:hover { background: #e2e8f0; }
         .close-btn { float: right; font-size: 28px; cursor: pointer; }
 
         /* Mockup Internal Styles */
@@ -280,6 +294,18 @@
     <div class="modal-content"><span class="close-btn" onclick="closeModal('refundModal')">&times;</span><h2 data-i18n="home.modal.refundTitle">Refund Policy</h2><p data-i18n="home.modal.refundBody">Refund policy text...</p></div>
 </div>
 
+<div id="vpnWarningModal" class="vpn-modal-overlay">
+    <div class="vpn-modal">
+        <div class="vpn-modal-icon">⚠️</div>
+        <h3>支付提示</h3>
+        <p>若需要用支付宝支付，请关闭VPN或切换到中国节点</p>
+        <div class="vpn-modal-btns">
+            <button class="vpn-btn-continue" id="vpnContinueBtn">继续支付</button>
+            <button class="vpn-btn-cancel" id="vpnCancelBtn">取消</button>
+        </div>
+    </div>
+</div>
+
 <script>
     // Config
     const SUPABASE_URL = "https://ikriqgjylpbwqihwpsho.supabase.co";
@@ -323,6 +349,51 @@
         }
     });
 
+    // VPN Warning: detect user country by IP
+    let _userCountry = null;
+    (async () => {
+        try {
+            const resp = await fetch("https://ipapi.co/json/", { signal: AbortSignal.timeout(5000) });
+            const data = await resp.json();
+            _userCountry = data.country_code; // e.g. "CN"
+        } catch (e) {
+            console.warn("IP geolocation failed:", e);
+        }
+    })();
+
+    function isChinese() {
+        if (!window.KanfanI18n) return false;
+        const lang = KanfanI18n.getLang();
+        return lang === 'zh_CN' || lang === 'zh_TW';
+    }
+
+    function shouldShowVpnWarning() {
+        return isChinese() && _userCountry && _userCountry !== 'CN';
+    }
+
+    function showVpnWarning() {
+        return new Promise((resolve) => {
+            const overlay = document.getElementById('vpnWarningModal');
+            const continueBtn = document.getElementById('vpnContinueBtn');
+            const cancelBtn = document.getElementById('vpnCancelBtn');
+            overlay.classList.add('active');
+
+            function cleanup() {
+                overlay.classList.remove('active');
+                continueBtn.removeEventListener('click', onContinue);
+                cancelBtn.removeEventListener('click', onCancel);
+                overlay.removeEventListener('click', onOverlay);
+            }
+            function onContinue() { cleanup(); resolve(true); }
+            function onCancel() { cleanup(); resolve(false); }
+            function onOverlay(e) { if (e.target === overlay) { cleanup(); resolve(false); } }
+
+            continueBtn.addEventListener('click', onContinue);
+            cancelBtn.addEventListener('click', onCancel);
+            overlay.addEventListener('click', onOverlay);
+        });
+    }
+
     const AUTH_API_URL = "https://api.kanfan.site/auth";//for creating pro/max pay link
     const LK_PRO = "kanfan_pro_monthly_new";
     const LK_MAX = "kanfan_max_monthly_new";
@@ -331,7 +402,8 @@
     sb.auth.getSession().then(({ data: { session } }) => {
         if (session) {
             const navBtn = document.getElementById('nav-login-btn');
-            navBtn.textContent = "My Account";
+            navBtn.dataset.i18n = "nav.myAccount";
+            navBtn.textContent = KanfanI18n.t("nav.myAccount");
             navBtn.href = "account.html";
         }
     });
@@ -354,6 +426,11 @@
         if (!session) {
             window.location.href = 'login.html';
             return;
+        }
+
+        if (shouldShowVpnWarning()) {
+            const proceed = await showVpnWarning();
+            if (!proceed) return;
         }
 
         const btn = btnEl || (event && event.currentTarget);
@@ -410,6 +487,11 @@
 
         const { data: { session } } = await sb.auth.getSession();
         if (!session) { window.location.href = 'login.html'; return; }
+
+        if (shouldShowVpnWarning()) {
+            const proceed = await showVpnWarning();
+            if (!proceed) return;
+        }
 
         btn.innerText = "Processing...";
         btn.style.opacity = "0.7";
