@@ -1,0 +1,34 @@
+name: Deploy static site to AWS
+
+on:
+  push:
+    branches:
+      - master   # 如果你用 main 就改成 main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::623281895037:role/kanfan-page-role
+          aws-region: us-west-1
+
+      - name: Upload files to S3
+        run: |
+          aws s3 sync . s3://kanfan-page-bucket \
+            --delete \
+            --exclude ".git/*" \
+            --exclude ".github/*" \
+            --exclude ".idea/*"
+
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id YOUR_DISTRIBUTION_ID \
+            --paths "/*"
