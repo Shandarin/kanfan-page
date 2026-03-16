@@ -253,7 +253,7 @@
             <ul class="lp-features-list">
                 <li><span class="lp-check">✓</span> <span data-i18n="home.plan.proFeature">2,000 Weekly Images</span></li>
             </ul>
-            <a onclick="handleProMaxCheckout(event, LK_PRO, this)" class="lp-btn" style="width:100%; justify-content:center;">
+            <a onclick="handleProMaxCheckout(event, getLookupKey(LK_PRO), this)" class="lp-btn" style="width:100%; justify-content:center;">
                 <span data-i18n="home.plan.subscribePro">Subscribe Pro</span>
             </a>
         </div>
@@ -264,7 +264,7 @@
             <ul class="lp-features-list">
                 <li><span class="lp-check">✓</span> <span data-i18n="home.plan.maxFeature">Unlimited Images</span></li>
             </ul>
-            <a onclick="handleProMaxCheckout(event, LK_MAX, this)" class="lp-btn" style="background:var(--lp-purple); width:100%; justify-content:center;">
+            <a onclick="handleProMaxCheckout(event, getLookupKey(LK_MAX), this)" class="lp-btn" style="background:var(--lp-purple); width:100%; justify-content:center;">
                 <span data-i18n="home.plan.subscribeMax">Subscribe Max</span>
             </a>
         </div>
@@ -397,6 +397,11 @@
     const AUTH_API_URL = "https://api.kanfan.site/auth";//for creating pro/max pay link
     const LK_PRO = "kanfan_pro_monthly_new";
     const LK_MAX = "kanfan_max_monthly_new";
+
+    function getLookupKey(base) {
+        if (isChinese()) return base + "_2";  // zh_CN / zh_TW
+        return base;
+    }
 
     // Check Login
     sb.auth.getSession().then(({ data: { session } }) => {
