@@ -367,33 +367,6 @@
         return lang === 'zh_CN' || lang === 'zh_TW';
     }
 
-    function shouldShowVpnWarning() {
-        return isChinese() && _userCountry && _userCountry !== 'CN';
-    }
-
-    function showVpnWarning() {
-        return new Promise((resolve) => {
-            const overlay = document.getElementById('vpnWarningModal');
-            const continueBtn = document.getElementById('vpnContinueBtn');
-            const cancelBtn = document.getElementById('vpnCancelBtn');
-            overlay.classList.add('active');
-
-            function cleanup() {
-                overlay.classList.remove('active');
-                continueBtn.removeEventListener('click', onContinue);
-                cancelBtn.removeEventListener('click', onCancel);
-                overlay.removeEventListener('click', onOverlay);
-            }
-            function onContinue() { cleanup(); resolve(true); }
-            function onCancel() { cleanup(); resolve(false); }
-            function onOverlay(e) { if (e.target === overlay) { cleanup(); resolve(false); } }
-
-            continueBtn.addEventListener('click', onContinue);
-            cancelBtn.addEventListener('click', onCancel);
-            overlay.addEventListener('click', onOverlay);
-        });
-    }
-
     const AUTH_API_URL = "https://api.kanfan.site/auth";//for creating pro/max pay link
     const LK_PRO = "kanfan_pro_monthly_new";
     const LK_MAX = "kanfan_max_monthly_new";
@@ -433,11 +406,6 @@
             return;
         }
 
-        if (shouldShowVpnWarning()) {
-            const proceed = await showVpnWarning();
-            if (!proceed) return;
-        }
-
         const btn = btnEl || (event && event.currentTarget);
         const originalText = btn ? btn.innerText : "";
 
@@ -457,7 +425,7 @@
                 body: JSON.stringify({
                     action: "createStripeCheckout",
                     payload: {
-                        lookup_key: lookupKey
+                        lookup_key: getLookupKey("usage_based_1")
                     }
                 })
             });
@@ -492,11 +460,6 @@
 
         const { data: { session } } = await sb.auth.getSession();
         if (!session) { window.location.href = 'login.html'; return; }
-
-        if (shouldShowVpnWarning()) {
-            const proceed = await showVpnWarning();
-            if (!proceed) return;
-        }
 
         btn.innerText = "Processing...";
         btn.style.opacity = "0.7";
