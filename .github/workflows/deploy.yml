@@ -5,6 +5,10 @@ on:
     branches:
       - master   # 如果你用 main 就改成 main
 
+permissions:
+  id-token: write
+  contents: read
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
