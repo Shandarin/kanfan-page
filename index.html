@@ -425,7 +425,7 @@
                 body: JSON.stringify({
                     action: "createStripeCheckout",
                     payload: {
-                        lookup_key: getLookupKey("usage_based_1")
+                        lookup_key: lookupKey
                     }
                 })
             });
@@ -474,7 +474,7 @@
                 },
                 body: JSON.stringify({
                     action: "createPaygCheckout",
-                    payload: {}
+                    payload: { lookup_key: getLookupKey("usage_based_1") }
                 })
             });
 
