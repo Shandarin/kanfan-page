@@ -614,7 +614,6 @@
 
     const PLANS = {
         plus: {
-            monthly:   { price: '$4.99',   unit: '/mo',      lookup: 'kanfan_plus_monthly',       buyBtn: 'buy_btn_placeholder_plus_monthly',   note: '' },
             quarterly: { price: '$11.99',  unit: '/quarter', lookup: 'kanfan_plus_quarterly',     buyBtn: 'buy_btn_placeholder_plus_quarterly', note: '等效 $3.99/月', save: '省$0.98' },
             yearly:    { price: '$44.99',  unit: '/year',    lookup: 'kanfan_plus_yearly',        buyBtn: 'buy_btn_placeholder_plus_yearly',    note: '等效 $3.75/月', save: '省$15' },
         },
@@ -684,7 +683,22 @@
         // Update prices & CTA for each paid plan
         ['plus', 'pro', 'max'].forEach(plan => {
             const cfg = PLANS[plan][selectedPeriod];
-            if (!cfg) return;
+            const planCard = document.querySelector(`.lp-plan-v2[data-plan="${plan}"]`);
+            const ctaContainer = document.getElementById(`cta-${plan}`);
+
+            // Clean up dynamic badge
+            planCard.classList.remove('current-plan');
+            const existingBadge = planCard.querySelector('.badge-current');
+            if (existingBadge) existingBadge.remove();
+
+            if (!cfg) {
+                // Plan doesn't support this period (e.g. Plus has no monthly)
+                document.getElementById(`price-${plan}`).textContent = '—';
+                document.getElementById(`price-unit-${plan}`).textContent = '';
+                document.getElementById(`price-note-${plan}`).innerHTML = '';
+                ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-blocked" disabled>不支持${selectedPeriod === 'monthly' ? '月' : selectedPeriod === 'quarterly' ? '季' : '年'}付</button>`;
+                return;
+            }
 
             // Price display
             document.getElementById(`price-${plan}`).textContent = cfg.price;
@@ -696,15 +710,7 @@
             noteEl.innerHTML = noteHtml;
 
             // CTA
-            const ctaContainer = document.getElementById(`cta-${plan}`);
             ctaContainer.innerHTML = '';
-
-            const planCard = document.querySelector(`.lp-plan-v2[data-plan="${plan}"]`);
-            // Remove current-plan highlight
-            planCard.classList.remove('current-plan');
-            // Remove dynamic current badge if exists
-            const existingBadge = planCard.querySelector('.badge-current');
-            if (existingBadge) existingBadge.remove();
 
             if (!userSession) {
                 // Not logged in → show subscribe button (redirects to login)
