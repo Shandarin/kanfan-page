@@ -599,9 +599,6 @@
 
     const AUTH_API_URL = "https://api.kanfan.site/auth";
     const STRIPE_PORTAL_URL = "https://api.kanfan.site/stripe_portal";
-    // TODO: Replace with real Stripe publishable key
-    const STRIPE_PK = "pk_live_placeholder";
-
     function getLookupKey(base) {
         if (isChinese()) return base + "_2";
         return base;
@@ -614,19 +611,19 @@
 
     const PLANS = {
         plus: {
-            quarterly: { price: '$11.99',  unit: '/quarter', lookup: 'kanfan_plus_quarterly',     buyBtn: 'buy_btn_placeholder_plus_quarterly', note: '等效 $3.99/月', save: '省$0.98', monthlyEquiv: '$3.99' },
-            yearly:    { price: '$44.99',  unit: '/year',    lookup: 'kanfan_plus_yearly',        buyBtn: 'buy_btn_placeholder_plus_yearly',    note: '等效 $3.75/月', save: '省$15' },
+            quarterly: { price: '$11.99',  unit: '/quarter', lookup: 'kanfan_plus_quarterly',     note: '等效 $3.99/月', save: '省$0.98', monthlyEquiv: '$3.99' },
+            yearly:    { price: '$44.99',  unit: '/year',    lookup: 'kanfan_plus_yearly',        note: '等效 $3.75/月', save: '省$15' },
             _fallbackPeriod: 'quarterly',  // when monthly is selected, fall back to this
         },
         pro: {
-            monthly:   { price: '$8.99',   unit: '/mo',      lookup: 'kanfan_pro_monthly_new',    buyBtn: 'buy_btn_placeholder_pro_monthly',    note: '' },
-            quarterly: { price: '$24.99',  unit: '/quarter', lookup: 'kanfan_pro_quarterly_new',  buyBtn: 'buy_btn_placeholder_pro_quarterly',  note: '等效 $8.33/月', save: '省$2' },
-            yearly:    { price: '$89.99',  unit: '/year',    lookup: 'kanfan_pro_yearly_new',     buyBtn: 'buy_btn_placeholder_pro_yearly',     note: '等效 $7.50/月', save: '省$18' },
+            monthly:   { price: '$8.99',   unit: '/mo',      lookup: 'kanfan_pro_monthly_new',    note: '' },
+            quarterly: { price: '$24.99',  unit: '/quarter', lookup: 'kanfan_pro_quarterly_new',  note: '等效 $8.33/月', save: '省$2' },
+            yearly:    { price: '$89.99',  unit: '/year',    lookup: 'kanfan_pro_yearly_new',     note: '等效 $7.50/月', save: '省$18' },
         },
         max: {
-            monthly:   { price: '$19.99',  unit: '/mo',      lookup: 'kanfan_max_monthly_new',    buyBtn: 'buy_btn_placeholder_max_monthly',    note: '' },
-            quarterly: { price: '$54.99',  unit: '/quarter', lookup: 'kanfan_max_quarterly_new',  buyBtn: 'buy_btn_placeholder_max_quarterly',  note: '等效 $18.33/月', save: '省$5' },
-            yearly:    { price: '$191.90', unit: '/year',    lookup: 'kanfan_max_yearly_new',     buyBtn: 'buy_btn_placeholder_max_yearly',     note: '等效 $15.99/月', save: '省$48' },
+            monthly:   { price: '$19.99',  unit: '/mo',      lookup: 'kanfan_max_monthly_new',    note: '' },
+            quarterly: { price: '$54.99',  unit: '/quarter', lookup: 'kanfan_max_quarterly_new',  note: '等效 $18.33/月', save: '省$5' },
+            yearly:    { price: '$191.90', unit: '/year',    lookup: 'kanfan_max_yearly_new',     note: '等效 $15.99/月', save: '省$48' },
         }
     };
 
@@ -705,7 +702,7 @@
                 if (!userSession) {
                     ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-subscribe" onclick="handleFallbackCheckout(event, '${plan}', '${fallbackPeriod}', this)">订阅${periodLabel}</button>`;
                 } else if (!isSubscribed) {
-                    renderBuyButton(ctaContainer, plan, fallbackPeriod);
+                    renderSubscribeButton(ctaContainer, plan, fallbackPeriod);
                 } else {
                     ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-blocked" disabled>跨周期不可切换</button>`;
                 }
@@ -734,8 +731,8 @@
                 // Not logged in → show subscribe button (redirects to login)
                 ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-subscribe" onclick="handlePlanCheckout(event, '${plan}', this)">订阅</button>`;
             } else if (!isSubscribed) {
-                // Logged in, no active subscription → Stripe Buy Button
-                renderBuyButton(ctaContainer, plan);
+                // Logged in, no active subscription → Checkout Session
+                renderSubscribeButton(ctaContainer, plan);
             } else if (isSubscribed && samePeriod) {
                 // Subscribed, same period
                 if (plan === userTier) {
@@ -772,21 +769,13 @@
     }
 
     /* =========================================
-       RENDER STRIPE BUY BUTTON
+       RENDER SUBSCRIBE BUTTON (Checkout Session flow)
        ========================================= */
-    function renderBuyButton(container, plan, periodOverride) {
+    function renderSubscribeButton(container, plan, periodOverride) {
         const period = periodOverride || selectedPeriod;
         const cfg = PLANS[plan][period];
         if (!cfg) return;
-        const buyBtnId = cfg.buyBtn;
-        const email = userSession ? userSession.user.email : '';
-        // Stripe Buy Button embed
-        const el = document.createElement('stripe-buy-button');
-        el.setAttribute('buy-button-id', buyBtnId);
-        el.setAttribute('publishable-key', STRIPE_PK);
-        if (email) el.setAttribute('customer-email', email);
-        if (userSession) el.setAttribute('client-reference-id', userSession.user.id);
-        container.appendChild(el);
+        container.innerHTML = `<button class="lp-plan-cta lp-cta-subscribe" onclick="handlePlanCheckout(event, '${plan}', this, '${period}')">订阅</button>`;
     }
 
     /* Fallback checkout: e.g. Plus "订阅季度" when Monthly tab is active */
@@ -815,7 +804,7 @@
     /* =========================================
        CHECKOUT HANDLER (upgrade / downgrade / new sub for not-logged-in)
        ========================================= */
-    async function handlePlanCheckout(event, plan, btnEl) {
+    async function handlePlanCheckout(event, plan, btnEl, periodOverride) {
         if (event) event.preventDefault();
 
         const { data: { session } } = await sb.auth.getSession();
@@ -824,7 +813,8 @@
             return;
         }
 
-        const cfg = PLANS[plan][selectedPeriod];
+        const period = periodOverride || selectedPeriod;
+        const cfg = PLANS[plan][period];
         if (!cfg) return;
 
         const btn = btnEl || (event && event.currentTarget);
