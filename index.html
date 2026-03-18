@@ -614,8 +614,9 @@
 
     const PLANS = {
         plus: {
-            quarterly: { price: '$11.99',  unit: '/quarter', lookup: 'kanfan_plus_quarterly',     buyBtn: 'buy_btn_placeholder_plus_quarterly', note: '等效 $3.99/月', save: '省$0.98' },
+            quarterly: { price: '$11.99',  unit: '/quarter', lookup: 'kanfan_plus_quarterly',     buyBtn: 'buy_btn_placeholder_plus_quarterly', note: '等效 $3.99/月', save: '省$0.98', monthlyEquiv: '$3.99' },
             yearly:    { price: '$44.99',  unit: '/year',    lookup: 'kanfan_plus_yearly',        buyBtn: 'buy_btn_placeholder_plus_yearly',    note: '等效 $3.75/月', save: '省$15' },
+            _fallbackPeriod: 'quarterly',  // when monthly is selected, fall back to this
         },
         pro: {
             monthly:   { price: '$8.99',   unit: '/mo',      lookup: 'kanfan_pro_monthly_new',    buyBtn: 'buy_btn_placeholder_pro_monthly',    note: '' },
@@ -691,12 +692,29 @@
             const existingBadge = planCard.querySelector('.badge-current');
             if (existingBadge) existingBadge.remove();
 
-            if (!cfg) {
-                // Plan doesn't support this period (e.g. Plus has no monthly)
+            // Fallback: plan doesn't support this period → show equivalent monthly price + fallback CTA
+            const fallbackPeriod = PLANS[plan]._fallbackPeriod;
+            if (!cfg && fallbackPeriod) {
+                const fb = PLANS[plan][fallbackPeriod];
+                const periodLabel = fallbackPeriod === 'quarterly' ? '季度' : fallbackPeriod === 'yearly' ? '年度' : '月度';
+                document.getElementById(`price-${plan}`).textContent = fb.monthlyEquiv || fb.price;
+                document.getElementById(`price-unit-${plan}`).textContent = fb.monthlyEquiv ? '/mo' : fb.unit;
+                document.getElementById(`price-note-${plan}`).innerHTML = `${periodLabel}付 ${fb.price}`;
+                ctaContainer.innerHTML = '';
+                // Use fallback period for the CTA
+                if (!userSession) {
+                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-subscribe" onclick="handleFallbackCheckout(event, '${plan}', '${fallbackPeriod}', this)">订阅${periodLabel}</button>`;
+                } else if (!isSubscribed) {
+                    renderBuyButton(ctaContainer, plan, fallbackPeriod);
+                } else {
+                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-blocked" disabled>跨周期不可切换</button>`;
+                }
+                return;
+            } else if (!cfg) {
                 document.getElementById(`price-${plan}`).textContent = '—';
                 document.getElementById(`price-unit-${plan}`).textContent = '';
                 document.getElementById(`price-note-${plan}`).innerHTML = '';
-                ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-blocked" disabled>不支持${selectedPeriod === 'monthly' ? '月' : selectedPeriod === 'quarterly' ? '季' : '年'}付</button>`;
+                ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-blocked" disabled>不支持此周期</button>`;
                 return;
             }
 
@@ -756,8 +774,9 @@
     /* =========================================
        RENDER STRIPE BUY BUTTON
        ========================================= */
-    function renderBuyButton(container, plan) {
-        const cfg = PLANS[plan][selectedPeriod];
+    function renderBuyButton(container, plan, periodOverride) {
+        const period = periodOverride || selectedPeriod;
+        const cfg = PLANS[plan][period];
         if (!cfg) return;
         const buyBtnId = isChinese() ? cfg.buyBtn + '_zh' : cfg.buyBtn;
         const email = userSession ? userSession.user.email : '';
@@ -768,6 +787,29 @@
         if (email) el.setAttribute('customer-email', email);
         if (userSession) el.setAttribute('client-reference-id', userSession.user.id);
         container.appendChild(el);
+    }
+
+    /* Fallback checkout: e.g. Plus "订阅季度" when Monthly tab is active */
+    async function handleFallbackCheckout(event, plan, period, btnEl) {
+        if (event) event.preventDefault();
+        const { data: { session } } = await sb.auth.getSession();
+        if (!session) { window.location.href = 'login.html'; return; }
+        const cfg = PLANS[plan][period];
+        if (!cfg) return;
+        const btn = btnEl || (event && event.currentTarget);
+        const originalText = btn ? btn.innerText : "";
+        if (btn) { btn.innerText = "Processing..."; btn.style.opacity = "0.7"; btn.style.pointerEvents = "none"; }
+        try {
+            const resp = await fetch(AUTH_API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "Authorization": `Bearer ${session.access_token}` },
+                body: JSON.stringify({ action: "createStripeCheckout", payload: { lookup_key: getLookupKey(cfg.lookup) } })
+            });
+            const data = await resp.json();
+            if (data.success && data.checkout_url) { window.location.href = data.checkout_url; return; }
+            alert("Error: " + (data.error || "Could not init checkout"));
+        } catch (e) { alert("Network error. Please try again."); }
+        finally { if (btn) { btn.innerText = originalText; btn.style.opacity = "1"; btn.style.pointerEvents = "auto"; } }
     }
 
     /* =========================================
