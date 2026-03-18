@@ -778,7 +778,7 @@
         const period = periodOverride || selectedPeriod;
         const cfg = PLANS[plan][period];
         if (!cfg) return;
-        const buyBtnId = isChinese() ? cfg.buyBtn + '_zh' : cfg.buyBtn;
+        const buyBtnId = cfg.buyBtn;
         const email = userSession ? userSession.user.email : '';
         // Stripe Buy Button embed
         const el = document.createElement('stripe-buy-button');
