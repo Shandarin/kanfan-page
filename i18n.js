@@ -28,6 +28,7 @@
             "account.title": "Account Settings", "account.signout": "Sign Out", "account.profile": "Profile", "account.profileDesc": "Manage your login information", "account.email": "Email", "account.password": "Password", "account.change": "Change", "account.billing": "Subscription & Billing", "account.billingDesc": "Manage your plan, payment methods, and invoices via Stripe", "account.billingHint": "You will be redirected to our secure billing portal hosted by Stripe.", "account.manage": "Manage Subscription", "account.syncTitle": "Extension Connected", "account.syncDesc": "Your account is now synced with the Kanfan browser extension.",
             "reset.verifying": "Verifying link...", "reset.title": "Reset Password", "reset.subtitle": "Enter your new password below.", "reset.new": "New Password", "reset.confirm": "Confirm Password", "reset.pwPlaceholder": "At least 6 characters", "reset.pw2Placeholder": "Confirm new password", "reset.update": "Update Password", "reset.updating": "Updating...", "reset.doneTitle": "Password Updated", "reset.doneDesc": "You can now close this page and log in with your new password.", "reset.gotoLogin": "Go to Login",
             "pay.successTitle": "Payment Successful!", "pay.successDesc": "Thank you for supporting Kanfan. Your account has been upgraded.", "pay.cancelTitle": "Payment Cancelled", "pay.cancelDesc": "No charges were made. If you encountered an error or have questions about our plans, feel free to contact us.", "pay.returnHome": "Return Home",
+            "checkout.title": "Complete your subscription", "checkout.back": "Back to pricing", "checkout.loading": "Loading checkout...", "checkout.pay": "Subscribe", "checkout.processing": "Processing...", "checkout.initError": "Failed to load checkout. Please try again.",
             "uninstall.title": "We're sorry to see you go", "uninstall.desc": "Could you tell us why you uninstalled Kanfan?", "uninstall.reason.performance": "Too slow", "uninstall.reason.pricing": "Too expensive", "uninstall.reason.translation": "Translation quality", "uninstall.reason.ocr_accuracy": "Image recognition accuracy", "uninstall.reason.display_quality": "Display quality", "uninstall.reason.missing_feature": "Missing features", "uninstall.reason.site_not_supported": "Some websites are not supported", "uninstall.reason.alternative": "Found an alternative", "uninstall.reason.bug": "Bug", "uninstall.reason.not_needed": "No longer needed", "uninstall.reason.other": "Other", "uninstall.commentPlaceholder": "How can we make it better?", "uninstall.submit": "Submit feedback", "uninstall.success": "Thank you! We hope to see you again.", "uninstall.error": "Failed to submit. Please try again later."
         },
         zh_CN: {
@@ -37,12 +38,13 @@
             "account.title": "账户设置", "account.signout": "退出登录", "account.profile": "个人资料", "account.profileDesc": "管理你的登录信息", "account.email": "邮箱", "account.password": "密码", "account.change": "修改", "account.billing": "订阅与账单", "account.billingDesc": "通过 Stripe 管理套餐、支付方式与账单", "account.billingHint": "你将跳转到 Stripe 托管的安全账单门户。", "account.manage": "管理订阅", "account.syncTitle": "扩展已连接", "account.syncDesc": "你的账户已与 Kanfan 浏览器扩展同步。",
             "reset.verifying": "正在验证链接...", "reset.title": "重置密码", "reset.subtitle": "请输入你的新密码。", "reset.new": "新密码", "reset.confirm": "确认密码", "reset.pwPlaceholder": "至少 6 个字符", "reset.pw2Placeholder": "再次输入新密码", "reset.update": "更新密码", "reset.updating": "更新中...", "reset.doneTitle": "密码已更新", "reset.doneDesc": "现在你可以关闭本页，并使用新密码登录。", "reset.gotoLogin": "前往登录",
             "pay.successTitle": "支付成功！", "pay.successDesc": "感谢你支持 Kanfan。你的账号已升级。", "pay.cancelTitle": "支付已取消", "pay.cancelDesc": "本次未产生扣费。如果遇到错误或对套餐有疑问，欢迎联系我们。", "pay.returnHome": "返回首页",
+            "checkout.title": "完成订阅", "checkout.back": "返回价格页", "checkout.loading": "正在加载结账页...", "checkout.pay": "订阅", "checkout.processing": "处理中...", "checkout.initError": "加载结账页失败，请重试。",
             "uninstall.title": "很遗憾看到你离开", "uninstall.desc": "可以告诉我们你为什么卸载 Kanfan 吗？", "uninstall.reason.performance": "速度太慢", "uninstall.reason.pricing": "价格太贵", "uninstall.reason.translation": "翻译质量", "uninstall.reason.ocr_accuracy": "图像识别准确率", "uninstall.reason.display_quality": "显示效果", "uninstall.reason.missing_feature": "功能缺失", "uninstall.reason.site_not_supported": "部分网站不支持", "uninstall.reason.alternative": "找到了替代品", "uninstall.reason.bug": "存在 Bug", "uninstall.reason.not_needed": "不再需要", "uninstall.reason.other": "其他", "uninstall.commentPlaceholder": "我们怎样可以做得更好？", "uninstall.submit": "提交反馈", "uninstall.success": "感谢反馈！期待与你再见。", "uninstall.error": "提交失败，请稍后重试。"
         },
         zh_TW: {
             "nav.signin": "登入", "nav.install": "安裝擴充", "nav.myAccount": "我的帳戶",
             "home.heroLine1": "閱讀漫畫，", "home.heroLine2": "用你的語言", "home.heroDesc": "最聰明的 AI 漫畫翻譯擴充，直接在瀏覽器翻譯生肉漫畫，流暢零阻力。", "home.chromeStore": "Chrome 商店", "home.edgeAddons": "Edge 附加元件", "home.pricing": "價格", "home.perMonth": "/月", "home.install": "安裝", "home.popular": "熱門", "home.plan.free": "免費", "home.plan.freeFeature": "每週 50 張圖片", "home.plan.flex": "彈性包", "home.plan.flexF1": "免月費", "home.plan.flexF2": "按用量付費", "home.plan.flexF3": "每月結算", "home.plan.startFlex": "開始使用彈性包", "home.plan.proFeature": "每週 2,000 張圖片", "home.plan.subscribePro": "訂閱 Pro", "home.plan.maxFeature": "無限圖片", "home.plan.subscribeMax": "訂閱 Max", "home.feature.ocrTitle": "⚡ 智慧 OCR", "home.feature.ocrDesc": "針對漫畫字體優化的高速文字辨識。", "home.feature.cleanTitle": "🎨 智慧修復", "home.feature.cleanDesc": "自動移除原文並修復畫面。", "home.feature.langTitle": "🌍 多語言", "home.feature.langDesc": "即時翻譯成 20+ 種語言。", "home.footer.copyright": "© 2026 Kanfan 專案。", "home.footer.contact": "聯絡我們", "home.footer.terms": "條款", "home.footer.refunds": "退款", "home.modal.termsTitle": "服務條款", "home.modal.termsBody": "使用者協議內容...", "home.modal.refundTitle": "退款政策", "home.modal.refundBody": "退款政策內容...",
-            "login.title": "歡迎回來", "login.subtitle": "登入以管理你的訂閱", "login.google": "使用 Google 繼續", "login.or": "或", "login.email": "Email", "login.password": "密碼", "login.submitIn": "登入", "login.submitUp": "註冊", "login.noAccount": "還沒有帳號？", "login.haveAccount": "已有帳號？", "login.create": "立即建立", "login.forgot": "忘記密碼？", "login.successTitle": "登入成功", "login.successDesc": "你已成功登入，擴充套件帳號已同步。", "login.successTip": "你可以在擴充套件彈窗中查看狀態。", "login.close": "關閉視窗", "account.title": "帳戶設定", "account.signout": "登出", "account.profile": "個人資料", "account.profileDesc": "管理你的登入資訊", "account.email": "Email", "account.password": "密碼", "account.change": "修改", "account.billing": "訂閱與帳單", "account.billingDesc": "透過 Stripe 管理方案、付款方式與帳單", "account.billingHint": "你將被導向 Stripe 託管的安全帳單入口。", "account.manage": "管理訂閱", "account.syncTitle": "擴充套件已連線", "account.syncDesc": "你的帳戶已與 Kanfan 瀏覽器擴充套件同步。", "reset.verifying": "正在驗證連結...", "reset.title": "重設密碼", "reset.subtitle": "請輸入你的新密碼。", "reset.new": "新密碼", "reset.confirm": "確認密碼", "reset.pwPlaceholder": "至少 6 個字元", "reset.pw2Placeholder": "再次輸入新密碼", "reset.update": "更新密碼", "reset.updating": "更新中...", "reset.doneTitle": "密碼已更新", "reset.doneDesc": "你現在可以關閉此頁，並使用新密碼登入。", "reset.gotoLogin": "前往登入", "pay.successTitle": "付款成功！", "pay.successDesc": "感謝你支持 Kanfan。你的帳號已升級。", "pay.cancelTitle": "付款已取消", "pay.cancelDesc": "本次未扣款。若你遇到錯誤或對方案有疑問，歡迎聯絡我們。", "pay.returnHome": "返回首頁", "uninstall.title": "很遺憾看到你離開", "uninstall.desc": "可以告訴我們你為什麼解除安裝 Kanfan 嗎？", "uninstall.reason.performance": "速度太慢", "uninstall.reason.pricing": "價格太高", "uninstall.reason.translation": "翻譯品質", "uninstall.reason.ocr_accuracy": "影像辨識準確度", "uninstall.reason.display_quality": "顯示品質", "uninstall.reason.missing_feature": "缺少功能", "uninstall.reason.site_not_supported": "部分網站不支援", "uninstall.reason.alternative": "找到替代方案", "uninstall.reason.bug": "有 Bug", "uninstall.reason.not_needed": "不再需要", "uninstall.reason.other": "其他", "uninstall.commentPlaceholder": "我們可以如何做得更好？", "uninstall.submit": "提交回饋", "uninstall.success": "感謝你的回饋！期待與你再見。", "uninstall.error": "提交失敗，請稍後再試。"
+            "login.title": "歡迎回來", "login.subtitle": "登入以管理你的訂閱", "login.google": "使用 Google 繼續", "login.or": "或", "login.email": "Email", "login.password": "密碼", "login.submitIn": "登入", "login.submitUp": "註冊", "login.noAccount": "還沒有帳號？", "login.haveAccount": "已有帳號？", "login.create": "立即建立", "login.forgot": "忘記密碼？", "login.successTitle": "登入成功", "login.successDesc": "你已成功登入，擴充套件帳號已同步。", "login.successTip": "你可以在擴充套件彈窗中查看狀態。", "login.close": "關閉視窗", "account.title": "帳戶設定", "account.signout": "登出", "account.profile": "個人資料", "account.profileDesc": "管理你的登入資訊", "account.email": "Email", "account.password": "密碼", "account.change": "修改", "account.billing": "訂閱與帳單", "account.billingDesc": "透過 Stripe 管理方案、付款方式與帳單", "account.billingHint": "你將被導向 Stripe 託管的安全帳單入口。", "account.manage": "管理訂閱", "account.syncTitle": "擴充套件已連線", "account.syncDesc": "你的帳戶已與 Kanfan 瀏覽器擴充套件同步。", "reset.verifying": "正在驗證連結...", "reset.title": "重設密碼", "reset.subtitle": "請輸入你的新密碼。", "reset.new": "新密碼", "reset.confirm": "確認密碼", "reset.pwPlaceholder": "至少 6 個字元", "reset.pw2Placeholder": "再次輸入新密碼", "reset.update": "更新密碼", "reset.updating": "更新中...", "reset.doneTitle": "密碼已更新", "reset.doneDesc": "你現在可以關閉此頁，並使用新密碼登入。", "reset.gotoLogin": "前往登入", "pay.successTitle": "付款成功！", "pay.successDesc": "感謝你支持 Kanfan。你的帳號已升級。", "pay.cancelTitle": "付款已取消", "pay.cancelDesc": "本次未扣款。若你遇到錯誤或對方案有疑問，歡迎聯絡我們。", "pay.returnHome": "返回首頁", "checkout.title": "完成訂閱", "checkout.back": "返回價格頁", "checkout.loading": "正在載入結帳頁...", "checkout.pay": "訂閱", "checkout.processing": "處理中...", "checkout.initError": "載入結帳頁失敗，請重試。", "uninstall.title": "很遺憾看到你離開", "uninstall.desc": "可以告訴我們你為什麼解除安裝 Kanfan 嗎？", "uninstall.reason.performance": "速度太慢", "uninstall.reason.pricing": "價格太高", "uninstall.reason.translation": "翻譯品質", "uninstall.reason.ocr_accuracy": "影像辨識準確度", "uninstall.reason.display_quality": "顯示品質", "uninstall.reason.missing_feature": "缺少功能", "uninstall.reason.site_not_supported": "部分網站不支援", "uninstall.reason.alternative": "找到替代方案", "uninstall.reason.bug": "有 Bug", "uninstall.reason.not_needed": "不再需要", "uninstall.reason.other": "其他", "uninstall.commentPlaceholder": "我們可以如何做得更好？", "uninstall.submit": "提交回饋", "uninstall.success": "感謝你的回饋！期待與你再見。", "uninstall.error": "提交失敗，請稍後再試。"
         },
         ja: {
             "nav.signin": "ログイン",
@@ -138,6 +140,7 @@
             "pay.cancelTitle": "お支払いがキャンセルされました",
             "pay.cancelDesc": "料金は発生していません。ご不明点があればお気軽にお問い合わせください。",
             "pay.returnHome": "ホームに戻る",
+            "checkout.title": "サブスクリプションを完了", "checkout.back": "料金プランに戻る", "checkout.loading": "チェックアウトを読み込み中...", "checkout.pay": "購読する", "checkout.processing": "処理中...", "checkout.initError": "チェックアウトの読み込みに失敗しました。もう一度お試しください。",
 
             "uninstall.title": "ご利用ありがとうございました",
             "uninstall.desc": "アンインストールの理由を教えてください。",
@@ -251,6 +254,7 @@
             "pay.cancelTitle": "결제가 취소되었습니다",
             "pay.cancelDesc": "요금은 청구되지 않았습니다. 문제가 있거나 궁금한 점이 있으면 언제든지 문의해 주세요.",
             "pay.returnHome": "홈으로 돌아가기",
+            "checkout.title": "구독 완료", "checkout.back": "요금제로 돌아가기", "checkout.loading": "결제 페이지 로딩 중...", "checkout.pay": "구독하기", "checkout.processing": "처리 중...", "checkout.initError": "결제 페이지를 불러오지 못했습니다. 다시 시도해 주세요.",
 
             "uninstall.title": "떠나셔서 아쉽습니다",
             "uninstall.desc": "Kanfan을 제거한 이유를 알려주실 수 있나요?",
@@ -364,6 +368,7 @@
             "pay.cancelTitle": "Zahlung abgebrochen",
             "pay.cancelDesc": "Es wurden keine Kosten berechnet. Wenn Sie Fragen haben oder ein Problem aufgetreten ist, kontaktieren Sie uns gerne.",
             "pay.returnHome": "Zur Startseite",
+            "checkout.title": "Abonnement abschließen", "checkout.back": "Zurück zu den Preisen", "checkout.loading": "Kasse wird geladen...", "checkout.pay": "Abonnieren", "checkout.processing": "Wird verarbeitet...", "checkout.initError": "Kasse konnte nicht geladen werden. Bitte versuchen Sie es erneut.",
 
             "uninstall.title": "Schade, dass Sie gehen",
             "uninstall.desc": "Könnten Sie uns sagen, warum Sie Kanfan deinstalliert haben?",
@@ -477,6 +482,7 @@
             "pay.cancelTitle": "Pago cancelado",
             "pay.cancelDesc": "No se realizó ningún cargo. Si tienes alguna pregunta o problema, no dudes en contactarnos.",
             "pay.returnHome": "Volver al inicio",
+            "checkout.title": "Completa tu suscripción", "checkout.back": "Volver a precios", "checkout.loading": "Cargando pago...", "checkout.pay": "Suscribirse", "checkout.processing": "Procesando...", "checkout.initError": "No se pudo cargar el pago. Inténtalo de nuevo.",
 
             "uninstall.title": "Lamentamos verte partir",
             "uninstall.desc": "¿Podrías decirnos por qué desinstalaste Kanfan?",
@@ -590,6 +596,7 @@
             "pay.cancelTitle": "Paiement annulé",
             "pay.cancelDesc": "Aucun montant n’a été débité. Si vous avez rencontré un problème ou avez des questions, n’hésitez pas à nous contacter.",
             "pay.returnHome": "Retour à l’accueil",
+            "checkout.title": "Finaliser votre abonnement", "checkout.back": "Retour aux tarifs", "checkout.loading": "Chargement du paiement...", "checkout.pay": "S’abonner", "checkout.processing": "Traitement en cours...", "checkout.initError": "Impossible de charger le paiement. Veuillez réessayer.",
 
             "uninstall.title": "Nous sommes désolés de vous voir partir",
             "uninstall.desc": "Pourriez-vous nous dire pourquoi vous avez désinstallé Kanfan ?",
@@ -703,6 +710,7 @@
             "pay.cancelTitle": "Pagamento annullato",
             "pay.cancelDesc": "Nessun addebito è stato effettuato. Se hai domande o hai riscontrato un problema, contattaci pure.",
             "pay.returnHome": "Torna alla home",
+            "checkout.title": "Completa l'abbonamento", "checkout.back": "Torna ai prezzi", "checkout.loading": "Caricamento pagamento...", "checkout.pay": "Abbonati", "checkout.processing": "Elaborazione...", "checkout.initError": "Impossibile caricare il pagamento. Riprova.",
 
             "uninstall.title": "Ci dispiace vederti andare via",
             "uninstall.desc": "Potresti dirci perché hai disinstallato Kanfan?",
@@ -816,6 +824,7 @@
             "pay.cancelTitle": "Płatność anulowana",
             "pay.cancelDesc": "Nie pobrano żadnych opłat. Jeśli wystąpił problem lub masz pytania, skontaktuj się z nami.",
             "pay.returnHome": "Wróć na stronę główną",
+            "checkout.title": "Dokończ subskrypcję", "checkout.back": "Wróć do cennika", "checkout.loading": "Ładowanie płatności...", "checkout.pay": "Subskrybuj", "checkout.processing": "Przetwarzanie...", "checkout.initError": "Nie udało się załadować płatności. Spróbuj ponownie.",
 
             "uninstall.title": "Przykro nam, że odchodzisz",
             "uninstall.desc": "Czy możesz powiedzieć nam, dlaczego odinstalowałeś Kanfan?",
@@ -929,6 +938,7 @@
             "pay.cancelTitle": "Pagamento cancelado",
             "pay.cancelDesc": "Nenhuma cobrança foi realizada. Se tiver dúvidas ou encontrar algum problema, entre em contato conosco.",
             "pay.returnHome": "Voltar para a página inicial",
+            "checkout.title": "Concluir a subscrição", "checkout.back": "Voltar aos preços", "checkout.loading": "A carregar pagamento...", "checkout.pay": "Subscrever", "checkout.processing": "A processar...", "checkout.initError": "Não foi possível carregar o pagamento. Tente novamente.",
 
             "uninstall.title": "É uma pena ver você partir",
             "uninstall.desc": "Você poderia nos dizer por que desinstalou o Kanfan?",
@@ -1042,6 +1052,7 @@
             "pay.cancelTitle": "Pagamento cancelado",
             "pay.cancelDesc": "Nenhuma cobrança foi realizada. Se tiver dúvidas ou algum problema, entre em contato conosco.",
             "pay.returnHome": "Voltar para a página inicial",
+            "checkout.title": "Concluir assinatura", "checkout.back": "Voltar aos preços", "checkout.loading": "Carregando pagamento...", "checkout.pay": "Assinar", "checkout.processing": "Processando...", "checkout.initError": "Não foi possível carregar o pagamento. Tente novamente.",
 
             "uninstall.title": "Sentimos muito em ver você sair",
             "uninstall.desc": "Você pode nos contar por que desinstalou o Kanfan?",
@@ -1155,6 +1166,7 @@
             "pay.cancelTitle": "Платёж отменён",
             "pay.cancelDesc": "Средства не были списаны. Если у вас есть вопросы или возникла проблема, свяжитесь с нами.",
             "pay.returnHome": "Вернуться на главную",
+            "checkout.title": "Оформить подписку", "checkout.back": "Назад к тарифам", "checkout.loading": "Загрузка оплаты...", "checkout.pay": "Подписаться", "checkout.processing": "Обработка...", "checkout.initError": "Не удалось загрузить страницу оплаты. Попробуйте ещё раз.",
 
             "uninstall.title": "Нам жаль, что вы уходите",
             "uninstall.desc": "Можете рассказать, почему вы удалили Kanfan?",
@@ -1268,6 +1280,7 @@
             "pay.cancelTitle": "Thanh toán đã bị hủy",
             "pay.cancelDesc": "Không có khoản phí nào được tính. Nếu bạn có câu hỏi hoặc gặp sự cố, vui lòng liên hệ với chúng tôi.",
             "pay.returnHome": "Quay về trang chủ",
+            "checkout.title": "Hoàn tất đăng ký", "checkout.back": "Quay lại bảng giá", "checkout.loading": "Đang tải trang thanh toán...", "checkout.pay": "Đăng ký", "checkout.processing": "Đang xử lý...", "checkout.initError": "Không thể tải trang thanh toán. Vui lòng thử lại.",
 
             "uninstall.title": "Chúng tôi rất tiếc khi bạn rời đi",
             "uninstall.desc": "Bạn có thể cho chúng tôi biết lý do bạn gỡ cài đặt Kanfan không?",
@@ -1381,6 +1394,7 @@
             "pay.cancelTitle": "Pembayaran dibatalkan",
             "pay.cancelDesc": "Tidak ada biaya yang dikenakan. Jika Anda memiliki pertanyaan atau mengalami masalah, silakan hubungi kami.",
             "pay.returnHome": "Kembali ke beranda",
+            "checkout.title": "Selesaikan langganan", "checkout.back": "Kembali ke harga", "checkout.loading": "Memuat pembayaran...", "checkout.pay": "Berlangganan", "checkout.processing": "Memproses...", "checkout.initError": "Gagal memuat pembayaran. Silakan coba lagi.",
 
             "uninstall.title": "Kami sedih melihat Anda pergi",
             "uninstall.desc": "Bisakah Anda memberi tahu alasan menghapus Kanfan?",
@@ -1494,6 +1508,7 @@
             "pay.cancelTitle": "تم إلغاء الدفع",
             "pay.cancelDesc": "لم يتم خصم أي رسوم. إذا كانت لديك أسئلة أو واجهت مشكلة، فلا تتردد في التواصل معنا.",
             "pay.returnHome": "العودة إلى الصفحة الرئيسية",
+            "checkout.title": "أكمل اشتراكك", "checkout.back": "العودة إلى الأسعار", "checkout.loading": "جارٍ تحميل صفحة الدفع...", "checkout.pay": "اشترك", "checkout.processing": "جارٍ المعالجة...", "checkout.initError": "فشل تحميل صفحة الدفع. يرجى المحاولة مرة أخرى.",
 
             "uninstall.title": "نأسف لرؤيتك تغادر",
             "uninstall.desc": "هل يمكنك إخبارنا بسبب إلغاء تثبيت Kanfan؟",
@@ -1607,6 +1622,7 @@
             "pay.cancelTitle": "भुगतान रद्द किया गया",
             "pay.cancelDesc": "कोई शुल्क नहीं लिया गया। यदि आपके कोई प्रश्न हैं या समस्या आई है, तो हमसे संपर्क करें।",
             "pay.returnHome": "होम पर लौटें",
+            "checkout.title": "अपनी सदस्यता पूरी करें", "checkout.back": "मूल्य पृष्ठ पर वापस जाएं", "checkout.loading": "चेकआउट लोड हो रहा है...", "checkout.pay": "सदस्यता लें", "checkout.processing": "प्रोसेसिंग...", "checkout.initError": "चेकआउट लोड नहीं हो सका। कृपया पुनः प्रयास करें।",
 
             "uninstall.title": "हमें आपको जाते देख दुख हुआ",
             "uninstall.desc": "क्या आप बता सकते हैं कि आपने Kanfan क्यों अनइंस्टॉल किया?",

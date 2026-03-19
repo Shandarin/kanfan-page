@@ -432,8 +432,13 @@
 
             const data = await resp.json();
 
-            // 你的后端返回字段是 checkout_url :contentReference[oaicite:2]{index=2}
-            if (data.success && data.checkout_url) {
+            // Embedded checkout (client_secret) or legacy hosted checkout (checkout_url)
+            if (data.success && data.client_secret) {
+                sessionStorage.setItem('kanfan_checkout_secret', data.client_secret);
+                sessionStorage.setItem('kanfan_checkout_plan', lookupKey);
+                window.location.href = 'checkout.html';
+                return;
+            } else if (data.success && data.checkout_url) {
                 window.location.href = data.checkout_url;
                 return;
             }
@@ -479,7 +484,12 @@
             });
 
             const data = await resp.json();
-            if (data.success && data.checkout_url) {
+            if (data.success && data.client_secret) {
+                sessionStorage.setItem('kanfan_checkout_secret', data.client_secret);
+                sessionStorage.setItem('kanfan_checkout_plan', getLookupKey("usage_based_1"));
+                window.location.href = 'checkout.html';
+                return;
+            } else if (data.success && data.checkout_url) {
                 window.location.href = data.checkout_url;
                 return;
             }

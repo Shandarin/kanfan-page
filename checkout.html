@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout - Kanfan</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <script src="https://js.stripe.com/v3/"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="i18n.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .checkout-page {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+            background: radial-gradient(circle at top right, #fff7ed, #ffffff);
+        }
+        .checkout-container {
+            width: 100%;
+            max-width: 520px;
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06);
+            padding: 2rem;
+        }
+        .checkout-header {
+            text-align: center;
+            margin-bottom: 1.5rem;
+        }
+        .checkout-header h1 {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--dark);
+            margin-bottom: 0.25rem;
+        }
+        .checkout-header p {
+            color: var(--slate);
+            font-size: 0.9rem;
+        }
+        .checkout-back {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--slate);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .checkout-back:hover { color: var(--primary); }
+
+        #currency-selector { margin-bottom: 1.25rem; }
+        #payment-element { margin-bottom: 1.5rem; }
+
+        #pay-button {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            background: var(--primary);
+            color: white;
+            padding: 14px 24px;
+            border-radius: 50px;
+            border: none;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 6px -1px rgba(249,115,22,0.3);
+        }
+        #pay-button:hover:not(:disabled) {
+            background: var(--primary-hover);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(249,115,22,0.4);
+        }
+        #pay-button:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        #checkout-error {
+            padding: 10px;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            background: #fee2e2;
+            color: var(--danger);
+            border: 1px solid #fecaca;
+            display: none;
+        }
+        #checkout-error.visible { display: block; }
+
+        .checkout-loading {
+            text-align: center;
+            padding: 3rem;
+            color: var(--slate);
+        }
+        .checkout-loading .spinner {
+            width: 2rem;
+            height: 2rem;
+            border: 3px solid #e2e8f0;
+            border-top-color: var(--primary);
+            margin: 0 auto 1rem;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="index.html" style="font-size:1.25rem; font-weight:800; color:var(--primary); display:flex; align-items:center; gap:8px;">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+        Kanfan
+    </a>
+</nav>
+
+<div class="checkout-page">
+    <div class="checkout-container">
+        <a href="index.html#pricing" class="checkout-back">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+            <span data-i18n="checkout.back">Back to pricing</span>
+        </a>
+
+        <div class="checkout-header">
+            <h1 data-i18n="checkout.title">Complete your subscription</h1>
+            <p id="checkout-plan-name"></p>
+        </div>
+
+        <div id="checkout-loading" class="checkout-loading">
+            <div class="spinner"></div>
+            <p data-i18n="checkout.loading">Loading checkout...</p>
+        </div>
+
+        <div id="checkout-form" style="display:none;">
+            <div id="currency-selector"></div>
+            <div id="payment-element"></div>
+            <div id="checkout-error"></div>
+            <button id="pay-button" type="button">
+                <span data-i18n="checkout.pay">Subscribe</span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+    // ── Config ──
+    const STRIPE_PK = 'pk_live_YOUR_STRIPE_PUBLISHABLE_KEY'; // TODO: Replace with your Stripe publishable key
+    const SUPABASE_URL = "https://ikriqgjylpbwqihwpsho.supabase.co";
+    const SUPABASE_ANON_KEY = "sb_publishable_xdQsvfTfJEwfNjF5KYvxLA_y4QiKqFo";
+    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+    // ── i18n ──
+    if (window.KanfanI18n) KanfanI18n.apply();
+
+    // ── Plan display names ──
+    const PLAN_NAMES = {
+        kanfan_pro_monthly_new: 'Pro',
+        kanfan_pro_monthly_new_2: 'Pro',
+        kanfan_max_monthly_new: 'Max',
+        kanfan_max_monthly_new_2: 'Max',
+        usage_based_1: 'Flex',
+        usage_based_1_2: 'Flex',
+    };
+
+    // ── Init ──
+    (async function initCheckout() {
+        const clientSecret = sessionStorage.getItem('kanfan_checkout_secret');
+        const planKey = sessionStorage.getItem('kanfan_checkout_plan') || '';
+
+        if (!clientSecret) {
+            window.location.href = 'index.html#pricing';
+            return;
+        }
+
+        // Show plan name
+        const planNameEl = document.getElementById('checkout-plan-name');
+        if (PLAN_NAMES[planKey]) {
+            planNameEl.textContent = PLAN_NAMES[planKey];
+        }
+
+        // Clear secret from storage (one-time use)
+        sessionStorage.removeItem('kanfan_checkout_secret');
+        sessionStorage.removeItem('kanfan_checkout_plan');
+
+        try {
+            const stripe = Stripe(STRIPE_PK);
+
+            const checkout = await stripe.initCheckout({
+                clientSecret,
+                elementsOptions: {
+                    appearance: {
+                        theme: 'stripe',
+                        variables: {
+                            colorPrimary: '#f97316',
+                            colorBackground: '#ffffff',
+                            colorText: '#0f172a',
+                            colorDanger: '#ef4444',
+                            fontFamily: "'Inter', sans-serif",
+                            borderRadius: '12px',
+                        }
+                    }
+                }
+            });
+
+            // Mount Currency Selector Element
+            const currencySelectorElement = checkout.createCurrencySelectorElement();
+            currencySelectorElement.mount('#currency-selector');
+
+            // Mount Payment Element
+            const paymentElement = checkout.createPaymentElement();
+            paymentElement.mount('#payment-element');
+
+            // Show form, hide loading
+            document.getElementById('checkout-loading').style.display = 'none';
+            document.getElementById('checkout-form').style.display = 'block';
+
+            // Handle pay button
+            const payBtn = document.getElementById('pay-button');
+            payBtn.addEventListener('click', async () => {
+                payBtn.disabled = true;
+                payBtn.innerHTML = '<span class="spinner"></span> <span data-i18n="checkout.processing">Processing...</span>';
+
+                hideError();
+
+                const { error } = await checkout.confirm({
+                    return_url: window.location.origin + '/success.html'
+                });
+
+                if (error) {
+                    showError(error.message);
+                    payBtn.disabled = false;
+                    payBtn.innerHTML = '<span data-i18n="checkout.pay">Subscribe</span>';
+                    if (window.KanfanI18n) KanfanI18n.apply();
+                }
+                // If no error, Stripe redirects automatically
+            });
+
+        } catch (err) {
+            console.error('Stripe init error:', err);
+            document.getElementById('checkout-loading').innerHTML =
+                '<p style="color:var(--danger);" data-i18n="checkout.initError">Failed to load checkout. Please try again.</p>';
+            if (window.KanfanI18n) KanfanI18n.apply();
+        }
+    })();
+
+    function showError(msg) {
+        const el = document.getElementById('checkout-error');
+        el.textContent = msg;
+        el.classList.add('visible');
+    }
+    function hideError() {
+        const el = document.getElementById('checkout-error');
+        el.textContent = '';
+        el.classList.remove('visible');
+    }
+</script>
+</body>
+</html>
