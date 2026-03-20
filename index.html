@@ -151,6 +151,19 @@
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); }
         .modal-content { background-color: #ffffff; margin: 5vh auto; padding: 40px; border-radius: 24px; width: 90%; max-width: 800px; max-height: 85vh; overflow-y: auto; position: relative; }
 
+        /* VPN Warning Modal */
+        .vpn-modal-overlay { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); align-items: center; justify-content: center; }
+        .vpn-modal-overlay.active { display: flex; }
+        .vpn-modal { background: #fff; border-radius: 20px; padding: 32px; max-width: 420px; width: 90%; text-align: center; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
+        .vpn-modal-icon { font-size: 2.5rem; margin-bottom: 12px; }
+        .vpn-modal h3 { font-size: 1.15rem; margin: 0 0 12px; color: var(--dark); }
+        .vpn-modal p { font-size: 0.95rem; color: var(--slate); line-height: 1.6; margin: 0 0 24px; }
+        .vpn-modal-btns { display: flex; gap: 12px; justify-content: center; }
+        .vpn-modal-btns button { padding: 10px 24px; border-radius: 50px; font-weight: 600; font-size: 0.9rem; cursor: pointer; border: none; transition: all 0.2s; }
+        .vpn-modal-btns .vpn-btn-continue { background: var(--primary); color: #fff; }
+        .vpn-modal-btns .vpn-btn-continue:hover { background: var(--primary-hover); }
+        .vpn-modal-btns .vpn-btn-cancel { background: #f1f5f9; color: var(--dark); }
+        .vpn-modal-btns .vpn-btn-cancel:hover { background: #e2e8f0; }
         .close-btn { float: right; font-size: 28px; cursor: pointer; }
 
         /* Mockup Internal Styles */
@@ -333,6 +346,10 @@
     .lp-free-price { font-size: 2.2rem; font-weight: 800; color: #1e293b; margin: 4px 0 2px; line-height: 1; }
     .lp-free-desc  { font-size: 0.78rem; color: #64748b; margin-bottom: 14px; flex-grow: 1; }
 
+    /* Stripe buy button container */
+    .lp-buy-btn-container { width: 100%; }
+    .lp-buy-btn-container stripe-buy-button { width: 100%; }
+
     /* Credit packs */
     .lp-credits-card {
         background: white; border: 1.5px solid #e2e8f0; border-radius: 18px;
@@ -370,6 +387,9 @@
 
     .lp-pricing-note { margin-top: 18px; font-size: 0.78rem; color: #94a3b8; }
 </style>
+
+<!-- Stripe Buy Button SDK -->
+<script async src="https://js.stripe.com/v3/buy-button.js"></script>
 
 <section class="lp-pricing" id="pricing">
     <h2 data-i18n="home.pricing">Pricing</h2>
@@ -461,20 +481,20 @@
                     <div class="lp-pack-name">5,000 点</div>
                     <div class="lp-pack-price">$9.99</div>
                     <div class="lp-pack-detail"> $1.99/1000图</div>
-                    <button onclick="handleCreditsCheckout(event, 'credits_starter')" class="lp-pack-btn">购买</button>
+                    <button onclick="handleCreditsCheckout(event, getLookupKey('credits_starter'), this)" class="lp-pack-btn">购买</button>
                 </div>
                 <div class="lp-credit-pack pack-popular">
                     <div class="lp-pack-badge">最受欢迎</div>
                     <div class="lp-pack-name">15,000 点</div>
                     <div class="lp-pack-price">$29.99</div>
                     <div class="lp-pack-detail">$1.89/1000图<br><span class="lp-pack-saving">省 5%</span></div>
-                    <button onclick="handleCreditsCheckout(event, 'credits_standard')" class="lp-pack-btn">购买</button>
+                    <button onclick="handleCreditsCheckout(event, getLookupKey('credits_standard'), this)" class="lp-pack-btn">购买</button>
                 </div>
                 <div class="lp-credit-pack">
                     <div class="lp-pack-name">80,000 点</div>
                     <div class="lp-pack-price">$129</div>
                     <div class="lp-pack-detail">$1.83/1000图<br><span class="lp-pack-saving">省 8%</span></div>
-                    <button onclick="handleCreditsCheckout(event, 'credits_max')" class="lp-pack-btn">购买</button>
+                    <button onclick="handleCreditsCheckout(event, getLookupKey('credits_max'), this)" class="lp-pack-btn">购买</button>
                 </div>
             </div>
         </div>
@@ -502,6 +522,18 @@
 </div>
 <div id="refundModal" class="modal">
     <div class="modal-content"><span class="close-btn" onclick="closeModal('refundModal')">&times;</span><h2 data-i18n="home.modal.refundTitle">Refund Policy</h2><p data-i18n="home.modal.refundBody">Refund policy text...</p></div>
+</div>
+
+<div id="vpnWarningModal" class="vpn-modal-overlay">
+    <div class="vpn-modal">
+        <div class="vpn-modal-icon">⚠️</div>
+        <h3>支付提示</h3>
+        <p>若需要用支付宝支付，请关闭VPN或切换到中国节点</p>
+        <div class="vpn-modal-btns">
+            <button class="vpn-btn-continue" id="vpnContinueBtn">继续支付</button>
+            <button class="vpn-btn-cancel" id="vpnCancelBtn">取消</button>
+        </div>
+    </div>
 </div>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
@@ -547,50 +579,51 @@
         }
     });
 
+    // VPN Warning: detect user country by IP
+    let _userCountry = null;
+    (async () => {
+        try {
+            const resp = await fetch("https://ipapi.co/json/", { signal: AbortSignal.timeout(5000) });
+            const data = await resp.json();
+            _userCountry = data.country_code; // e.g. "CN"
+        } catch (e) {
+            console.warn("IP geolocation failed:", e);
+        }
+    })();
+
     function isChinese() {
         if (!window.KanfanI18n) return false;
         const lang = KanfanI18n.getLang();
         return lang === 'zh_CN' || lang === 'zh_TW';
     }
 
-    // Stripe Portal URL (for upgrade/downgrade of existing subscriptions)
-    const STRIPE_PORTAL_URL = "https://api.kanfan.site/stripe_portal";
+    const AUTH_API_URL = "https://api.kanfan.site/auth";//for creating pro/max pay link
+    const LK_PRO = "kanfan_pro_monthly_new";
+    const LK_MAX = "kanfan_max_monthly_new";
 
-    // Payment Links: CN (人民币/支付宝) vs INT (USD/国际卡)
-    // TODO: Replace placeholder URLs with actual Stripe Payment Link URLs from Dashboard
-    const PAYMENT_LINKS = {
+    // Dual payment links: CN (人民币) vs INT (国际)
+    // Each plan has two lookup keys — one for Chinese (RMB) and one for international (USD)
+    const PLAN_LINKS = {
         // Plus
-        plus_quarterly:    { cn: "https://buy.stripe.com/TODO_plus_q_cny",    intl: "https://buy.stripe.com/TODO_plus_q_usd" },
-        plus_yearly:       { cn: "https://buy.stripe.com/TODO_plus_y_cny",    intl: "https://buy.stripe.com/TODO_plus_y_usd" },
+        plus_quarterly:      { cn: "kanfan_plus_quarterly_cny",      intl: "kanfan_plus_quarterly" },
+        plus_yearly:         { cn: "kanfan_plus_yearly_cny",         intl: "kanfan_plus_yearly" },
         // Pro
-        pro_monthly:       { cn: "https://buy.stripe.com/TODO_pro_m_cny",     intl: "https://buy.stripe.com/TODO_pro_m_usd" },
-        pro_quarterly:     { cn: "https://buy.stripe.com/TODO_pro_q_cny",     intl: "https://buy.stripe.com/TODO_pro_q_usd" },
-        pro_yearly:        { cn: "https://buy.stripe.com/TODO_pro_y_cny",     intl: "https://buy.stripe.com/TODO_pro_y_usd" },
+        pro_monthly:     { cn: "kanfan_pro_monthly_2_cny",     intl: "kanfan_pro_monthly_2" },
+        pro_quarterly:   { cn: "kanfan_pro_quarterly_2_cny",   intl: "kanfan_pro_quarterly_2" },
+        pro_yearly:      { cn: "kanfan_pro_yearly_2_cny",      intl: "kanfan_pro_yearly_2" },
         // Max
-        max_monthly:       { cn: "https://buy.stripe.com/TODO_max_m_cny",     intl: "https://buy.stripe.com/TODO_max_m_usd" },
-        max_quarterly:     { cn: "https://buy.stripe.com/TODO_max_q_cny",     intl: "https://buy.stripe.com/TODO_max_q_usd" },
-        max_yearly:        { cn: "https://buy.stripe.com/TODO_max_y_cny",     intl: "https://buy.stripe.com/TODO_max_y_usd" },
+        max_monthly_:     { cn: "kanfan_max_monthly_2_cny",     intl: "kanfan_max_monthly_2" },
+        max_quarterly:   { cn: "kanfan_max_quarterly_2_cny",   intl: "kanfan_max_quarterly_2" },
+        max_yearly:      { cn: "kanfan_max_yearly_2_cny",      intl: "kanfan_max_yearly_2" },
         // Credits
-        credits_starter:   { cn: "https://buy.stripe.com/TODO_cred_s_cny",   intl: "https://buy.stripe.com/TODO_cred_s_usd" },
-        credits_standard:  { cn: "https://buy.stripe.com/TODO_cred_std_cny", intl: "https://buy.stripe.com/TODO_cred_std_usd" },
-        credits_max:       { cn: "https://buy.stripe.com/TODO_cred_max_cny", intl: "https://buy.stripe.com/TODO_cred_max_usd" },
+        credits_starter:            { cn: "credits_starter_cny",            intl: "credits_starter" },
+        credits_standard:           { cn: "credits_standard_cny",           intl: "credits_standard" },
+        credits_max:                { cn: "credits_max_cny",                intl: "credits_max" },
     };
 
-    function getPaymentLinkUrl(linkKey) {
-        const entry = PAYMENT_LINKS[linkKey];
-        if (!entry) return null;
-        return isChinese() ? entry.cn : entry.intl;
-    }
-
-    function buildCheckoutUrl(baseUrl, session) {
-        const url = new URL(baseUrl);
-        if (session) {
-            url.searchParams.set('client_reference_id', session.user.id);
-            if (session.user.email) {
-                url.searchParams.set('prefilled_email', session.user.email);
-            }
-        }
-        return url.toString();
+    function getLookupKey(base) {
+        const entry = PLAN_LINKS[base];
+        if (entry) return isChinese() ? entry.cn : entry.intl;
     }
 
     /* =========================================
@@ -600,19 +633,19 @@
 
     const PLANS = {
         plus: {
-            quarterly: { price: '$11.99',  unit: '/quarter', linkKey: 'plus_quarterly',  note: '等效 $3.99/月', monthlyEquiv: '$3.99' },
-            yearly:    { price: '$44.99',  unit: '/year',    linkKey: 'plus_yearly',     note: '等效 $3.75/月', save: '省6%' },
-            _fallbackPeriod: 'quarterly',
+            quarterly: { price: '$11.99',  unit: '/quarter', lookup: 'kanfan_plus_quarterly',     note: '等效 $3.99/月', monthlyEquiv: '$3.99' },
+            yearly:    { price: '$44.99',  unit: '/year',    lookup: 'kanfan_plus_yearly',        note: '等效 $3.75/月', save: '省6%' },
+            _fallbackPeriod: 'quarterly',  // when monthly is selected, fall back to this
         },
         pro: {
-            monthly:   { price: '$8.99',   unit: '/mo',      linkKey: 'pro_monthly',    note: '' },
-            quarterly: { price: '$24.99',  unit: '/quarter', linkKey: 'pro_quarterly',  note: '等效 $8.33/月', save: '省6%' },
-            yearly:    { price: '$96.99',  unit: '/year',    linkKey: 'pro_yearly',     note: '等效 $8.08/月', save: '省10%' },
+            monthly:   { price: '$8.99',   unit: '/mo',      lookup: 'kanfan_pro_monthly_new',    note: '' },
+            quarterly: { price: '$24.99',  unit: '/quarter', lookup: 'kanfan_pro_quarterly_new',  note: '等效 $8.33/月', save: '省6%' },
+            yearly:    { price: '$96.99',  unit: '/year',    lookup: 'kanfan_pro_yearly_new',     note: '等效 $8.08/月', save: '省10%' },
         },
         max: {
-            monthly:   { price: '$19.99',  unit: '/mo',      linkKey: 'max_monthly',    note: '' },
-            quarterly: { price: '$55.99',  unit: '/quarter', linkKey: 'max_quarterly',  note: '等效 $18.66/月', save: '省6%' },
-            yearly:    { price: '$209.99', unit: '/year',    linkKey: 'max_yearly',     note: '等效 $17.49/月', save: '省13%' },
+            monthly:   { price: '$19.99',  unit: '/mo',      lookup: 'kanfan_max_monthly_new',    note: '' },
+            quarterly: { price: '$55.99',  unit: '/quarter', lookup: 'kanfan_max_quarterly_new',  note: '等效 $18.66/月', save: '省6%' },
+            yearly:    { price: '$209.99', unit: '/year',    lookup: 'kanfan_max_yearly_new',     note: '等效 $17.49/月', save: '省13%' },
         }
     };
 
@@ -689,7 +722,7 @@
                 ctaContainer.innerHTML = '';
                 // Use fallback period for the CTA
                 if (!userSession) {
-                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-subscribe" onclick="handleFallbackCheckout(event, '${plan}', '${fallbackPeriod}')">订阅${periodLabel}</button>`;
+                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-subscribe" onclick="handleFallbackCheckout(event, '${plan}', '${fallbackPeriod}', this)">订阅${periodLabel}</button>`;
                 } else if (!isSubscribed) {
                     renderSubscribeButton(ctaContainer, plan, fallbackPeriod);
                 } else {
@@ -733,11 +766,11 @@
                     planCard.appendChild(badge);
                     ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-current" disabled>当前方案</button>`;
                 } else if (tierIndex(plan) > tierIndex(userTier)) {
-                    // Upgrade → Stripe Customer Portal
-                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-upgrade" onclick="handlePortalRedirect(event)">升级到 ${plan.charAt(0).toUpperCase() + plan.slice(1)}</button>`;
+                    // Upgrade
+                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-upgrade" onclick="handlePlanCheckout(event, '${plan}', this)">升级到 ${plan.charAt(0).toUpperCase() + plan.slice(1)}</button>`;
                 } else {
-                    // Downgrade → Stripe Customer Portal
-                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-downgrade" onclick="handlePortalRedirect(event)">降级到 ${plan.charAt(0).toUpperCase() + plan.slice(1)}</button>`;
+                    // Downgrade
+                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-downgrade" onclick="handlePlanCheckout(event, '${plan}', this)">降级到 ${plan.charAt(0).toUpperCase() + plan.slice(1)}</button>`;
                 }
             } else if (isSubscribed && !samePeriod) {
                 // Subscribed, different period → cross-period not allowed
@@ -758,7 +791,7 @@
     }
 
     /* =========================================
-       RENDER SUBSCRIBE BUTTON (Payment Link flow)
+       RENDER SUBSCRIBE BUTTON (Checkout Session flow)
        ========================================= */
     function renderSubscribeButton(container, plan, periodOverride) {
         const period = periodOverride || selectedPeriod;
@@ -768,19 +801,30 @@
     }
 
     /* Fallback checkout: e.g. Plus "订阅季度" when Monthly tab is active */
-    async function handleFallbackCheckout(event, plan, period) {
+    async function handleFallbackCheckout(event, plan, period, btnEl) {
         if (event) event.preventDefault();
         const { data: { session } } = await sb.auth.getSession();
         if (!session) { window.location.href = 'login.html'; return; }
         const cfg = PLANS[plan][period];
-        if (!cfg || !cfg.linkKey) return;
-        const baseUrl = getPaymentLinkUrl(cfg.linkKey);
-        if (!baseUrl) return;
-        window.location.href = buildCheckoutUrl(baseUrl, session);
+        if (!cfg) return;
+        const btn = btnEl || (event && event.currentTarget);
+        const originalText = btn ? btn.innerText : "";
+        if (btn) { btn.innerText = "Processing..."; btn.style.opacity = "0.7"; btn.style.pointerEvents = "none"; }
+        try {
+            const resp = await fetch(AUTH_API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "Authorization": `Bearer ${session.access_token}` },
+                body: JSON.stringify({ action: "createStripeCheckout", payload: { lookup_key: getLookupKey(cfg.lookup) } })
+            });
+            const data = await resp.json();
+            if (data.success && data.checkout_url) { window.location.href = data.checkout_url; return; }
+            alert("Error: " + (data.error || "Could not init checkout"));
+        } catch (e) { alert("Network error. Please try again."); }
+        finally { if (btn) { btn.innerText = originalText; btn.style.opacity = "1"; btn.style.pointerEvents = "auto"; } }
     }
 
     /* =========================================
-       CHECKOUT HANDLER (new subscription via Payment Link)
+       CHECKOUT HANDLER (upgrade / downgrade / new sub for not-logged-in)
        ========================================= */
     async function handlePlanCheckout(event, plan, btnEl, periodOverride) {
         if (event) event.preventDefault();
@@ -793,39 +837,54 @@
 
         const period = periodOverride || selectedPeriod;
         const cfg = PLANS[plan][period];
-        if (!cfg || !cfg.linkKey) return;
+        if (!cfg) return;
 
-        const baseUrl = getPaymentLinkUrl(cfg.linkKey);
-        if (!baseUrl) return;
+        const btn = btnEl || (event && event.currentTarget);
+        const originalText = btn ? btn.innerText : "";
 
-        window.location.href = buildCheckoutUrl(baseUrl, session);
-    }
+        if (btn) {
+            btn.innerText = "Processing...";
+            btn.style.opacity = "0.7";
+            btn.style.pointerEvents = "none";
+        }
 
-    /* =========================================
-       UPGRADE/DOWNGRADE: redirect to Stripe Customer Portal
-       ========================================= */
-    async function handlePortalRedirect(event) {
-        if (event) event.preventDefault();
-        const { data: { session } } = await sb.auth.getSession();
-        if (!session) { window.location.href = 'login.html'; return; }
+        try {
+            const resp = await fetch(AUTH_API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${session.access_token}`,
+                },
+                body: JSON.stringify({
+                    action: "createStripeCheckout",
+                    payload: { lookup_key: getLookupKey(cfg.lookup) }
+                })
+            });
 
-        const form = document.createElement("form");
-        form.method = "POST";
-        form.action = STRIPE_PORTAL_URL;
-        const input = document.createElement("input");
-        input.type = "hidden"; input.name = "access_token"; input.value = session.access_token;
-        const returnUrl = document.createElement("input");
-        returnUrl.type = "hidden"; returnUrl.name = "return_url"; returnUrl.value = window.location.href;
-        form.appendChild(input);
-        form.appendChild(returnUrl);
-        document.body.appendChild(form);
-        form.submit();
+            const data = await resp.json();
+            if (data.success && data.checkout_url) {
+                window.location.href = data.checkout_url;
+                return;
+            }
+
+            console.error("API Error:", data);
+            alert("Error: " + (data.error || "Could not init checkout"));
+        } catch (e) {
+            console.error("Network Error:", e);
+            alert("Network error. Please try again.");
+        } finally {
+            if (btn) {
+                btn.innerText = originalText;
+                btn.style.opacity = "1";
+                btn.style.pointerEvents = "auto";
+            }
+        }
     }
 
     /* =========================================
        CREDITS CHECKOUT (always available, repeatable)
        ========================================= */
-    async function handleCreditsCheckout(event, linkKey) {
+    async function handleCreditsCheckout(event, lookupKey, btnEl) {
         if (event) event.preventDefault();
 
         const { data: { session } } = await sb.auth.getSession();
@@ -834,10 +893,46 @@
             return;
         }
 
-        const baseUrl = getPaymentLinkUrl(linkKey);
-        if (!baseUrl) return;
+        const btn = btnEl || (event && event.currentTarget);
+        const originalText = btn ? btn.innerText : "";
 
-        window.location.href = buildCheckoutUrl(baseUrl, session);
+        if (btn) {
+            btn.innerText = "Processing...";
+            btn.style.opacity = "0.7";
+            btn.style.pointerEvents = "none";
+        }
+
+        try {
+            const resp = await fetch(AUTH_API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${session.access_token}`,
+                },
+                body: JSON.stringify({
+                    action: "createStripeCheckout",
+                    payload: { lookup_key: lookupKey }
+                })
+            });
+
+            const data = await resp.json();
+            if (data.success && data.checkout_url) {
+                window.location.href = data.checkout_url;
+                return;
+            }
+
+            console.error("API Error:", data);
+            alert("Error: " + (data.error || "Could not init checkout"));
+        } catch (e) {
+            console.error("Network Error:", e);
+            alert("Network error. Please try again.");
+        } finally {
+            if (btn) {
+                btn.innerText = originalText;
+                btn.style.opacity = "1";
+                btn.style.pointerEvents = "auto";
+            }
+        }
     }
 
     /* =========================================
