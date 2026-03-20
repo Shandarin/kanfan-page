@@ -461,20 +461,20 @@
                     <div class="lp-pack-name">5,000 点</div>
                     <div class="lp-pack-price">$9.99</div>
                     <div class="lp-pack-detail"> $1.99/1000图</div>
-                    <button onclick="handleCreditsCheckout(event, 'credits_starter')" class="lp-pack-btn">购买</button>
+                    <button onclick="handleCreditsCheckout(event, 'credits_starter', this)" class="lp-pack-btn">购买</button>
                 </div>
                 <div class="lp-credit-pack pack-popular">
                     <div class="lp-pack-badge">最受欢迎</div>
                     <div class="lp-pack-name">15,000 点</div>
                     <div class="lp-pack-price">$29.99</div>
                     <div class="lp-pack-detail">$1.89/1000图<br><span class="lp-pack-saving">省 5%</span></div>
-                    <button onclick="handleCreditsCheckout(event, 'credits_standard')" class="lp-pack-btn">购买</button>
+                    <button onclick="handleCreditsCheckout(event, 'credits_standard', this)" class="lp-pack-btn">购买</button>
                 </div>
                 <div class="lp-credit-pack">
                     <div class="lp-pack-name">80,000 点</div>
                     <div class="lp-pack-price">$129</div>
                     <div class="lp-pack-detail">$1.83/1000图<br><span class="lp-pack-saving">省 8%</span></div>
-                    <button onclick="handleCreditsCheckout(event, 'credits_max')" class="lp-pack-btn">购买</button>
+                    <button onclick="handleCreditsCheckout(event, 'credits_max', this)" class="lp-pack-btn">购买</button>
                 </div>
             </div>
         </div>
@@ -509,12 +509,20 @@
     const SUPABASE_URL = "https://ikriqgjylpbwqihwpsho.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_xdQsvfTfJEwfNjF5KYvxLA_y4QiKqFo";
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const AUTH_API_URL = "https://api.kanfan.site/auth";
+    const STRIPE_PORTAL_URL = "https://api.kanfan.site/stripe_portal";
+
     const navLangSelect = document.querySelector('.lp-nav-language');
     if (navLangSelect && window.KanfanI18n) {
         navLangSelect.value = KanfanI18n.getLang();
-        navLangSelect.addEventListener('change', () => { KanfanI18n.setLang(navLangSelect.value); KanfanI18n.apply(); });
+        navLangSelect.addEventListener('change', () => {
+            KanfanI18n.setLang(navLangSelect.value);
+            KanfanI18n.apply();
+            renderPricing(); // re-render so lookup keys update for new language
+        });
         KanfanI18n.apply();
     }
+
     function broadcastAuthToExtension(session) {
         if (!session) return;
         window.postMessage(
@@ -547,83 +555,55 @@
         }
     });
 
-    function isChinese() {
+    // Only zh_CN uses CNY pricing; all others (including zh_TW) use international
+    function isCNY() {
         if (!window.KanfanI18n) return false;
-        const lang = KanfanI18n.getLang();
-        return lang === 'zh_CN' || lang === 'zh_TW';
+        return KanfanI18n.getLang() === 'zh_CN';
     }
 
-    // Stripe Portal URL (for upgrade/downgrade of existing subscriptions)
-    const STRIPE_PORTAL_URL = "https://api.kanfan.site/stripe_portal";
-
-    // Payment Links: CN (人民币/支付宝) vs INT (USD/国际卡)
-    // TODO: Replace placeholder URLs with actual Stripe Payment Link URLs from Dashboard
-    const PAYMENT_LINKS = {
-        // Plus
-        plus_quarterly:    { cn: "https://buy.stripe.com/TODO_plus_q_cny",    intl: "https://buy.stripe.com/TODO_plus_q_usd" },
-        plus_yearly:       { cn: "https://buy.stripe.com/TODO_plus_y_cny",    intl: "https://buy.stripe.com/TODO_plus_y_usd" },
-        // Pro
-        pro_monthly:       { cn: "https://buy.stripe.com/TODO_pro_m_cny",     intl: "https://buy.stripe.com/TODO_pro_m_usd" },
-        pro_quarterly:     { cn: "https://buy.stripe.com/TODO_pro_q_cny",     intl: "https://buy.stripe.com/TODO_pro_q_usd" },
-        pro_yearly:        { cn: "https://buy.stripe.com/TODO_pro_y_cny",     intl: "https://buy.stripe.com/TODO_pro_y_usd" },
-        // Max
-        max_monthly:       { cn: "https://buy.stripe.com/TODO_max_m_cny",     intl: "https://buy.stripe.com/TODO_max_m_usd" },
-        max_quarterly:     { cn: "https://buy.stripe.com/TODO_max_q_cny",     intl: "https://buy.stripe.com/TODO_max_q_usd" },
-        max_yearly:        { cn: "https://buy.stripe.com/TODO_max_y_cny",     intl: "https://buy.stripe.com/TODO_max_y_usd" },
-        // Credits
-        credits_starter:   { cn: "https://buy.stripe.com/TODO_cred_s_cny",   intl: "https://buy.stripe.com/TODO_cred_s_usd" },
-        credits_standard:  { cn: "https://buy.stripe.com/TODO_cred_std_cny", intl: "https://buy.stripe.com/TODO_cred_std_usd" },
-        credits_max:       { cn: "https://buy.stripe.com/TODO_cred_max_cny", intl: "https://buy.stripe.com/TODO_cred_max_usd" },
-    };
-
-    function getPaymentLinkUrl(linkKey) {
-        const entry = PAYMENT_LINKS[linkKey];
-        if (!entry) return null;
-        return isChinese() ? entry.cn : entry.intl;
-    }
-
-    function buildCheckoutUrl(baseUrl, session) {
-        const url = new URL(baseUrl);
-        if (session) {
-            url.searchParams.set('client_reference_id', session.user.id);
-            if (session.user.email) {
-                url.searchParams.set('prefilled_email', session.user.email);
-            }
-        }
-        return url.toString();
+    // Append _cny suffix for simplified Chinese, otherwise use base key as-is
+    function getLookupKey(base) {
+        return isCNY() ? base + "_cny" : base;
     }
 
     /* =========================================
-       PLAN CONFIG - prices, lookup keys, buy button IDs
+       PLAN CONFIG
        ========================================= */
     const PLAN_TIERS = ['free', 'plus', 'pro', 'max'];
 
     const PLANS = {
         plus: {
-            quarterly: { price: '$11.99',  unit: '/quarter', linkKey: 'plus_quarterly',  note: '等效 $3.99/月', monthlyEquiv: '$3.99' },
-            yearly:    { price: '$44.99',  unit: '/year',    linkKey: 'plus_yearly',     note: '等效 $3.75/月', save: '省6%' },
+            quarterly: { price: '$11.99',  unit: '/quarter', lookup: 'kanfan_plus_quarterly',   note: '等效 $3.99/月', monthlyEquiv: '$3.99' },
+            yearly:    { price: '$44.99',  unit: '/year',    lookup: 'kanfan_plus_yearly',      note: '等效 $3.75/月', save: '省6%' },
             _fallbackPeriod: 'quarterly',
         },
         pro: {
-            monthly:   { price: '$8.99',   unit: '/mo',      linkKey: 'pro_monthly',    note: '' },
-            quarterly: { price: '$24.99',  unit: '/quarter', linkKey: 'pro_quarterly',  note: '等效 $8.33/月', save: '省6%' },
-            yearly:    { price: '$96.99',  unit: '/year',    linkKey: 'pro_yearly',     note: '等效 $8.08/月', save: '省10%' },
+            monthly:   { price: '$8.99',   unit: '/mo',      lookup: 'kanfan_pro_monthly_2',   note: '' },
+            quarterly: { price: '$24.99',  unit: '/quarter', lookup: 'kanfan_pro_quarterly_2', note: '等效 $8.33/月', save: '省6%' },
+            yearly:    { price: '$96.99',  unit: '/year',    lookup: 'kanfan_pro_yearly_2',    note: '等效 $8.08/月', save: '省10%' },
         },
         max: {
-            monthly:   { price: '$19.99',  unit: '/mo',      linkKey: 'max_monthly',    note: '' },
-            quarterly: { price: '$55.99',  unit: '/quarter', linkKey: 'max_quarterly',  note: '等效 $18.66/月', save: '省6%' },
-            yearly:    { price: '$209.99', unit: '/year',    linkKey: 'max_yearly',     note: '等效 $17.49/月', save: '省13%' },
+            monthly:   { price: '$19.99',  unit: '/mo',      lookup: 'kanfan_max_monthly_2',   note: '' },
+            quarterly: { price: '$55.99',  unit: '/quarter', lookup: 'kanfan_max_quarterly_2', note: '等效 $18.66/月', save: '省6%' },
+            yearly:    { price: '$209.99', unit: '/year',    lookup: 'kanfan_max_yearly_2',    note: '等效 $17.49/月', save: '省13%' },
         }
+    };
+
+    // Credit pack lookup key bases
+    const CREDIT_LOOKUPS = {
+        credits_starter:  'credits_starter',
+        credits_standard: 'credits_standard',
+        credits_max:      'credits_max',
     };
 
     /* =========================================
        STATE
        ========================================= */
     let selectedPeriod = 'monthly';
-    let userProfile = null;   // { plan, subscription_status, ... }
+    let userProfile = null;
     let userSession = null;
-    let userTier = 'free';    // parsed tier: free | plus | pro | max
-    let userPeriod = null;    // parsed period: monthly | quarterly | yearly
+    let userTier = 'free';
+    let userPeriod = null;
 
     /* =========================================
        PARSE USER PLAN from profiles.plan field
@@ -667,18 +647,15 @@
             userTier !== 'free';
         const samePeriod = userPeriod === selectedPeriod;
 
-        // Update prices & CTA for each paid plan
         ['plus', 'pro', 'max'].forEach(plan => {
             const cfg = PLANS[plan][selectedPeriod];
             const planCard = document.querySelector(`.lp-plan-v2[data-plan="${plan}"]`);
             const ctaContainer = document.getElementById(`cta-${plan}`);
 
-            // Clean up dynamic badge
             planCard.classList.remove('current-plan');
             const existingBadge = planCard.querySelector('.badge-current');
             if (existingBadge) existingBadge.remove();
 
-            // Fallback: plan doesn't support this period → show equivalent monthly price + fallback CTA
             const fallbackPeriod = PLANS[plan]._fallbackPeriod;
             if (!cfg && fallbackPeriod) {
                 const fb = PLANS[plan][fallbackPeriod];
@@ -687,9 +664,8 @@
                 document.getElementById(`price-unit-${plan}`).textContent = fb.monthlyEquiv ? '/mo' : fb.unit;
                 document.getElementById(`price-note-${plan}`).innerHTML = `${periodLabel}付 ${fb.price}`;
                 ctaContainer.innerHTML = '';
-                // Use fallback period for the CTA
                 if (!userSession) {
-                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-subscribe" onclick="handleFallbackCheckout(event, '${plan}', '${fallbackPeriod}')">订阅${periodLabel}</button>`;
+                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-subscribe" onclick="handlePlanCheckout(event, '${plan}', this, '${fallbackPeriod}')">订阅${periodLabel}</button>`;
                 } else if (!isSubscribed) {
                     renderSubscribeButton(ctaContainer, plan, fallbackPeriod);
                 } else {
@@ -704,7 +680,6 @@
                 return;
             }
 
-            // Price display
             document.getElementById(`price-${plan}`).textContent = cfg.price;
             document.getElementById(`price-unit-${plan}`).textContent = cfg.unit;
 
@@ -713,19 +688,14 @@
             if (cfg.save) noteHtml += (noteHtml ? ' · ' : '') + `<span class="lp-save-badge">${cfg.save}</span>`;
             noteEl.innerHTML = noteHtml;
 
-            // CTA
             ctaContainer.innerHTML = '';
 
             if (!userSession) {
-                // Not logged in → show subscribe button (redirects to login)
                 ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-subscribe" onclick="handlePlanCheckout(event, '${plan}', this)">订阅</button>`;
             } else if (!isSubscribed) {
-                // Logged in, no active subscription → Checkout Session
                 renderSubscribeButton(ctaContainer, plan);
             } else if (isSubscribed && samePeriod) {
-                // Subscribed, same period
                 if (plan === userTier) {
-                    // Current plan
                     planCard.classList.add('current-plan');
                     const badge = document.createElement('span');
                     badge.className = 'lp-plan-v2-badge badge-current';
@@ -733,32 +703,24 @@
                     planCard.appendChild(badge);
                     ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-current" disabled>当前方案</button>`;
                 } else if (tierIndex(plan) > tierIndex(userTier)) {
-                    // Upgrade → Stripe Customer Portal
                     ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-upgrade" onclick="handlePortalRedirect(event)">升级到 ${plan.charAt(0).toUpperCase() + plan.slice(1)}</button>`;
                 } else {
-                    // Downgrade → Stripe Customer Portal
                     ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-downgrade" onclick="handlePortalRedirect(event)">降级到 ${plan.charAt(0).toUpperCase() + plan.slice(1)}</button>`;
                 }
             } else if (isSubscribed && !samePeriod) {
-                // Subscribed, different period → cross-period not allowed
                 ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-blocked" disabled>跨周期不可切换</button>`;
             }
         });
 
-        // Highlight the user's current period tab if subscribed
         if (isSubscribed && userPeriod) {
             document.querySelectorAll('.lp-period-toggle-btn').forEach(btn => {
-                if (btn.dataset.period === userPeriod) {
-                    btn.style.fontWeight = '800';
-                } else {
-                    btn.style.fontWeight = '';
-                }
+                btn.style.fontWeight = btn.dataset.period === userPeriod ? '800' : '';
             });
         }
     }
 
     /* =========================================
-       RENDER SUBSCRIBE BUTTON (Payment Link flow)
+       RENDER SUBSCRIBE BUTTON
        ========================================= */
     function renderSubscribeButton(container, plan, periodOverride) {
         const period = periodOverride || selectedPeriod;
@@ -767,38 +729,48 @@
         container.innerHTML = `<button class="lp-plan-cta lp-cta-subscribe" onclick="handlePlanCheckout(event, '${plan}', this, '${period}')">订阅</button>`;
     }
 
-    /* Fallback checkout: e.g. Plus "订阅季度" when Monthly tab is active */
-    async function handleFallbackCheckout(event, plan, period) {
-        if (event) event.preventDefault();
-        const { data: { session } } = await sb.auth.getSession();
-        if (!session) { window.location.href = 'login.html'; return; }
-        const cfg = PLANS[plan][period];
-        if (!cfg || !cfg.linkKey) return;
-        const baseUrl = getPaymentLinkUrl(cfg.linkKey);
-        if (!baseUrl) return;
-        window.location.href = buildCheckoutUrl(baseUrl, session);
-    }
-
     /* =========================================
-       CHECKOUT HANDLER (new subscription via Payment Link)
+       PLAN CHECKOUT (new subscription via backend API)
        ========================================= */
     async function handlePlanCheckout(event, plan, btnEl, periodOverride) {
         if (event) event.preventDefault();
 
         const { data: { session } } = await sb.auth.getSession();
-        if (!session) {
-            window.location.href = 'login.html';
-            return;
-        }
+        if (!session) { window.location.href = 'login.html'; return; }
 
         const period = periodOverride || selectedPeriod;
         const cfg = PLANS[plan][period];
-        if (!cfg || !cfg.linkKey) return;
+        if (!cfg) return;
 
-        const baseUrl = getPaymentLinkUrl(cfg.linkKey);
-        if (!baseUrl) return;
+        const btn = btnEl || (event && event.currentTarget);
+        const originalText = btn ? btn.innerText : "";
+        if (btn) { btn.innerText = "Processing..."; btn.style.opacity = "0.7"; btn.style.pointerEvents = "none"; }
 
-        window.location.href = buildCheckoutUrl(baseUrl, session);
+        try {
+            const resp = await fetch(AUTH_API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${session.access_token}`,
+                },
+                body: JSON.stringify({
+                    action: "createStripeCheckout",
+                    payload: { lookup_key: getLookupKey(cfg.lookup) }
+                })
+            });
+            const data = await resp.json();
+            if (data.success && data.checkout_url) {
+                window.location.href = data.checkout_url;
+                return;
+            }
+            console.error("API Error:", data);
+            alert("Error: " + (data.error || "Could not init checkout"));
+        } catch (e) {
+            console.error("Network Error:", e);
+            alert("Network error. Please try again.");
+        } finally {
+            if (btn) { btn.innerText = originalText; btn.style.opacity = "1"; btn.style.pointerEvents = "auto"; }
+        }
     }
 
     /* =========================================
@@ -823,21 +795,46 @@
     }
 
     /* =========================================
-       CREDITS CHECKOUT (always available, repeatable)
+       CREDITS CHECKOUT (via backend API)
        ========================================= */
-    async function handleCreditsCheckout(event, linkKey) {
+    async function handleCreditsCheckout(event, creditKey, btnEl) {
         if (event) event.preventDefault();
 
         const { data: { session } } = await sb.auth.getSession();
-        if (!session) {
-            window.location.href = 'login.html';
-            return;
+        if (!session) { window.location.href = 'login.html'; return; }
+
+        const base = CREDIT_LOOKUPS[creditKey];
+        if (!base) return;
+
+        const btn = btnEl || (event && event.currentTarget);
+        const originalText = btn ? btn.innerText : "";
+        if (btn) { btn.innerText = "Processing..."; btn.style.opacity = "0.7"; btn.style.pointerEvents = "none"; }
+
+        try {
+            const resp = await fetch(AUTH_API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${session.access_token}`,
+                },
+                body: JSON.stringify({
+                    action: "createStripeCheckout",
+                    payload: { lookup_key: getLookupKey(base) }
+                })
+            });
+            const data = await resp.json();
+            if (data.success && data.checkout_url) {
+                window.location.href = data.checkout_url;
+                return;
+            }
+            console.error("API Error:", data);
+            alert("Error: " + (data.error || "Could not init checkout"));
+        } catch (e) {
+            console.error("Network Error:", e);
+            alert("Network error. Please try again.");
+        } finally {
+            if (btn) { btn.innerText = originalText; btn.style.opacity = "1"; btn.style.pointerEvents = "auto"; }
         }
-
-        const baseUrl = getPaymentLinkUrl(linkKey);
-        if (!baseUrl) return;
-
-        window.location.href = buildCheckoutUrl(baseUrl, session);
     }
 
     /* =========================================
@@ -848,13 +845,11 @@
         userSession = session;
 
         if (session) {
-            // Update nav
             const navBtn = document.getElementById('nav-login-btn');
             navBtn.dataset.i18n = "nav.myAccount";
             navBtn.textContent = KanfanI18n.t("nav.myAccount");
             navBtn.href = "account.html";
 
-            // Fetch profile from Supabase
             try {
                 const { data: profile } = await sb
                     .from('profiles')
@@ -868,7 +863,6 @@
                     userTier = parsed.tier;
                     userPeriod = parsed.period;
 
-                    // If user has an active subscription, default the toggle to their period
                     if (profile.subscription_status === 'active' && userTier !== 'free' && userPeriod) {
                         selectedPeriod = userPeriod;
                         document.querySelectorAll('.lp-period-toggle-btn').forEach(btn => {
@@ -886,5 +880,6 @@
 
     // Modal Logic
     function openModal(id) { document.getElementById(id).style.display = "block"; }
-    function closeModal(id) { document.getElementById(id).style.display = "block"; }
+    function closeModal(id) { document.getElementById(id).style.display = "none"; }
+    window.onclick = (e) => { if (e.target.className === 'modal') e.target.style.display = "none"; }
     </script>
