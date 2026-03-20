@@ -481,20 +481,20 @@
                     <div class="lp-pack-name">5,000 点</div>
                     <div class="lp-pack-price">$9.99</div>
                     <div class="lp-pack-detail"> $1.99/1000图</div>
-                    <button onclick="handleCreditsCheckout(event, getLookupKey('credits_starter'), this)" class="lp-pack-btn">购买</button>
+                    <button onclick="handleCreditsCheckout(event, 'starter', this)" class="lp-pack-btn">购买</button>
                 </div>
                 <div class="lp-credit-pack pack-popular">
                     <div class="lp-pack-badge">最受欢迎</div>
                     <div class="lp-pack-name">15,000 点</div>
                     <div class="lp-pack-price">$29.99</div>
                     <div class="lp-pack-detail">$1.89/1000图<br><span class="lp-pack-saving">省 5%</span></div>
-                    <button onclick="handleCreditsCheckout(event, getLookupKey('credits_standard'), this)" class="lp-pack-btn">购买</button>
+                    <button onclick="handleCreditsCheckout(event, 'standard', this)" class="lp-pack-btn">购买</button>
                 </div>
                 <div class="lp-credit-pack">
                     <div class="lp-pack-name">80,000 点</div>
                     <div class="lp-pack-price">$129</div>
                     <div class="lp-pack-detail">$1.83/1000图<br><span class="lp-pack-saving">省 8%</span></div>
-                    <button onclick="handleCreditsCheckout(event, getLookupKey('credits_max'), this)" class="lp-pack-btn">购买</button>
+                    <button onclick="handleCreditsCheckout(event, 'max', this)" class="lp-pack-btn">购买</button>
                 </div>
             </div>
         </div>
@@ -598,32 +598,8 @@
     }
 
     const AUTH_API_URL = "https://api.kanfan.site/auth";//for creating pro/max pay link
-    const LK_PRO = "kanfan_pro_monthly_new";
-    const LK_MAX = "kanfan_max_monthly_new";
-
-    // Dual payment links: CN (人民币) vs INT (国际)
-    // Each plan has two lookup keys — one for Chinese (RMB) and one for international (USD)
-    const PLAN_LINKS = {
-        // Plus
-        plus_quarterly:      { cn: "kanfan_plus_quarterly_cny",      intl: "kanfan_plus_quarterly" },
-        plus_yearly:         { cn: "kanfan_plus_yearly_cny",         intl: "kanfan_plus_yearly" },
-        // Pro
-        pro_monthly:     { cn: "kanfan_pro_monthly_2_cny",     intl: "kanfan_pro_monthly_2" },
-        pro_quarterly:   { cn: "kanfan_pro_quarterly_2_cny",   intl: "kanfan_pro_quarterly_2" },
-        pro_yearly:      { cn: "kanfan_pro_yearly_2_cny",      intl: "kanfan_pro_yearly_2" },
-        // Max
-        max_monthly_:     { cn: "kanfan_max_monthly_2_cny",     intl: "kanfan_max_monthly_2" },
-        max_quarterly:   { cn: "kanfan_max_quarterly_2_cny",   intl: "kanfan_max_quarterly_2" },
-        max_yearly:      { cn: "kanfan_max_yearly_2_cny",      intl: "kanfan_max_yearly_2" },
-        // Credits
-        credits_starter:            { cn: "credits_starter_cny",            intl: "credits_starter" },
-        credits_standard:           { cn: "credits_standard_cny",           intl: "credits_standard" },
-        credits_max:                { cn: "credits_max_cny",                intl: "credits_max" },
-    };
-
-    function getLookupKey(base) {
-        const entry = PLAN_LINKS[base];
-        if (entry) return isChinese() ? entry.cn : entry.intl;
+    function getCheckoutCurrency() {
+        return isChinese() ? "cny" : "usd";
     }
 
     /* =========================================
@@ -633,19 +609,19 @@
 
     const PLANS = {
         plus: {
-            quarterly: { price: '$11.99',  unit: '/quarter', lookup: 'kanfan_plus_quarterly',     note: '等效 $3.99/月', monthlyEquiv: '$3.99' },
-            yearly:    { price: '$44.99',  unit: '/year',    lookup: 'kanfan_plus_yearly',        note: '等效 $3.75/月', save: '省6%' },
+            quarterly: { price: '$11.99',  unit: '/quarter', note: '等效 $3.99/月', monthlyEquiv: '$3.99' },
+            yearly:    { price: '$44.99',  unit: '/year',  note: '等效 $3.75/月', save: '省6%' },
             _fallbackPeriod: 'quarterly',  // when monthly is selected, fall back to this
         },
         pro: {
-            monthly:   { price: '$8.99',   unit: '/mo',      lookup: 'kanfan_pro_monthly_new',    note: '' },
-            quarterly: { price: '$24.99',  unit: '/quarter', lookup: 'kanfan_pro_quarterly_new',  note: '等效 $8.33/月', save: '省6%' },
-            yearly:    { price: '$96.99',  unit: '/year',    lookup: 'kanfan_pro_yearly_new',     note: '等效 $8.08/月', save: '省10%' },
+            monthly:   { price: '$8.99',   unit: '/mo',       note: '' },
+            quarterly: { price: '$24.99',  unit: '/quarter',  note: '等效 $8.33/月', save: '省6%' },
+            yearly:    { price: '$96.99',  unit: '/year',     note: '等效 $8.08/月', save: '省10%' },
         },
         max: {
-            monthly:   { price: '$19.99',  unit: '/mo',      lookup: 'kanfan_max_monthly_new',    note: '' },
-            quarterly: { price: '$55.99',  unit: '/quarter', lookup: 'kanfan_max_quarterly_new',  note: '等效 $18.66/月', save: '省6%' },
-            yearly:    { price: '$209.99', unit: '/year',    lookup: 'kanfan_max_yearly_new',     note: '等效 $17.49/月', save: '省13%' },
+            monthly:   { price: '$19.99',  unit: '/mo',        note: '' },
+            quarterly: { price: '$55.99',  unit: '/quarter',  note: '等效 $18.66/月', save: '省6%' },
+            yearly:    { price: '$209.99', unit: '/year',       note: '等效 $17.49/月', save: '省13%' },
         }
     };
 
@@ -800,32 +776,62 @@
         container.innerHTML = `<button class="lp-plan-cta lp-cta-subscribe" onclick="handlePlanCheckout(event, '${plan}', this, '${period}')">订阅</button>`;
     }
 
-    /* Fallback checkout: e.g. Plus "订阅季度" when Monthly tab is active */
     async function handleFallbackCheckout(event, plan, period, btnEl) {
         if (event) event.preventDefault();
         const { data: { session } } = await sb.auth.getSession();
-        if (!session) { window.location.href = 'login.html'; return; }
+        if (!session) {
+            window.location.href = 'login.html';
+            return;
+        }
+
         const cfg = PLANS[plan][period];
         if (!cfg) return;
+
         const btn = btnEl || (event && event.currentTarget);
         const originalText = btn ? btn.innerText : "";
-        if (btn) { btn.innerText = "Processing..."; btn.style.opacity = "0.7"; btn.style.pointerEvents = "none"; }
+
+        if (btn) {
+            btn.innerText = "Processing...";
+            btn.style.opacity = "0.7";
+            btn.style.pointerEvents = "none";
+        }
+
         try {
             const resp = await fetch(AUTH_API_URL, {
                 method: "POST",
-                headers: { "Content-Type": "application/json", "Authorization": `Bearer ${session.access_token}` },
-                body: JSON.stringify({ action: "createStripeCheckout", payload: { lookup_key: getLookupKey(cfg.lookup) } })
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${session.access_token}`
+                },
+                body: JSON.stringify({
+                    action: "createStripeCheckout",
+                    payload: {
+                        tier: plan,
+                        period: period,
+                        currency: getCheckoutCurrency(),
+                        product_type: "subscription"
+                    }
+                })
             });
+
             const data = await resp.json();
-            if (data.success && data.checkout_url) { window.location.href = data.checkout_url; return; }
+            if (data.success && data.checkout_url) {
+                window.location.href = data.checkout_url;
+                return;
+            }
+
             alert("Error: " + (data.error || "Could not init checkout"));
-        } catch (e) { alert("Network error. Please try again."); }
-        finally { if (btn) { btn.innerText = originalText; btn.style.opacity = "1"; btn.style.pointerEvents = "auto"; } }
+        } catch (e) {
+            alert("Network error. Please try again.");
+        } finally {
+            if (btn) {
+                btn.innerText = originalText;
+                btn.style.opacity = "1";
+                btn.style.pointerEvents = "auto";
+            }
+        }
     }
 
-    /* =========================================
-       CHECKOUT HANDLER (upgrade / downgrade / new sub for not-logged-in)
-       ========================================= */
     async function handlePlanCheckout(event, plan, btnEl, periodOverride) {
         if (event) event.preventDefault();
 
@@ -857,7 +863,12 @@
                 },
                 body: JSON.stringify({
                     action: "createStripeCheckout",
-                    payload: { lookup_key: getLookupKey(cfg.lookup) }
+                    payload: {
+                        tier: plan,
+                        period: period,
+                        currency: getCheckoutCurrency(),
+                        product_type: "subscription"
+                    }
                 })
             });
 
@@ -881,10 +892,7 @@
         }
     }
 
-    /* =========================================
-       CREDITS CHECKOUT (always available, repeatable)
-       ========================================= */
-    async function handleCreditsCheckout(event, lookupKey, btnEl) {
+    async function handleCreditsCheckout(event, pack, btnEl) {
         if (event) event.preventDefault();
 
         const { data: { session } } = await sb.auth.getSession();
@@ -911,7 +919,11 @@
                 },
                 body: JSON.stringify({
                     action: "createStripeCheckout",
-                    payload: { lookup_key: lookupKey }
+                    payload: {
+                        pack: pack,
+                        currency: getCheckoutCurrency(),
+                        product_type: "credits"
+                    }
                 })
             });
 
@@ -981,5 +993,5 @@
 
     // Modal Logic
     function openModal(id) { document.getElementById(id).style.display = "block"; }
-    function closeModal(id) { document.getElementById(id).style.display = "block"; }
+    function closeModal(id) { document.getElementById(id).style.display = "none"; }
     </script>
