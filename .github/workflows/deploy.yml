@@ -31,6 +31,21 @@ jobs:
             --exclude ".github/*" \
             --exclude ".idea/*"
 
+      - name: Fix Content-Types
+        run: |
+          aws s3 cp s3://kanfan-page-bucket/ s3://kanfan-page-bucket/ \
+            --recursive --exclude "*" --include "*.js" \
+            --content-type "application/javascript" \
+            --metadata-directive REPLACE
+          aws s3 cp s3://kanfan-page-bucket/ s3://kanfan-page-bucket/ \
+            --recursive --exclude "*" --include "*.css" \
+            --content-type "text/css" \
+            --metadata-directive REPLACE
+          aws s3 cp s3://kanfan-page-bucket/ s3://kanfan-page-bucket/ \
+            --recursive --exclude "*" --include "*.html" \
+            --content-type "text/html; charset=utf-8" \
+            --metadata-directive REPLACE
+
       - name: Invalidate CloudFront cache
         run: |
           aws cloudfront create-invalidation \
