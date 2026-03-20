@@ -597,9 +597,36 @@
         return lang === 'zh_CN' || lang === 'zh_TW';
     }
 
-    const AUTH_API_URL = "https://api.kanfan.site/auth";
-    const STRIPE_PORTAL_URL = "https://api.kanfan.site/stripe_portal";
+    const AUTH_API_URL = "https://api.kanfan.site/auth";//for creating pro/max pay link
+    const LK_PRO = "kanfan_pro_monthly_new";
+    const LK_MAX = "kanfan_max_monthly_new";
+
+    // Dual payment links: CN (人民币) vs INT (国际)
+    // Each plan has two lookup keys — one for Chinese (RMB) and one for international (USD)
+    const PLAN_LINKS = {
+        // Plus
+        kanfan_plus_quarterly:      { cn: "kanfan_plus_quarterly_2",      intl: "kanfan_plus_quarterly" },
+        kanfan_plus_yearly:         { cn: "kanfan_plus_yearly_2",         intl: "kanfan_plus_yearly" },
+        // Pro
+        kanfan_pro_monthly_new:     { cn: "kanfan_pro_monthly_new_2",     intl: "kanfan_pro_monthly_new" },
+        kanfan_pro_quarterly_new:   { cn: "kanfan_pro_quarterly_new_2",   intl: "kanfan_pro_quarterly_new" },
+        kanfan_pro_yearly_new:      { cn: "kanfan_pro_yearly_new_2",      intl: "kanfan_pro_yearly_new" },
+        // Max
+        kanfan_max_monthly_new:     { cn: "kanfan_max_monthly_new_2",     intl: "kanfan_max_monthly_new" },
+        kanfan_max_quarterly_new:   { cn: "kanfan_max_quarterly_new_2",   intl: "kanfan_max_quarterly_new" },
+        kanfan_max_yearly_new:      { cn: "kanfan_max_yearly_new_2",      intl: "kanfan_max_yearly_new" },
+        // Credits
+        credits_starter:            { cn: "credits_starter_2",            intl: "credits_starter" },
+        credits_standard:           { cn: "credits_standard_2",           intl: "credits_standard" },
+        credits_max:                { cn: "credits_max_2",                intl: "credits_max" },
+        // Usage-based
+        usage_based_1:              { cn: "usage_based_1_2",              intl: "usage_based_1" },
+    };
+
     function getLookupKey(base) {
+        const entry = PLAN_LINKS[base];
+        if (entry) return isChinese() ? entry.cn : entry.intl;
+        // fallback: append _2 for Chinese
         if (isChinese()) return base + "_2";
         return base;
     }
