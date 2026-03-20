@@ -224,14 +224,44 @@
 
 <style>
     /* =========================================
-       PRICING STYLES (v4 - direct Stripe buttons)
+       PRICING STYLES (v5 - global period toggle + single CTA)
        ========================================= */
+
+    /* Global period toggle */
+    .lp-period-toggle {
+        display: inline-flex;
+        background: #f1f5f9;
+        border-radius: 12px;
+        padding: 4px;
+        margin: 24px auto 0;
+        gap: 4px;
+    }
+    .lp-period-toggle-btn {
+        padding: 8px 22px;
+        border-radius: 10px;
+        border: none;
+        cursor: pointer;
+        font-family: inherit;
+        font-size: 0.85rem;
+        font-weight: 600;
+        color: #64748b;
+        background: transparent;
+        transition: all 0.2s ease;
+    }
+    .lp-period-toggle-btn.active {
+        background: white;
+        color: #1e293b;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .lp-period-toggle-btn:hover:not(.active) { color: #1e293b; }
+
+    /* Plan grid */
     .lp-price-row1 {
         display: grid;
         grid-template-columns: repeat(4, 1fr);
         gap: 16px;
         max-width: 1200px;
-        margin: 36px auto 0;
+        margin: 24px auto 0;
     }
     @media (max-width: 1050px) {
         .lp-price-row1 { grid-template-columns: repeat(2, 1fr); max-width: 700px; }
@@ -241,6 +271,7 @@
     }
     .lp-price-row2 { max-width: 1200px; margin: 16px auto 0; }
 
+    /* Plan card */
     .lp-plan-v2 {
         background: white; padding: 22px 18px 20px;
         border-radius: 18px; border: 1.5px solid #e2e8f0;
@@ -251,6 +282,10 @@
         border: 2px solid #f97316;
         box-shadow: 0 8px 30px -8px rgba(249,115,22,0.18);
     }
+    .lp-plan-v2.current-plan {
+        border: 2px solid var(--success);
+        box-shadow: 0 8px 30px -8px rgba(16,185,129,0.15);
+    }
     .lp-plan-v2-badge {
         position: absolute; top: 12px; right: 12px;
         padding: 3px 10px; border-radius: 20px;
@@ -259,27 +294,22 @@
     .badge-popular { background: #fff7ed; color: #ea580c; }
     .badge-heavy   { background: #fef3c7; color: #b45309; }
     .badge-anchor  { background: #f1f5f9; color: #475569; }
+    .badge-current { background: #dcfce7; color: #16a34a; }
 
+    /* Title & price */
     .lp-plan-v2-title {
         font-size: 1.15rem; font-weight: 800; margin: 0 0 2px; color: #1e293b;
     }
-    .lp-plan-v2-subtitle { font-size: 0.78rem; color: #64748b; margin-bottom: 12px; }
-
-    /* Prominent price display */
-    .lp-price-display {
-        margin: 4px 0 2px;
-    }
+    .lp-price-display { margin: 4px 0 2px; }
     .lp-price-main {
         font-size: 2.2rem; font-weight: 800; color: #1e293b; line-height: 1;
     }
     .lp-price-unit { font-size: 0.85rem; color: #64748b; font-weight: 500; }
     .lp-price-note { font-size: 0.75rem; color: #94a3b8; margin: 3px 0 14px; }
-
-    /* Save badge inline */
     .lp-save-badge {
         display: inline-block; background: #dcfce7; color: #16a34a;
         font-size: 0.68rem; font-weight: 700; padding: 2px 6px; border-radius: 20px;
-        vertical-align: middle;
+        vertical-align: middle; margin-left: 6px;
     }
 
     /* Quota */
@@ -290,25 +320,35 @@
     }
     .lp-quota-val { font-weight: 700; color: #1e293b; }
 
-    /* Per-period buttons */
-    .lp-period-btns { display: flex; flex-direction: column; gap: 8px; }
-    .lp-period-btn {
-        display: flex; justify-content: space-between; align-items: center;
-        width: 100%; padding: 10px 14px;
-        border-radius: 10px; border: none; cursor: pointer;
-        font-family: inherit; font-size: 0.85rem; font-weight: 600;
-        transition: opacity 0.15s, transform 0.1s;
-        text-decoration: none;
+    /* Single CTA button per plan */
+    .lp-plan-cta {
+        width: 100%; padding: 11px 0;
+        border-radius: 10px; border: none;
+        font-family: inherit; font-size: 0.88rem; font-weight: 700;
+        cursor: pointer; transition: all 0.15s ease;
+        text-align: center; text-decoration: none;
+        display: flex; align-items: center; justify-content: center;
     }
-    .lp-period-btn:hover { opacity: 0.88; transform: translateY(-1px); }
-    .lp-period-btn:active { transform: translateY(0); }
-    .lp-period-btn-label { display: flex; align-items: center; gap: 6px; }
-    .lp-period-btn-price { font-size: 0.95rem; font-weight: 800; }
+    .lp-plan-cta:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
+    .lp-plan-cta:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+    .lp-cta-subscribe { background: var(--primary); color: white; }
+    .lp-cta-subscribe:hover:not(:disabled) { background: var(--primary-hover); }
+    .lp-cta-current   { background: #dcfce7; color: #16a34a; cursor: default; }
+    .lp-cta-upgrade    { background: var(--primary); color: white; }
+    .lp-cta-upgrade:hover { background: var(--primary-hover); }
+    .lp-cta-downgrade  { background: #f1f5f9; color: #475569; border: 1.5px solid #e2e8f0; }
+    .lp-cta-downgrade:hover { background: #e2e8f0; }
+    .lp-cta-blocked    { background: #f1f5f9; color: #94a3b8; }
+    .lp-cta-free       { background: #94a3b8; color: white; }
 
     /* Free plan */
     .lp-free-price { font-size: 2.2rem; font-weight: 800; color: #1e293b; margin: 4px 0 2px; line-height: 1; }
     .lp-free-desc  { font-size: 0.78rem; color: #64748b; margin-bottom: 14px; flex-grow: 1; }
-    .lp-plan-v2 .lp-btn { width: 100%; justify-content: center; }
+
+    /* Stripe buy button container */
+    .lp-buy-btn-container { width: 100%; }
+    .lp-buy-btn-container stripe-buy-button { width: 100%; }
 
     /* Credit packs */
     .lp-credits-card {
@@ -348,14 +388,26 @@
     .lp-pricing-note { margin-top: 18px; font-size: 0.78rem; color: #94a3b8; }
 </style>
 
+<!-- Stripe Buy Button SDK -->
+<script async src="https://js.stripe.com/v3/buy-button.js"></script>
+
 <section class="lp-pricing" id="pricing">
     <h2 data-i18n="home.pricing">Pricing</h2>
+
+    <!-- Global period toggle -->
+    <div style="text-align:center;">
+        <div class="lp-period-toggle" id="period-toggle">
+            <button class="lp-period-toggle-btn active" data-period="monthly">Monthly</button>
+            <button class="lp-period-toggle-btn" data-period="quarterly">Quarterly</button>
+            <button class="lp-period-toggle-btn" data-period="yearly">Yearly</button>
+        </div>
+    </div>
 
     <!-- Row 1: Subscription plans -->
     <div class="lp-price-row1">
 
         <!-- FREE -->
-        <div class="lp-plan-v2">
+        <div class="lp-plan-v2" data-plan="free">
             <div class="lp-plan-v2-title">Free</div>
             <div class="lp-free-price">$0</div>
             <div class="lp-free-desc">永久免费 · 无需信用卡</div>
@@ -364,128 +416,85 @@
                 <span class="lp-quota-val">50图/周</span>
             </div>
             <a href="https://chromewebstore.google.com/detail/kanfan-manga-translator/ffjpelbfmecoidnkjapdhpcbeianmkpp"
-               target="_blank" class="lp-btn" style="background:#94a3b8;">
+               target="_blank" class="lp-plan-cta lp-cta-free">
                 免费安装
             </a>
         </div>
 
         <!-- PLUS -->
-        <div class="lp-plan-v2">
+        <div class="lp-plan-v2" data-plan="plus">
             <span class="lp-plan-v2-badge badge-anchor">基础档</span>
             <div class="lp-plan-v2-title">Plus</div>
             <div class="lp-price-display">
-                <span class="lp-price-main">$3.99</span>
-                <span class="lp-price-unit">/月起</span>
+                <span class="lp-price-main" id="price-plus"></span>
+                <span class="lp-price-unit" id="price-unit-plus"></span>
             </div>
-            <div class="lp-price-note">季付 $11.99 · 等效月费</div>
+            <div class="lp-price-note" id="price-note-plus"></div>
             <div class="lp-quota-row">
                 <span>额度</span>
                 <span class="lp-quota-val">1000图/周</span>
             </div>
-            <div class="lp-period-btns">
-                <a onclick="handleProMaxCheckout(event, getLookupKey('kanfan_plus_quarterly'), this)"
-                   class="lp-period-btn" style="background:#f1f5f9; color:#1e293b;">
-                    <span class="lp-period-btn-label">季付</span>
-                    <span class="lp-period-btn-price">$11.99</span>
-                </a>
-                <a onclick="handleProMaxCheckout(event, getLookupKey('kanfan_plus_yearly'), this)"
-                   class="lp-period-btn" style="background:#e2e8f0; color:#1e293b;">
-                    <span class="lp-period-btn-label">年付 <span class="lp-save-badge">省$3</span></span>
-                    <span class="lp-period-btn-price">$44.99</span>
-                </a>
-            </div>
+            <div id="cta-plus"></div>
         </div>
 
         <!-- PRO -->
-        <div class="lp-plan-v2 popular-v2">
+        <div class="lp-plan-v2 popular-v2" data-plan="pro">
             <span class="lp-plan-v2-badge badge-popular">最受欢迎</span>
             <div class="lp-plan-v2-title" style="color:#f97316;">Pro</div>
             <div class="lp-price-display">
-                <span class="lp-price-main">$8.99</span>
-                <span class="lp-price-unit">/月起</span>
+                <span class="lp-price-main" id="price-pro"></span>
+                <span class="lp-price-unit" id="price-unit-pro"></span>
             </div>
-            <div class="lp-price-note">追更必备 · 灵活选周期</div>
+            <div class="lp-price-note" id="price-note-pro"></div>
             <div class="lp-quota-row">
                 <span>额度</span>
                 <span class="lp-quota-val">4000图/周</span>
             </div>
-            <div class="lp-period-btns">
-                <a onclick="handleProMaxCheckout(event, getLookupKey(LK_PRO), this)"
-                   class="lp-period-btn" style="background:#fff7ed; color:#1e293b;">
-                    <span class="lp-period-btn-label">月付</span>
-                    <span class="lp-period-btn-price">$8.99</span>
-                </a>
-                <a onclick="handleProMaxCheckout(event, getLookupKey('kanfan_pro_quarterly_new'), this)"
-                   class="lp-period-btn" style="background:#fed7aa; color:#1e293b;">
-                    <span class="lp-period-btn-label">季付 <span class="lp-save-badge">省$2</span></span>
-                    <span class="lp-period-btn-price">$24.99</span>
-                </a>
-                <a onclick="handleProMaxCheckout(event, getLookupKey('kanfan_pro_yearly_new'), this)"
-                   class="lp-period-btn" style="background:#f97316; color:white;">
-                    <span class="lp-period-btn-label">年付 <span class="lp-save-badge" style="background:rgba(255,255,255,0.25);color:white;">省$18</span></span>
-                    <span class="lp-period-btn-price">$89.99</span>
-                </a>
-            </div>
+            <div id="cta-pro"></div>
         </div>
 
         <!-- MAX -->
-        <div class="lp-plan-v2">
+        <div class="lp-plan-v2" data-plan="max">
             <span class="lp-plan-v2-badge badge-heavy">重度用户</span>
             <div class="lp-plan-v2-title" style="color:#ea580c;">Max</div>
             <div class="lp-price-display">
-                <span class="lp-price-main">$19.99</span>
-                <span class="lp-price-unit">/月起</span>
+                <span class="lp-price-main" id="price-max"></span>
+                <span class="lp-price-unit" id="price-unit-max"></span>
             </div>
-            <div class="lp-price-note">高频用户首选</div>
+            <div class="lp-price-note" id="price-note-max"></div>
             <div class="lp-quota-row">
                 <span>额度</span>
                 <span class="lp-quota-val">12000张/周</span>
             </div>
-            <div class="lp-period-btns">
-                <a onclick="handleProMaxCheckout(event, getLookupKey(LK_MAX), this)"
-                   class="lp-period-btn" style="background:#fff7ed; color:#1e293b;">
-                    <span class="lp-period-btn-label">月付</span>
-                    <span class="lp-period-btn-price">$19.99</span>
-                </a>
-                <a onclick="handleProMaxCheckout(event, getLookupKey('kanfan_max_quarterly_new'), this)"
-                   class="lp-period-btn" style="background:#fed7aa; color:#1e293b;">
-                    <span class="lp-period-btn-label">季付 <span class="lp-save-badge">省$5</span></span>
-                    <span class="lp-period-btn-price">$54.99</span>
-                </a>
-                <a onclick="handleProMaxCheckout(event, getLookupKey('kanfan_max_yearly_new'), this)"
-                   class="lp-period-btn" style="background:#ea580c; color:white;">
-                    <span class="lp-period-btn-label">年付 <span class="lp-save-badge" style="background:rgba(255,255,255,0.22);color:white;">省$48</span></span>
-                    <span class="lp-period-btn-price">$191.90</span>
-                </a>
-            </div>
+            <div id="cta-max"></div>
         </div>
 
     </div>
 
-    <!-- Row 2: Credit packs -->
+    <!-- Row 2: Credit packs (always purchasable, can buy multiple) -->
     <div class="lp-price-row2">
         <div class="lp-credits-card">
             <div class="lp-credits-title">点数包</div>
-            <div class="lp-credits-subtitle">用多少买多少，三年有效</div>
+            <div class="lp-credits-subtitle">用多少买多少，三年有效，可反复购买</div>
             <div class="lp-credits-grid">
                 <div class="lp-credit-pack">
                     <div class="lp-pack-name">5,000 点</div>
                     <div class="lp-pack-price">$9.99</div>
                     <div class="lp-pack-detail"> $1.99/1000图</div>
-                    <button onclick="handleProMaxCheckout(event, getLookupKey('credits_starter'), this)" class="lp-pack-btn">购买</button>
+                    <button onclick="handleCreditsCheckout(event, getLookupKey('credits_starter'), this)" class="lp-pack-btn">购买</button>
                 </div>
                 <div class="lp-credit-pack pack-popular">
                     <div class="lp-pack-badge">最受欢迎</div>
                     <div class="lp-pack-name">15,000 点</div>
                     <div class="lp-pack-price">$29.99</div>
                     <div class="lp-pack-detail">$1.89/1000图<br><span class="lp-pack-saving">省 5%</span></div>
-                    <button onclick="handleProMaxCheckout(event, getLookupKey('credits_standard'), this)" class="lp-pack-btn">购买</button>
+                    <button onclick="handleCreditsCheckout(event, getLookupKey('credits_standard'), this)" class="lp-pack-btn">购买</button>
                 </div>
                 <div class="lp-credit-pack">
                     <div class="lp-pack-name">80,000 点</div>
                     <div class="lp-pack-price">$129</div>
                     <div class="lp-pack-detail">$1.83/1000图<br><span class="lp-pack-saving">省 8%</span></div>
-                    <button onclick="handleProMaxCheckout(event, getLookupKey('credits_max'), this)" class="lp-pack-btn">购买</button>
+                    <button onclick="handleCreditsCheckout(event, getLookupKey('credits_max'), this)" class="lp-pack-btn">购买</button>
                 </div>
             </div>
         </div>
@@ -622,28 +631,265 @@
         return base;
     }
 
-    // Check Login
-    sb.auth.getSession().then(({ data: { session } }) => {
-        if (session) {
-            const navBtn = document.getElementById('nav-login-btn');
-            navBtn.dataset.i18n = "nav.myAccount";
-            navBtn.textContent = KanfanI18n.t("nav.myAccount");
-            navBtn.href = "account.html";
+    /* =========================================
+       PLAN CONFIG - prices, lookup keys, buy button IDs
+       ========================================= */
+    const PLAN_TIERS = ['free', 'plus', 'pro', 'max'];
+
+    const PLANS = {
+        plus: {
+            quarterly: { price: '$11.99',  unit: '/quarter', lookup: 'kanfan_plus_quarterly',     note: '等效 $3.99/月', save: '省$0.98', monthlyEquiv: '$3.99' },
+            yearly:    { price: '$44.99',  unit: '/year',    lookup: 'kanfan_plus_yearly',        note: '等效 $3.75/月', save: '省$15' },
+            _fallbackPeriod: 'quarterly',  // when monthly is selected, fall back to this
+        },
+        pro: {
+            monthly:   { price: '$8.99',   unit: '/mo',      lookup: 'kanfan_pro_monthly_new',    note: '' },
+            quarterly: { price: '$24.99',  unit: '/quarter', lookup: 'kanfan_pro_quarterly_new',  note: '等效 $8.33/月', save: '省$2' },
+            yearly:    { price: '$89.99',  unit: '/year',    lookup: 'kanfan_pro_yearly_new',     note: '等效 $7.50/月', save: '省$18' },
+        },
+        max: {
+            monthly:   { price: '$19.99',  unit: '/mo',      lookup: 'kanfan_max_monthly_new',    note: '' },
+            quarterly: { price: '$54.99',  unit: '/quarter', lookup: 'kanfan_max_quarterly_new',  note: '等效 $18.33/月', save: '省$5' },
+            yearly:    { price: '$191.90', unit: '/year',    lookup: 'kanfan_max_yearly_new',     note: '等效 $15.99/月', save: '省$48' },
         }
+    };
+
+    /* =========================================
+       STATE
+       ========================================= */
+    let selectedPeriod = 'monthly';
+    let userProfile = null;   // { plan, subscription_status, ... }
+    let userSession = null;
+    let userTier = 'free';    // parsed tier: free | plus | pro | max
+    let userPeriod = null;    // parsed period: monthly | quarterly | yearly
+
+    /* =========================================
+       PARSE USER PLAN from profiles.plan field
+       ========================================= */
+    function parseUserPlan(planStr) {
+        if (!planStr) return { tier: 'free', period: null };
+        const s = planStr.toLowerCase();
+        let tier = 'free';
+        if (s.includes('max')) tier = 'max';
+        else if (s.includes('pro')) tier = 'pro';
+        else if (s.includes('plus')) tier = 'plus';
+        let period = null;
+        if (s.includes('monthly')) period = 'monthly';
+        else if (s.includes('quarterly')) period = 'quarterly';
+        else if (s.includes('yearly') || s.includes('annual')) period = 'yearly';
+        return { tier, period };
+    }
+
+    function tierIndex(tier) {
+        return PLAN_TIERS.indexOf(tier);
+    }
+
+    /* =========================================
+       PERIOD TOGGLE
+       ========================================= */
+    document.getElementById('period-toggle').addEventListener('click', (e) => {
+        const btn = e.target.closest('.lp-period-toggle-btn');
+        if (!btn) return;
+        document.querySelectorAll('.lp-period-toggle-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        selectedPeriod = btn.dataset.period;
+        renderPricing();
     });
 
-    // 1. Pro / Max Handler (Legacy Links)
-    async function handleSubscribe(stripeUrl) {
-        const { data: { session } } = await sb.auth.getSession();
-        if (!session) {
-            window.location.href = 'login.html';
-        } else {
-            const finalUrl = stripeUrl + (stripeUrl.includes('?') ? '&' : '?') + "prefilled_email=" + encodeURIComponent(session.user.email);
-            window.location.href = finalUrl;
+    /* =========================================
+       RENDER PRICING
+       ========================================= */
+    function renderPricing() {
+        const isSubscribed = userProfile &&
+            userProfile.subscription_status === 'active' &&
+            userTier !== 'free';
+        const samePeriod = userPeriod === selectedPeriod;
+
+        // Update prices & CTA for each paid plan
+        ['plus', 'pro', 'max'].forEach(plan => {
+            const cfg = PLANS[plan][selectedPeriod];
+            const planCard = document.querySelector(`.lp-plan-v2[data-plan="${plan}"]`);
+            const ctaContainer = document.getElementById(`cta-${plan}`);
+
+            // Clean up dynamic badge
+            planCard.classList.remove('current-plan');
+            const existingBadge = planCard.querySelector('.badge-current');
+            if (existingBadge) existingBadge.remove();
+
+            // Fallback: plan doesn't support this period → show equivalent monthly price + fallback CTA
+            const fallbackPeriod = PLANS[plan]._fallbackPeriod;
+            if (!cfg && fallbackPeriod) {
+                const fb = PLANS[plan][fallbackPeriod];
+                const periodLabel = fallbackPeriod === 'quarterly' ? '季度' : fallbackPeriod === 'yearly' ? '年度' : '月度';
+                document.getElementById(`price-${plan}`).textContent = fb.monthlyEquiv || fb.price;
+                document.getElementById(`price-unit-${plan}`).textContent = fb.monthlyEquiv ? '/mo' : fb.unit;
+                document.getElementById(`price-note-${plan}`).innerHTML = `${periodLabel}付 ${fb.price}`;
+                ctaContainer.innerHTML = '';
+                // Use fallback period for the CTA
+                if (!userSession) {
+                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-subscribe" onclick="handleFallbackCheckout(event, '${plan}', '${fallbackPeriod}', this)">订阅${periodLabel}</button>`;
+                } else if (!isSubscribed) {
+                    renderSubscribeButton(ctaContainer, plan, fallbackPeriod);
+                } else {
+                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-blocked" disabled>跨周期不可切换</button>`;
+                }
+                return;
+            } else if (!cfg) {
+                document.getElementById(`price-${plan}`).textContent = '—';
+                document.getElementById(`price-unit-${plan}`).textContent = '';
+                document.getElementById(`price-note-${plan}`).innerHTML = '';
+                ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-blocked" disabled>不支持此周期</button>`;
+                return;
+            }
+
+            // Price display
+            document.getElementById(`price-${plan}`).textContent = cfg.price;
+            document.getElementById(`price-unit-${plan}`).textContent = cfg.unit;
+
+            const noteEl = document.getElementById(`price-note-${plan}`);
+            let noteHtml = cfg.note || '';
+            if (cfg.save) noteHtml += (noteHtml ? ' · ' : '') + `<span class="lp-save-badge">${cfg.save}</span>`;
+            noteEl.innerHTML = noteHtml;
+
+            // CTA
+            ctaContainer.innerHTML = '';
+
+            if (!userSession) {
+                // Not logged in → show subscribe button (redirects to login)
+                ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-subscribe" onclick="handlePlanCheckout(event, '${plan}', this)">订阅</button>`;
+            } else if (!isSubscribed) {
+                // Logged in, no active subscription → Checkout Session
+                renderSubscribeButton(ctaContainer, plan);
+            } else if (isSubscribed && samePeriod) {
+                // Subscribed, same period
+                if (plan === userTier) {
+                    // Current plan
+                    planCard.classList.add('current-plan');
+                    const badge = document.createElement('span');
+                    badge.className = 'lp-plan-v2-badge badge-current';
+                    badge.textContent = '当前方案';
+                    planCard.appendChild(badge);
+                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-current" disabled>当前方案</button>`;
+                } else if (tierIndex(plan) > tierIndex(userTier)) {
+                    // Upgrade
+                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-upgrade" onclick="handlePlanCheckout(event, '${plan}', this)">升级到 ${plan.charAt(0).toUpperCase() + plan.slice(1)}</button>`;
+                } else {
+                    // Downgrade
+                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-downgrade" onclick="handlePlanCheckout(event, '${plan}', this)">降级到 ${plan.charAt(0).toUpperCase() + plan.slice(1)}</button>`;
+                }
+            } else if (isSubscribed && !samePeriod) {
+                // Subscribed, different period → cross-period not allowed
+                ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-blocked" disabled>跨周期不可切换</button>`;
+            }
+        });
+
+        // Highlight the user's current period tab if subscribed
+        if (isSubscribed && userPeriod) {
+            document.querySelectorAll('.lp-period-toggle-btn').forEach(btn => {
+                if (btn.dataset.period === userPeriod) {
+                    btn.style.fontWeight = '800';
+                } else {
+                    btn.style.fontWeight = '';
+                }
+            });
         }
     }
 
-    async function handleProMaxCheckout(event, lookupKey, btnEl) {
+    /* =========================================
+       RENDER SUBSCRIBE BUTTON (Checkout Session flow)
+       ========================================= */
+    function renderSubscribeButton(container, plan, periodOverride) {
+        const period = periodOverride || selectedPeriod;
+        const cfg = PLANS[plan][period];
+        if (!cfg) return;
+        container.innerHTML = `<button class="lp-plan-cta lp-cta-subscribe" onclick="handlePlanCheckout(event, '${plan}', this, '${period}')">订阅</button>`;
+    }
+
+    /* Fallback checkout: e.g. Plus "订阅季度" when Monthly tab is active */
+    async function handleFallbackCheckout(event, plan, period, btnEl) {
+        if (event) event.preventDefault();
+        const { data: { session } } = await sb.auth.getSession();
+        if (!session) { window.location.href = 'login.html'; return; }
+        const cfg = PLANS[plan][period];
+        if (!cfg) return;
+        const btn = btnEl || (event && event.currentTarget);
+        const originalText = btn ? btn.innerText : "";
+        if (btn) { btn.innerText = "Processing..."; btn.style.opacity = "0.7"; btn.style.pointerEvents = "none"; }
+        try {
+            const resp = await fetch(AUTH_API_URL, {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "Authorization": `Bearer ${session.access_token}` },
+                body: JSON.stringify({ action: "createStripeCheckout", payload: { lookup_key: getLookupKey(cfg.lookup) } })
+            });
+            const data = await resp.json();
+            if (data.success && data.checkout_url) { window.location.href = data.checkout_url; return; }
+            alert("Error: " + (data.error || "Could not init checkout"));
+        } catch (e) { alert("Network error. Please try again."); }
+        finally { if (btn) { btn.innerText = originalText; btn.style.opacity = "1"; btn.style.pointerEvents = "auto"; } }
+    }
+
+    /* =========================================
+       CHECKOUT HANDLER (upgrade / downgrade / new sub for not-logged-in)
+       ========================================= */
+    async function handlePlanCheckout(event, plan, btnEl, periodOverride) {
+        if (event) event.preventDefault();
+
+        const { data: { session } } = await sb.auth.getSession();
+        if (!session) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        const period = periodOverride || selectedPeriod;
+        const cfg = PLANS[plan][period];
+        if (!cfg) return;
+
+        const btn = btnEl || (event && event.currentTarget);
+        const originalText = btn ? btn.innerText : "";
+
+        if (btn) {
+            btn.innerText = "Processing...";
+            btn.style.opacity = "0.7";
+            btn.style.pointerEvents = "none";
+        }
+
+        try {
+            const resp = await fetch(AUTH_API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${session.access_token}`,
+                },
+                body: JSON.stringify({
+                    action: "createStripeCheckout",
+                    payload: { lookup_key: getLookupKey(cfg.lookup) }
+                })
+            });
+
+            const data = await resp.json();
+            if (data.success && data.checkout_url) {
+                window.location.href = data.checkout_url;
+                return;
+            }
+
+            console.error("API Error:", data);
+            alert("Error: " + (data.error || "Could not init checkout"));
+        } catch (e) {
+            console.error("Network Error:", e);
+            alert("Network error. Please try again.");
+        } finally {
+            if (btn) {
+                btn.innerText = originalText;
+                btn.style.opacity = "1";
+                btn.style.pointerEvents = "auto";
+            }
+        }
+    }
+
+    /* =========================================
+       CREDITS CHECKOUT (always available, repeatable)
+       ========================================= */
+    async function handleCreditsCheckout(event, lookupKey, btnEl) {
         if (event) event.preventDefault();
 
         const { data: { session } } = await sb.auth.getSession();
@@ -670,15 +916,11 @@
                 },
                 body: JSON.stringify({
                     action: "createStripeCheckout",
-                    payload: {
-                        lookup_key: lookupKey
-                    }
+                    payload: { lookup_key: lookupKey }
                 })
             });
 
             const data = await resp.json();
-
-            // 你的后端返回字段是 checkout_url :contentReference[oaicite:2]{index=2}
             if (data.success && data.checkout_url) {
                 window.location.href = data.checkout_url;
                 return;
@@ -698,55 +940,49 @@
         }
     }
 
-    async function handleMeteredCheckout(event) {
-        if (event) event.preventDefault();
-
-        const btn = event.currentTarget;
-        const originalText = btn.innerText;
-
+    /* =========================================
+       INIT: fetch auth + profile, then render
+       ========================================= */
+    (async () => {
         const { data: { session } } = await sb.auth.getSession();
-        if (!session) { window.location.href = 'login.html'; return; }
+        userSession = session;
 
-        btn.innerText = "Processing...";
-        btn.style.opacity = "0.7";
-        btn.style.pointerEvents = "none";
+        if (session) {
+            // Update nav
+            const navBtn = document.getElementById('nav-login-btn');
+            navBtn.dataset.i18n = "nav.myAccount";
+            navBtn.textContent = KanfanI18n.t("nav.myAccount");
+            navBtn.href = "account.html";
 
-        try {
-            const resp = await fetch(AUTH_API_URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${session.access_token}`,
-                },
-                body: JSON.stringify({
-                    action: "createPaygCheckout",
-                    payload: { lookup_key: getLookupKey("usage_based_1") }
-                })
-            });
+            // Fetch profile from Supabase
+            try {
+                const { data: profile } = await sb
+                    .from('profiles')
+                    .select('plan, subscription_status, credits, quota_tier')
+                    .eq('id', session.user.id)
+                    .single();
 
-            const data = await resp.json();
-            if (data.success && data.checkout_url) {
-                window.location.href = data.checkout_url;
-                return;
+                if (profile) {
+                    userProfile = profile;
+                    const parsed = parseUserPlan(profile.plan);
+                    userTier = parsed.tier;
+                    userPeriod = parsed.period;
+
+                    // If user has an active subscription, default the toggle to their period
+                    if (profile.subscription_status === 'active' && userTier !== 'free' && userPeriod) {
+                        selectedPeriod = userPeriod;
+                        document.querySelectorAll('.lp-period-toggle-btn').forEach(btn => {
+                            btn.classList.toggle('active', btn.dataset.period === selectedPeriod);
+                        });
+                    }
+                }
+            } catch (e) {
+                console.warn("Failed to fetch profile:", e);
             }
-
-            console.error("API Error:", data);
-            alert("Error: " + (data.error || "Could not init PAYG checkout"));
-        } catch (e) {
-            console.error("Network Error:", e);
-            alert("Network error. Please try again.");
-        } finally {
-            btn.innerText = originalText;
-            btn.style.opacity = "1";
-            btn.style.pointerEvents = "auto";
         }
-    }
 
-    function resetBtn(btn, text) {
-        btn.innerText = text;
-        btn.style.opacity = "1";
-        btn.style.pointerEvents = "auto";
-    }
+        renderPricing();
+    })();
 
     // Modal Logic
     function openModal(id) { document.getElementById(id).style.display = "block"; }
