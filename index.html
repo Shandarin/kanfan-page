@@ -151,19 +151,6 @@
         .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); }
         .modal-content { background-color: #ffffff; margin: 5vh auto; padding: 40px; border-radius: 24px; width: 90%; max-width: 800px; max-height: 85vh; overflow-y: auto; position: relative; }
 
-        /* VPN Warning Modal */
-        .vpn-modal-overlay { display: none; position: fixed; z-index: 3000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); align-items: center; justify-content: center; }
-        .vpn-modal-overlay.active { display: flex; }
-        .vpn-modal { background: #fff; border-radius: 20px; padding: 32px; max-width: 420px; width: 90%; text-align: center; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
-        .vpn-modal-icon { font-size: 2.5rem; margin-bottom: 12px; }
-        .vpn-modal h3 { font-size: 1.15rem; margin: 0 0 12px; color: var(--dark); }
-        .vpn-modal p { font-size: 0.95rem; color: var(--slate); line-height: 1.6; margin: 0 0 24px; }
-        .vpn-modal-btns { display: flex; gap: 12px; justify-content: center; }
-        .vpn-modal-btns button { padding: 10px 24px; border-radius: 50px; font-weight: 600; font-size: 0.9rem; cursor: pointer; border: none; transition: all 0.2s; }
-        .vpn-modal-btns .vpn-btn-continue { background: var(--primary); color: #fff; }
-        .vpn-modal-btns .vpn-btn-continue:hover { background: var(--primary-hover); }
-        .vpn-modal-btns .vpn-btn-cancel { background: #f1f5f9; color: var(--dark); }
-        .vpn-modal-btns .vpn-btn-cancel:hover { background: #e2e8f0; }
         .close-btn { float: right; font-size: 28px; cursor: pointer; }
 
         /* Mockup Internal Styles */
@@ -397,9 +384,9 @@
     <!-- Global period toggle -->
     <div style="text-align:center;">
         <div class="lp-period-toggle" id="period-toggle">
-            <button class="lp-period-toggle-btn active" data-period="monthly">Monthly</button>
-            <button class="lp-period-toggle-btn" data-period="quarterly">Quarterly</button>
-            <button class="lp-period-toggle-btn" data-period="yearly">Yearly</button>
+            <button class="lp-period-toggle-btn active" data-period="monthly" data-i18n="home.period.monthly">Monthly</button>
+            <button class="lp-period-toggle-btn" data-period="quarterly" data-i18n="home.period.quarterly">Quarterly</button>
+            <button class="lp-period-toggle-btn" data-period="yearly" data-i18n="home.period.yearly">Yearly</button>
         </div>
     </div>
 
@@ -410,20 +397,20 @@
         <div class="lp-plan-v2" data-plan="free">
             <div class="lp-plan-v2-title">Free</div>
             <div class="lp-free-price">$0</div>
-            <div class="lp-free-desc">永久免费 · 无需信用卡</div>
+            <div class="lp-free-desc" data-i18n="home.freeDesc">Free forever · No credit card</div>
             <div class="lp-quota-row">
-                <span>额度</span>
-                <span class="lp-quota-val">50图/周</span>
+                <span data-i18n="home.quota">Quota</span>
+                <span class="lp-quota-val" data-i18n="home.quotaFree">50 img/week</span>
             </div>
             <a href="https://chromewebstore.google.com/detail/kanfan-manga-translator/ffjpelbfmecoidnkjapdhpcbeianmkpp"
-               target="_blank" class="lp-plan-cta lp-cta-free">
-                免费安装
+               target="_blank" class="lp-plan-cta lp-cta-free" data-i18n="home.freeInstall">
+                Install Free
             </a>
         </div>
 
         <!-- PLUS -->
         <div class="lp-plan-v2" data-plan="plus">
-            <span class="lp-plan-v2-badge badge-anchor">基础档</span>
+            <span class="lp-plan-v2-badge badge-anchor" data-i18n="home.badgeBasic">Basic</span>
             <div class="lp-plan-v2-title">Plus</div>
             <div class="lp-price-display">
                 <span class="lp-price-main" id="price-plus"></span>
@@ -431,15 +418,15 @@
             </div>
             <div class="lp-price-note" id="price-note-plus"></div>
             <div class="lp-quota-row">
-                <span>额度</span>
-                <span class="lp-quota-val">1000图/周</span>
+                <span data-i18n="home.quota">Quota</span>
+                <span class="lp-quota-val" data-i18n="home.quotaPlus">1000 img/week</span>
             </div>
             <div id="cta-plus"></div>
         </div>
 
         <!-- PRO -->
         <div class="lp-plan-v2 popular-v2" data-plan="pro">
-            <span class="lp-plan-v2-badge badge-popular">最受欢迎</span>
+            <span class="lp-plan-v2-badge badge-popular" data-i18n="home.badgePopular">Most Popular</span>
             <div class="lp-plan-v2-title" style="color:#f97316;">Pro</div>
             <div class="lp-price-display">
                 <span class="lp-price-main" id="price-pro"></span>
@@ -447,15 +434,15 @@
             </div>
             <div class="lp-price-note" id="price-note-pro"></div>
             <div class="lp-quota-row">
-                <span>额度</span>
-                <span class="lp-quota-val">4000图/周</span>
+                <span data-i18n="home.quota">Quota</span>
+                <span class="lp-quota-val" data-i18n="home.quotaPro">4000 img/week</span>
             </div>
             <div id="cta-pro"></div>
         </div>
 
         <!-- MAX -->
         <div class="lp-plan-v2" data-plan="max">
-            <span class="lp-plan-v2-badge badge-heavy">重度用户</span>
+            <span class="lp-plan-v2-badge badge-heavy" data-i18n="home.badgeHeavy">Heavy User</span>
             <div class="lp-plan-v2-title" style="color:#ea580c;">Max</div>
             <div class="lp-price-display">
                 <span class="lp-price-main" id="price-max"></span>
@@ -463,8 +450,8 @@
             </div>
             <div class="lp-price-note" id="price-note-max"></div>
             <div class="lp-quota-row">
-                <span>额度</span>
-                <span class="lp-quota-val">无限量</span>
+                <span data-i18n="home.quota">Quota</span>
+                <span class="lp-quota-val" data-i18n="home.quotaMax">Unlimited</span>
             </div>
             <div id="cta-max"></div>
         </div>
@@ -474,27 +461,27 @@
     <!-- Row 2: Credit packs (always purchasable, can buy multiple) -->
     <div class="lp-price-row2">
         <div class="lp-credits-card">
-            <div class="lp-credits-title">点数包</div>
-            <div class="lp-credits-subtitle">用多少买多少，三年有效，可反复购买</div>
+            <div class="lp-credits-title" data-i18n="home.creditsTitle">Credit Packs</div>
+            <div class="lp-credits-subtitle" data-i18n="home.creditsSubtitle">Buy as needed, valid for 3 years, repurchasable</div>
             <div class="lp-credits-grid">
                 <div class="lp-credit-pack">
-                    <div class="lp-pack-name">5,000 点</div>
+                    <div class="lp-pack-name" data-i18n="home.pack5k">5,000 credits</div>
                     <div class="lp-pack-price">$9.99</div>
-                    <div class="lp-pack-detail"> $1.99/1000图</div>
-                    <button onclick="handleCreditsCheckout(event, 'starter', this)" class="lp-pack-btn">购买</button>
+                    <div class="lp-pack-detail" data-i18n="home.packUnit5k">$1.99/1000 img</div>
+                    <button onclick="handleCreditsCheckout(event, 'starter', this)" class="lp-pack-btn" data-i18n="home.buyBtn">Buy</button>
                 </div>
                 <div class="lp-credit-pack pack-popular">
-                    <div class="lp-pack-badge">最受欢迎</div>
-                    <div class="lp-pack-name">15,000 点</div>
+                    <div class="lp-pack-badge" data-i18n="home.badgePopular">Most Popular</div>
+                    <div class="lp-pack-name" data-i18n="home.pack15k">15,000 credits</div>
                     <div class="lp-pack-price">$29.99</div>
-                    <div class="lp-pack-detail">$1.89/1000图<br><span class="lp-pack-saving">省 5%</span></div>
-                    <button onclick="handleCreditsCheckout(event, 'standard', this)" class="lp-pack-btn">购买</button>
+                    <div class="lp-pack-detail">$1.89/1000 img<br><span class="lp-pack-saving" data-i18n="home.packSave15k">Save 5%</span></div>
+                    <button onclick="handleCreditsCheckout(event, 'standard', this)" class="lp-pack-btn" data-i18n="home.buyBtn">Buy</button>
                 </div>
                 <div class="lp-credit-pack">
-                    <div class="lp-pack-name">80,000 点</div>
+                    <div class="lp-pack-name" data-i18n="home.pack80k">80,000 credits</div>
                     <div class="lp-pack-price">$129</div>
-                    <div class="lp-pack-detail">$1.83/1000图<br><span class="lp-pack-saving">省 8%</span></div>
-                    <button onclick="handleCreditsCheckout(event, 'max', this)" class="lp-pack-btn">购买</button>
+                    <div class="lp-pack-detail">$1.83/1000 img<br><span class="lp-pack-saving" data-i18n="home.packSave80k">Save 8%</span></div>
+                    <button onclick="handleCreditsCheckout(event, 'max', this)" class="lp-pack-btn" data-i18n="home.buyBtn">Buy</button>
                 </div>
             </div>
         </div>
@@ -524,17 +511,6 @@
     <div class="modal-content"><span class="close-btn" onclick="closeModal('refundModal')">&times;</span><h2 data-i18n="home.modal.refundTitle">Refund Policy</h2><p data-i18n="home.modal.refundBody">Refund policy text...</p></div>
 </div>
 
-<div id="vpnWarningModal" class="vpn-modal-overlay">
-    <div class="vpn-modal">
-        <div class="vpn-modal-icon">⚠️</div>
-        <h3>支付提示</h3>
-        <p>若需要用支付宝支付，请关闭VPN或切换到中国节点</p>
-        <div class="vpn-modal-btns">
-            <button class="vpn-btn-continue" id="vpnContinueBtn">继续支付</button>
-            <button class="vpn-btn-cancel" id="vpnCancelBtn">取消</button>
-        </div>
-    </div>
-</div>
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
     // Config
@@ -544,7 +520,7 @@
     const navLangSelect = document.querySelector('.lp-nav-language');
     if (navLangSelect && window.KanfanI18n) {
         navLangSelect.value = KanfanI18n.getLang();
-        navLangSelect.addEventListener('change', () => { KanfanI18n.setLang(navLangSelect.value); KanfanI18n.apply(); });
+        navLangSelect.addEventListener('change', () => { KanfanI18n.setLang(navLangSelect.value); KanfanI18n.apply(); if (typeof renderPricing === 'function') renderPricing(); });
         KanfanI18n.apply();
     }
     function broadcastAuthToExtension(session) {
@@ -597,9 +573,9 @@
         return lang === 'zh_CN' || lang === 'zh_TW';
     }
 
-    const AUTH_API_URL = "https://api.kanfan.site/auth";//for creating pro/max pay link
+    const AUTH_API_URL = "https://api.kanfan.site/auth";
     function getCheckoutCurrency() {
-        return isChinese() ? "cny" : "usd";
+        return (isChinese() || _userCountry === 'CN') ? "cny" : "usd";
     }
 
     /* =========================================
@@ -607,21 +583,23 @@
        ========================================= */
     const PLAN_TIERS = ['free', 'plus', 'pro', 'max'];
 
+    const t = (key) => window.KanfanI18n ? KanfanI18n.t(key) : key;
+
     const PLANS = {
         plus: {
-            quarterly: { price: '$11.99',  unit: '/quarter', note: '等效 $3.99/月', monthlyEquiv: '$3.99' },
-            yearly:    { price: '$44.99',  unit: '/year',  note: '等效 $3.75/月', save: '省6%' },
+            quarterly: { price: '$11.99',  unitKey: 'home.unit.quarter', equivKey: 'home.equiv.plus.quarterly', monthlyEquiv: '$3.99' },
+            yearly:    { price: '$44.99',  unitKey: 'home.unit.year',  equivKey: 'home.equiv.plus.yearly', saveKey: 'home.save6' },
             _fallbackPeriod: 'quarterly',  // when monthly is selected, fall back to this
         },
         pro: {
-            monthly:   { price: '$8.99',   unit: '/mo',       note: '' },
-            quarterly: { price: '$24.99',  unit: '/quarter',  note: '等效 $8.33/月', save: '省6%' },
-            yearly:    { price: '$96.99',  unit: '/year',     note: '等效 $8.08/月', save: '省10%' },
+            monthly:   { price: '$8.99',   unitKey: 'home.unit.mo',       equivKey: '' },
+            quarterly: { price: '$24.99',  unitKey: 'home.unit.quarter',  equivKey: 'home.equiv.pro.quarterly', saveKey: 'home.save6' },
+            yearly:    { price: '$96.99',  unitKey: 'home.unit.year',     equivKey: 'home.equiv.pro.yearly', saveKey: 'home.save10' },
         },
         max: {
-            monthly:   { price: '$19.99',  unit: '/mo',        note: '' },
-            quarterly: { price: '$55.99',  unit: '/quarter',  note: '等效 $18.66/月', save: '省6%' },
-            yearly:    { price: '$209.99', unit: '/year',       note: '等效 $17.49/月', save: '省13%' },
+            monthly:   { price: '$19.99',  unitKey: 'home.unit.mo',        equivKey: '' },
+            quarterly: { price: '$55.99',  unitKey: 'home.unit.quarter',  equivKey: 'home.equiv.max.quarterly', saveKey: 'home.save6' },
+            yearly:    { price: '$209.99', unitKey: 'home.unit.year',       equivKey: 'home.equiv.max.yearly', saveKey: 'home.save13' },
         }
     };
 
@@ -687,70 +665,67 @@
             const existingBadge = planCard.querySelector('.badge-current');
             if (existingBadge) existingBadge.remove();
 
-            // Fallback: plan doesn't support this period → show equivalent monthly price + fallback CTA
+            // Fallback: plan doesn't support this period → show the fallback period pricing directly
             const fallbackPeriod = PLANS[plan]._fallbackPeriod;
             if (!cfg && fallbackPeriod) {
                 const fb = PLANS[plan][fallbackPeriod];
-                const periodLabel = fallbackPeriod === 'quarterly' ? '季度' : fallbackPeriod === 'yearly' ? '年度' : '月度';
-                document.getElementById(`price-${plan}`).textContent = fb.monthlyEquiv || fb.price;
-                document.getElementById(`price-unit-${plan}`).textContent = fb.monthlyEquiv ? '/mo' : fb.unit;
-                document.getElementById(`price-note-${plan}`).innerHTML = `${periodLabel}付 ${fb.price}`;
+                // Show fallback period price directly (e.g. quarterly price for Plus when monthly is selected)
+                document.getElementById(`price-${plan}`).textContent = fb.price;
+                document.getElementById(`price-unit-${plan}`).textContent = t(fb.unitKey);
+                const noteEl = document.getElementById(`price-note-${plan}`);
+                let noteHtml = fb.equivKey ? t(fb.equivKey) : '';
+                if (fb.saveKey) noteHtml += (noteHtml ? ' · ' : '') + `<span class="lp-save-badge">${t(fb.saveKey)}</span>`;
+                noteEl.innerHTML = noteHtml;
                 ctaContainer.innerHTML = '';
-                // Use fallback period for the CTA
+                // Use fallback period for the CTA — always send quarterly to backend
                 if (!userSession) {
-                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-subscribe" onclick="handleFallbackCheckout(event, '${plan}', '${fallbackPeriod}', this)">订阅${periodLabel}</button>`;
+                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-subscribe" onclick="handleFallbackCheckout(event, '${plan}', '${fallbackPeriod}', this)">${t('home.subscribe')}</button>`;
                 } else if (!isSubscribed) {
                     renderSubscribeButton(ctaContainer, plan, fallbackPeriod);
                 } else {
-                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-blocked" disabled>跨周期不可切换</button>`;
+                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-blocked" disabled>${t('home.crossPeriodBlocked')}</button>`;
                 }
                 return;
             } else if (!cfg) {
                 document.getElementById(`price-${plan}`).textContent = '—';
                 document.getElementById(`price-unit-${plan}`).textContent = '';
                 document.getElementById(`price-note-${plan}`).innerHTML = '';
-                ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-blocked" disabled>不支持此周期</button>`;
+                ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-blocked" disabled>${t('home.periodNotSupported')}</button>`;
                 return;
             }
 
             // Price display
             document.getElementById(`price-${plan}`).textContent = cfg.price;
-            document.getElementById(`price-unit-${plan}`).textContent = cfg.unit;
+            document.getElementById(`price-unit-${plan}`).textContent = t(cfg.unitKey);
 
             const noteEl = document.getElementById(`price-note-${plan}`);
-            let noteHtml = cfg.note || '';
-            if (cfg.save) noteHtml += (noteHtml ? ' · ' : '') + `<span class="lp-save-badge">${cfg.save}</span>`;
+            let noteHtml = cfg.equivKey ? t(cfg.equivKey) : '';
+            if (cfg.saveKey) noteHtml += (noteHtml ? ' · ' : '') + `<span class="lp-save-badge">${t(cfg.saveKey)}</span>`;
             noteEl.innerHTML = noteHtml;
 
             // CTA
             ctaContainer.innerHTML = '';
+            const planLabel = plan.charAt(0).toUpperCase() + plan.slice(1);
 
             if (!userSession) {
-                // Not logged in → show subscribe button (redirects to login)
-                ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-subscribe" onclick="handlePlanCheckout(event, '${plan}', this)">订阅</button>`;
+                ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-subscribe" onclick="handlePlanCheckout(event, '${plan}', this)">${t('home.subscribe')}</button>`;
             } else if (!isSubscribed) {
-                // Logged in, no active subscription → Checkout Session
                 renderSubscribeButton(ctaContainer, plan);
             } else if (isSubscribed && samePeriod) {
-                // Subscribed, same period
                 if (plan === userTier) {
-                    // Current plan
                     planCard.classList.add('current-plan');
                     const badge = document.createElement('span');
                     badge.className = 'lp-plan-v2-badge badge-current';
-                    badge.textContent = '当前方案';
+                    badge.textContent = t('home.currentPlan');
                     planCard.appendChild(badge);
-                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-current" disabled>当前方案</button>`;
+                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-current" disabled>${t('home.currentPlan')}</button>`;
                 } else if (tierIndex(plan) > tierIndex(userTier)) {
-                    // Upgrade
-                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-upgrade" onclick="handlePlanCheckout(event, '${plan}', this)">升级到 ${plan.charAt(0).toUpperCase() + plan.slice(1)}</button>`;
+                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-upgrade" onclick="handlePlanCheckout(event, '${plan}', this)">${t('home.upgradeTo')} ${planLabel}</button>`;
                 } else {
-                    // Downgrade
-                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-downgrade" onclick="handlePlanCheckout(event, '${plan}', this)">降级到 ${plan.charAt(0).toUpperCase() + plan.slice(1)}</button>`;
+                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-downgrade" onclick="handlePlanCheckout(event, '${plan}', this)">${t('home.downgradeTo')} ${planLabel}</button>`;
                 }
             } else if (isSubscribed && !samePeriod) {
-                // Subscribed, different period → cross-period not allowed
-                ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-blocked" disabled>跨周期不可切换</button>`;
+                ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-blocked" disabled>${t('home.crossPeriodBlocked')}</button>`;
             }
         });
 
@@ -773,7 +748,7 @@
         const period = periodOverride || selectedPeriod;
         const cfg = PLANS[plan][period];
         if (!cfg) return;
-        container.innerHTML = `<button class="lp-plan-cta lp-cta-subscribe" onclick="handlePlanCheckout(event, '${plan}', this, '${period}')">订阅</button>`;
+        container.innerHTML = `<button class="lp-plan-cta lp-cta-subscribe" onclick="handlePlanCheckout(event, '${plan}', this, '${period}')">${t('home.subscribe')}</button>`;
     }
 
     async function handleFallbackCheckout(event, plan, period, btnEl) {
@@ -791,7 +766,7 @@
         const originalText = btn ? btn.innerText : "";
 
         if (btn) {
-            btn.innerText = "Processing...";
+            btn.innerText = t('home.processing');
             btn.style.opacity = "0.7";
             btn.style.pointerEvents = "none";
         }
@@ -849,7 +824,7 @@
         const originalText = btn ? btn.innerText : "";
 
         if (btn) {
-            btn.innerText = "Processing...";
+            btn.innerText = t('home.processing');
             btn.style.opacity = "0.7";
             btn.style.pointerEvents = "none";
         }
@@ -905,7 +880,7 @@
         const originalText = btn ? btn.innerText : "";
 
         if (btn) {
-            btn.innerText = "Processing...";
+            btn.innerText = t('home.processing');
             btn.style.opacity = "0.7";
             btn.style.pointerEvents = "none";
         }
