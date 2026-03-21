@@ -460,33 +460,33 @@
     </div>
 
     <!-- Row 2: Credit packs (always purchasable, can buy multiple) -->
-<!--    <div class="lp-price-row2">-->
-<!--        <div class="lp-credits-card">-->
-<!--            <div class="lp-credits-title" data-i18n="home.creditsTitle">Credit Packs</div>-->
-<!--            <div class="lp-credits-subtitle" data-i18n="home.creditsSubtitle">Buy as needed, valid for 3 years, repurchasable</div>-->
-<!--            <div class="lp-credits-grid">-->
-<!--                <div class="lp-credit-pack">-->
-<!--                    <div class="lp-pack-name" data-i18n="home.pack5k">5,000 credits</div>-->
-<!--                    <div class="lp-pack-price">$9.99</div>-->
-<!--                    <div class="lp-pack-detail" data-i18n="home.packUnit5k">$1.99/1000 img</div>-->
-<!--                    <button onclick="handleCreditsCheckout(event, 'starter', this)" class="lp-pack-btn" data-i18n="home.buyBtn">Buy</button>-->
-<!--                </div>-->
-<!--                <div class="lp-credit-pack pack-popular">-->
-<!--                    <div class="lp-pack-badge" data-i18n="home.badgePopular">Most Popular</div>-->
-<!--                    <div class="lp-pack-name" data-i18n="home.pack15k">15,000 credits</div>-->
-<!--                    <div class="lp-pack-price">$29.99</div>-->
-<!--                    <div class="lp-pack-detail">$1.89/1000 img<br><span class="lp-pack-saving" data-i18n="home.packSave15k">Save 5%</span></div>-->
-<!--                    <button onclick="handleCreditsCheckout(event, 'standard', this)" class="lp-pack-btn" data-i18n="home.buyBtn">Buy</button>-->
-<!--                </div>-->
-<!--                <div class="lp-credit-pack">-->
-<!--                    <div class="lp-pack-name" data-i18n="home.pack80k">80,000 credits</div>-->
-<!--                    <div class="lp-pack-price">$129</div>-->
-<!--                    <div class="lp-pack-detail">$1.83/1000 img<br><span class="lp-pack-saving" data-i18n="home.packSave80k">Save 8%</span></div>-->
-<!--                    <button onclick="handleCreditsCheckout(event, 'max', this)" class="lp-pack-btn" data-i18n="home.buyBtn">Buy</button>-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </div>-->
+    <!--    <div class="lp-price-row2">-->
+    <!--        <div class="lp-credits-card">-->
+    <!--            <div class="lp-credits-title" data-i18n="home.creditsTitle">Credit Packs</div>-->
+    <!--            <div class="lp-credits-subtitle" data-i18n="home.creditsSubtitle">Buy as needed, valid for 3 years, repurchasable</div>-->
+    <!--            <div class="lp-credits-grid">-->
+    <!--                <div class="lp-credit-pack">-->
+    <!--                    <div class="lp-pack-name" data-i18n="home.pack5k">5,000 credits</div>-->
+    <!--                    <div class="lp-pack-price">$9.99</div>-->
+    <!--                    <div class="lp-pack-detail" data-i18n="home.packUnit5k">$1.99/1000 img</div>-->
+    <!--                    <button onclick="handleCreditsCheckout(event, 'starter', this)" class="lp-pack-btn" data-i18n="home.buyBtn">Buy</button>-->
+    <!--                </div>-->
+    <!--                <div class="lp-credit-pack pack-popular">-->
+    <!--                    <div class="lp-pack-badge" data-i18n="home.badgePopular">Most Popular</div>-->
+    <!--                    <div class="lp-pack-name" data-i18n="home.pack15k">15,000 credits</div>-->
+    <!--                    <div class="lp-pack-price">$29.99</div>-->
+    <!--                    <div class="lp-pack-detail">$1.89/1000 img<br><span class="lp-pack-saving" data-i18n="home.packSave15k">Save 5%</span></div>-->
+    <!--                    <button onclick="handleCreditsCheckout(event, 'standard', this)" class="lp-pack-btn" data-i18n="home.buyBtn">Buy</button>-->
+    <!--                </div>-->
+    <!--                <div class="lp-credit-pack">-->
+    <!--                    <div class="lp-pack-name" data-i18n="home.pack80k">80,000 credits</div>-->
+    <!--                    <div class="lp-pack-price">$129</div>-->
+    <!--                    <div class="lp-pack-detail">$1.83/1000 img<br><span class="lp-pack-saving" data-i18n="home.packSave80k">Save 8%</span></div>-->
+    <!--                    <button onclick="handleCreditsCheckout(event, 'max', this)" class="lp-pack-btn" data-i18n="home.buyBtn">Buy</button>-->
+    <!--                </div>-->
+    <!--            </div>-->
+    <!--        </div>-->
+    <!--    </div>-->
 
 </section>
 
@@ -646,6 +646,56 @@
         renderPricing();
     });
 
+
+    async function openStripePortal(btnEl) {
+        const { data: { session } } = await sb.auth.getSession();
+        if (!session) {
+            window.location.href = 'login.html';
+            return;
+        }
+
+        const btn = btnEl || null;
+        const originalText = btn ? btn.innerText : "";
+
+        if (btn) {
+            btn.innerText = t('home.processing');
+            btn.style.opacity = "0.7";
+            btn.style.pointerEvents = "none";
+        }
+
+        try {
+            const resp = await fetch(AUTH_API_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${session.access_token}`,
+                },
+                body: JSON.stringify({
+                    action: "createStripePortal",
+                    payload: {}
+                })
+            });
+
+            const data = await resp.json();
+            if (data.success && data.portal_url) {
+                window.location.href = data.portal_url;
+                return;
+            }
+
+            console.error("Portal API Error:", data);
+            alert("Error: " + (data.error || "Could not open billing portal"));
+        } catch (e) {
+            console.error("Portal Network Error:", e);
+            alert("Network error. Please try again.");
+        } finally {
+            if (btn) {
+                btn.innerText = originalText;
+                btn.style.opacity = "1";
+                btn.style.pointerEvents = "auto";
+            }
+        }
+    }
+
     /* =========================================
        RENDER PRICING
        ========================================= */
@@ -684,7 +734,7 @@
                 } else if (!isSubscribed) {
                     renderSubscribeButton(ctaContainer, plan, fallbackPeriod);
                 } else {
-                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-blocked" disabled>${t('home.crossPeriodBlocked')}</button>`;
+                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-blocked" onclick="openStripePortal(this)">Manage in Portal</button>`;
                 }
                 return;
             } else if (!cfg) {
@@ -719,14 +769,14 @@
                     badge.className = 'lp-plan-v2-badge badge-current';
                     badge.textContent = t('home.currentPlan');
                     planCard.appendChild(badge);
-                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-current" disabled>${t('home.currentPlan')}</button>`;
+                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-current" onclick="openStripePortal(this)">${t('home.currentPlan')}</button>`;
                 } else if (tierIndex(plan) > tierIndex(userTier)) {
-                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-upgrade" onclick="handlePlanCheckout(event, '${plan}', this)">${t('home.upgradeTo')} ${planLabel}</button>`;
+                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-upgrade" onclick="openStripePortal(this)">${t('home.upgradeTo')} ${planLabel}</button>`;
                 } else {
-                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-downgrade" onclick="handlePlanCheckout(event, '${plan}', this)">${t('home.downgradeTo')} ${planLabel}</button>`;
+                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-downgrade" onclick="openStripePortal(this)">${t('home.downgradeTo')} ${planLabel}</button>`;
                 }
             } else if (isSubscribed && !samePeriod) {
-                ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-blocked" disabled>${t('home.crossPeriodBlocked')}</button>`;
+                ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-blocked" onclick="openStripePortal(this)">Manage in Portal</button>`;
             }
         });
 
@@ -764,6 +814,12 @@
         if (!cfg) return;
 
         const btn = btnEl || (event && event.currentTarget);
+
+        if (userProfile && userProfile.subscription_status === 'active' && userTier !== 'free') {
+            await openStripePortal(btn);
+            return;
+        }
+
         const originalText = btn ? btn.innerText : "";
 
         if (btn) {
@@ -822,6 +878,12 @@
         if (!cfg) return;
 
         const btn = btnEl || (event && event.currentTarget);
+
+        if (userProfile && userProfile.subscription_status === 'active' && userTier !== 'free') {
+            await openStripePortal(btn);
+            return;
+        }
+
         const originalText = btn ? btn.innerText : "";
 
         if (btn) {
@@ -970,4 +1032,4 @@
     // Modal Logic
     function openModal(id) { document.getElementById(id).style.display = "block"; }
     function closeModal(id) { document.getElementById(id).style.display = "none"; }
-    </script>
+</script>
