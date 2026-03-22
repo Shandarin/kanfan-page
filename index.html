@@ -734,7 +734,7 @@
                 } else if (!isSubscribed) {
                     renderSubscribeButton(ctaContainer, plan, fallbackPeriod);
                 } else {
-                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-blocked" onclick="openStripePortal(this)">Manage in Portal</button>`;
+                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-blocked" onclick="openStripePortal(this)">${t('home.managePlan')}</button>`;
                 }
                 return;
             } else if (!cfg) {
@@ -770,13 +770,11 @@
                     badge.textContent = t('home.currentPlan');
                     planCard.appendChild(badge);
                     ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-current" onclick="openStripePortal(this)">${t('home.currentPlan')}</button>`;
-                } else if (tierIndex(plan) > tierIndex(userTier)) {
-                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-upgrade" onclick="openStripePortal(this)">${t('home.upgradeTo')} ${planLabel}</button>`;
                 } else {
-                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-downgrade" onclick="openStripePortal(this)">${t('home.downgradeTo')} ${planLabel}</button>`;
+                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-upgrade" onclick="openStripePortal(this)">${t('home.managePlan')}</button>`;
                 }
             } else if (isSubscribed && !samePeriod) {
-                ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-blocked" onclick="openStripePortal(this)">Manage in Portal</button>`;
+                ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-blocked" onclick="openStripePortal(this)">${t('home.managePlan')}</button>`;
             }
         });
 
