@@ -23,7 +23,7 @@
     const I18N = {
         en: {
             "nav.signin": "Sign In", "nav.install": "Install Extension", "nav.myAccount": "My Account",
-            "home.heroLine1": "Read Manga in", "home.heroLine2": "Your Language", "home.heroDesc": "The smartest AI-powered manga translator extension. Translate raw manga directly in your browser with zero friction.", "home.chromeStore": "Chrome Web Store", "home.edgeAddons": "Edge Add-ons", "home.pricing": "Pricing", "home.perMonth": "/month", "home.install": "Install", "home.popular": "POPULAR", "home.plan.free": "Free", "home.plan.freeFeature": "50 Images Weekly", "home.plan.flex": "Flex", "home.plan.flexF1": "No monthly fees", "home.plan.flexF2": "Pay only for usage", "home.plan.flexF3": "Billed monthly", "home.plan.startFlex": "Start Flex", "home.plan.proFeature": "2,000 Weekly Images", "home.plan.subscribePro": "Subscribe Pro", "home.plan.maxFeature": "Unlimited Images", "home.plan.subscribeMax": "Subscribe Max", "home.feature.ocrTitle": "⚡ Smart OCR", "home.feature.ocrDesc": "High-speed text recognition optimized for manga fonts.", "home.feature.cleanTitle": "🎨 In-paint Cleaning", "home.feature.cleanDesc": "Automatically removes original text and restores art.", "home.feature.langTitle": "🌍 Multi-Language", "home.feature.langDesc": "Instant translation into 20+ other languages.", "home.footer.copyright": "© 2026 Kanfan Project.", "home.footer.contact": "Contact", "home.footer.terms": "Terms", "home.footer.refunds": "Refunds", "home.modal.termsTitle": "Terms", "home.modal.termsBody": "User agreement text...", "home.modal.refundTitle": "Refund Policy", "home.modal.refundBody": "Refund policy text...",
+            "home.heroLine1": "Read Manga in", "home.heroLine2": "Your Language", "home.heroDesc": "The smartest AI-powered manga translator extension. Translate raw manga directly in your browser with zero friction.", "home.chromeStore": "Chrome Web Store", "home.edgeAddons": "Edge Add-ons", "home.pricing": "Pricing", "home.perMonth": "/month", "home.install": "Install", "home.popular": "POPULAR", "home.plan.free": "Free", "home.plan.freeFeature": "50 Images Weekly", "home.plan.flex": "Flex", "home.plan.flexF1": "No monthly fees", "home.plan.flexF2": "Pay only for usage", "home.plan.flexF3": "Billed monthly", "home.plan.startFlex": "Start Flex", "home.plan.proFeature": "2,000 Weekly Images", "home.plan.subscribePro": "Subscribe Pro", "home.plan.maxFeature": "Unlimited Images", "home.plan.subscribeMax": "Subscribe Max", "home.feature.ocrTitle": "⚡ Smart OCR", "home.feature.ocrDesc": "High-speed text recognition optimized for manga fonts.", "home.feature.cleanTitle": "🎨 In-paint Cleaning", "home.feature.cleanDesc": "Automatically removes original text and restores art.", "home.feature.langTitle": "🌍 Multi-Language", "home.feature.langDesc": "Instant translation into 20+ other languages.", "home.footer.copyright": "© 2026 Kanfan Project.", "home.footer.contact": "Contact", "home.footer.terms": "Terms", "home.footer.refunds": "Refunds", "home.footer.support": "Support", "home.modal.termsTitle": "Terms", "home.modal.termsBody": "User agreement text...", "home.modal.refundTitle": "Refund Policy", "home.modal.refundBody": "Refund policy text...",
             "home.period.monthly": "Monthly", "home.period.quarterly": "Quarterly", "home.period.yearly": "Yearly", "home.unit.mo": "/mo", "home.unit.quarter": "/quarter", "home.unit.year": "/year", "home.equiv.plus.quarterly": "Equiv. $3.99/mo", "home.equiv.plus.yearly": "Equiv. $3.75/mo", "home.equiv.pro.quarterly": "Equiv. $8.33/mo", "home.equiv.pro.yearly": "Equiv. $8.08/mo", "home.equiv.max.quarterly": "Equiv. $18.66/mo", "home.equiv.max.yearly": "Equiv. $17.49/mo", "home.save6": "Save 6%", "home.save10": "Save 10%", "home.save13": "Save 13%", "home.freeDesc": "Free forever · No credit card", "home.quota": "Quota", "home.quotaFree": "100 img/week", "home.quotaPlus": "1000 img/week", "home.quotaPro": "4000 img/week", "home.quotaMax": "Unlimited", "home.quotaNote": "Images without text don't consume quota", "home.badgeBasic": "Basic", "home.badgePopular": "Most Popular", "home.badgeHeavy": "Heavy User", "home.freeInstall": "Install Free", "home.creditsTitle": "Credit Packs", "home.creditsSubtitle": "Buy as needed, valid for 3 years, repurchasable", "home.pack5k": "5,000 credits", "home.pack15k": "15,000 credits", "home.pack80k": "80,000 credits", "home.packUnit5k": "$1.99/1000 img", "home.packSave15k": "Save 5%", "home.packSave80k": "Save 8%", "home.buyBtn": "Buy", "home.subscribe": "Subscribe", "home.currentPlan": "Current Plan", "home.managePlan": "Manage Plan", "home.upgradeTo": "Upgrade to", "home.downgradeTo": "Downgrade to", "home.crossPeriodBlocked": "Cannot switch across periods", "home.periodNotSupported": "Period not supported", "home.processing": "Processing...",
             "login.title": "Welcome Back", "login.subtitle": "Sign in to manage your subscription", "login.google": "Continue with Google", "login.or": "or", "login.email": "Email", "login.password": "Password", "login.submitIn": "Sign In", "login.submitUp": "Sign Up", "login.noAccount": "Don't have an account?", "login.haveAccount": "Already have an account?", "login.create": "Create one", "login.forgot": "Forgot Password?", "login.successTitle": "Successfully Signed In", "login.successDesc": "You have successfully logged in. Your extension is now synced.", "login.successTip": "You can verify your status in the extension popup.", "login.close": "Close Window",
             "account.title": "Account Settings", "account.signout": "Sign Out", "account.profile": "Profile", "account.profileDesc": "Manage your login information", "account.email": "Email", "account.password": "Password", "account.change": "Change", "account.billing": "Subscription & Billing", "account.billingDesc": "Manage your plan, payment methods, and invoices via Stripe", "account.billingHint": "You will be redirected to our secure billing portal hosted by Stripe.", "account.manage": "Manage Subscription", "account.syncTitle": "Extension Connected", "account.syncDesc": "Your account is now synced with the Kanfan browser extension.",
@@ -33,7 +33,7 @@
         },
         zh_CN: {
             "nav.signin": "登录", "nav.install": "安装扩展", "nav.myAccount": "我的账户",
-            "home.heroLine1": "阅读漫画，", "home.heroLine2": "用你的语言", "home.heroDesc": "最智能的 AI 漫画翻译扩展，直接在浏览器中翻译生肉漫画，丝滑无阻。", "home.chromeStore": "Chrome 商店", "home.edgeAddons": "Edge 插件", "home.pricing": "价格", "home.perMonth": "/月", "home.install": "安装", "home.popular": "热门", "home.plan.free": "免费", "home.plan.freeFeature": "每周 50 张图片", "home.plan.flex": "灵活包", "home.plan.flexF1": "无需月费", "home.plan.flexF2": "按量付费", "home.plan.flexF3": "按月结算", "home.plan.startFlex": "开始使用灵活包", "home.plan.proFeature": "每周 2,000 张图片", "home.plan.subscribePro": "订阅 Pro", "home.plan.maxFeature": "无限图片", "home.plan.subscribeMax": "订阅 Max", "home.feature.ocrTitle": "⚡ 智能 OCR", "home.feature.ocrDesc": "针对漫画字体优化的高速文字识别。", "home.feature.cleanTitle": "🎨 智能修复", "home.feature.cleanDesc": "自动去除原文并修复画面。", "home.feature.langTitle": "🌍 多语言", "home.feature.langDesc": "一键翻译为 20+ 种语言。", "home.footer.copyright": "© 2026 Kanfan 项目。", "home.footer.contact": "联系我们", "home.footer.terms": "条款", "home.footer.refunds": "退款", "home.modal.termsTitle": "服务条款", "home.modal.termsBody": "用户协议内容...", "home.modal.refundTitle": "退款政策", "home.modal.refundBody": "退款政策内容...",
+            "home.heroLine1": "阅读漫画，", "home.heroLine2": "用你的语言", "home.heroDesc": "最智能的 AI 漫画翻译扩展，直接在浏览器中翻译生肉漫画，丝滑无阻。", "home.chromeStore": "Chrome 商店", "home.edgeAddons": "Edge 插件", "home.pricing": "价格", "home.perMonth": "/月", "home.install": "安装", "home.popular": "热门", "home.plan.free": "免费", "home.plan.freeFeature": "每周 50 张图片", "home.plan.flex": "灵活包", "home.plan.flexF1": "无需月费", "home.plan.flexF2": "按量付费", "home.plan.flexF3": "按月结算", "home.plan.startFlex": "开始使用灵活包", "home.plan.proFeature": "每周 2,000 张图片", "home.plan.subscribePro": "订阅 Pro", "home.plan.maxFeature": "无限图片", "home.plan.subscribeMax": "订阅 Max", "home.feature.ocrTitle": "⚡ 智能 OCR", "home.feature.ocrDesc": "针对漫画字体优化的高速文字识别。", "home.feature.cleanTitle": "🎨 智能修复", "home.feature.cleanDesc": "自动去除原文并修复画面。", "home.feature.langTitle": "🌍 多语言", "home.feature.langDesc": "一键翻译为 20+ 种语言。", "home.footer.copyright": "© 2026 Kanfan 项目。", "home.footer.contact": "联系我们", "home.footer.terms": "条款", "home.footer.refunds": "退款", "home.footer.support": "支持", "home.modal.termsTitle": "服务条款", "home.modal.termsBody": "用户协议内容...", "home.modal.refundTitle": "退款政策", "home.modal.refundBody": "退款政策内容...",
             "home.period.monthly": "月付", "home.period.quarterly": "季付", "home.period.yearly": "年付", "home.unit.mo": "/月", "home.unit.quarter": "/季", "home.unit.year": "/年", "home.equiv.plus.quarterly": "等效 $3.99/月", "home.equiv.plus.yearly": "等效 $3.75/月", "home.equiv.pro.quarterly": "等效 $8.33/月", "home.equiv.pro.yearly": "等效 $8.08/月", "home.equiv.max.quarterly": "等效 $18.66/月", "home.equiv.max.yearly": "等效 $17.49/月", "home.save6": "省6%", "home.save10": "省10%", "home.save13": "省13%", "home.freeDesc": "永久免费 · 无需信用卡", "home.quota": "额度", "home.quotaFree": "100图/周", "home.quotaPlus": "1000图/周", "home.quotaPro": "4000图/周", "home.quotaMax": "无限量", "home.quotaNote": "没有文字的图片不会消耗额度", "home.badgeBasic": "基础档", "home.badgePopular": "最受欢迎", "home.badgeHeavy": "重度用户", "home.freeInstall": "免费安装", "home.creditsTitle": "点数包", "home.creditsSubtitle": "用多少买多少，三年有效，可反复购买", "home.pack5k": "5,000 点", "home.pack15k": "15,000 点", "home.pack80k": "80,000 点", "home.packUnit5k": "$1.99/1000图", "home.packSave15k": "省 5%", "home.packSave80k": "省 8%", "home.buyBtn": "购买", "home.subscribe": "订阅", "home.currentPlan": "当前方案", "home.managePlan": "管理订阅", "home.upgradeTo": "升级到", "home.downgradeTo": "降级到", "home.crossPeriodBlocked": "跨周期不可切换", "home.periodNotSupported": "不支持此周期", "home.processing": "处理中...",
             "login.title": "欢迎回来", "login.subtitle": "登录以管理你的订阅", "login.google": "使用 Google 继续", "login.or": "或", "login.email": "邮箱", "login.password": "密码", "login.submitIn": "登录", "login.submitUp": "注册", "login.noAccount": "还没有账号？", "login.haveAccount": "已有账号？", "login.create": "立即创建", "login.forgot": "忘记密码？", "login.successTitle": "登录成功", "login.successDesc": "你已成功登录，扩展账号已同步。", "login.successTip": "你可以在扩展弹窗中查看状态。", "login.close": "关闭窗口",
             "account.title": "账户设置", "account.signout": "退出登录", "account.profile": "个人资料", "account.profileDesc": "管理你的登录信息", "account.email": "邮箱", "account.password": "密码", "account.change": "修改", "account.billing": "订阅与账单", "account.billingDesc": "通过 Stripe 管理套餐、支付方式与账单", "account.billingHint": "你将跳转到 Stripe 托管的安全账单门户。", "account.manage": "管理订阅", "account.syncTitle": "扩展已连接", "account.syncDesc": "你的账户已与 Kanfan 浏览器扩展同步。",
@@ -43,7 +43,7 @@
         },
         zh_TW: {
             "nav.signin": "登入", "nav.install": "安裝擴充", "nav.myAccount": "我的帳戶",
-            "home.heroLine1": "閱讀漫畫，", "home.heroLine2": "用你的語言", "home.heroDesc": "最聰明的 AI 漫畫翻譯擴充，直接在瀏覽器翻譯生肉漫畫，流暢零阻力。", "home.chromeStore": "Chrome 商店", "home.edgeAddons": "Edge 附加元件", "home.pricing": "價格", "home.perMonth": "/月", "home.install": "安裝", "home.popular": "熱門", "home.plan.free": "免費", "home.plan.freeFeature": "每週 50 張圖片", "home.plan.flex": "彈性包", "home.plan.flexF1": "免月費", "home.plan.flexF2": "按用量付費", "home.plan.flexF3": "每月結算", "home.plan.startFlex": "開始使用彈性包", "home.plan.proFeature": "每週 2,000 張圖片", "home.plan.subscribePro": "訂閱 Pro", "home.plan.maxFeature": "無限圖片", "home.plan.subscribeMax": "訂閱 Max", "home.feature.ocrTitle": "⚡ 智慧 OCR", "home.feature.ocrDesc": "針對漫畫字體優化的高速文字辨識。", "home.feature.cleanTitle": "🎨 智慧修復", "home.feature.cleanDesc": "自動移除原文並修復畫面。", "home.feature.langTitle": "🌍 多語言", "home.feature.langDesc": "即時翻譯成 20+ 種語言。", "home.footer.copyright": "© 2026 Kanfan 專案。", "home.footer.contact": "聯絡我們", "home.footer.terms": "條款", "home.footer.refunds": "退款", "home.modal.termsTitle": "服務條款", "home.modal.termsBody": "使用者協議內容...", "home.modal.refundTitle": "退款政策", "home.modal.refundBody": "退款政策內容...",
+            "home.heroLine1": "閱讀漫畫，", "home.heroLine2": "用你的語言", "home.heroDesc": "最聰明的 AI 漫畫翻譯擴充，直接在瀏覽器翻譯生肉漫畫，流暢零阻力。", "home.chromeStore": "Chrome 商店", "home.edgeAddons": "Edge 附加元件", "home.pricing": "價格", "home.perMonth": "/月", "home.install": "安裝", "home.popular": "熱門", "home.plan.free": "免費", "home.plan.freeFeature": "每週 50 張圖片", "home.plan.flex": "彈性包", "home.plan.flexF1": "免月費", "home.plan.flexF2": "按用量付費", "home.plan.flexF3": "每月結算", "home.plan.startFlex": "開始使用彈性包", "home.plan.proFeature": "每週 2,000 張圖片", "home.plan.subscribePro": "訂閱 Pro", "home.plan.maxFeature": "無限圖片", "home.plan.subscribeMax": "訂閱 Max", "home.feature.ocrTitle": "⚡ 智慧 OCR", "home.feature.ocrDesc": "針對漫畫字體優化的高速文字辨識。", "home.feature.cleanTitle": "🎨 智慧修復", "home.feature.cleanDesc": "自動移除原文並修復畫面。", "home.feature.langTitle": "🌍 多語言", "home.feature.langDesc": "即時翻譯成 20+ 種語言。", "home.footer.copyright": "© 2026 Kanfan 專案。", "home.footer.contact": "聯絡我們", "home.footer.terms": "條款", "home.footer.refunds": "退款", "home.footer.support": "支援", "home.modal.termsTitle": "服務條款", "home.modal.termsBody": "使用者協議內容...", "home.modal.refundTitle": "退款政策", "home.modal.refundBody": "退款政策內容...",
             "home.period.monthly": "月付", "home.period.quarterly": "季付", "home.period.yearly": "年付", "home.unit.mo": "/月", "home.unit.quarter": "/季", "home.unit.year": "/年", "home.equiv.plus.quarterly": "等效 $3.99/月", "home.equiv.plus.yearly": "等效 $3.75/月", "home.equiv.pro.quarterly": "等效 $8.33/月", "home.equiv.pro.yearly": "等效 $8.08/月", "home.equiv.max.quarterly": "等效 $18.66/月", "home.equiv.max.yearly": "等效 $17.49/月", "home.save6": "省6%", "home.save10": "省10%", "home.save13": "省13%", "home.freeDesc": "永久免費 · 無需信用卡", "home.quota": "額度", "home.quotaFree": "100圖/週", "home.quotaPlus": "1000圖/週", "home.quotaPro": "4000圖/週", "home.quotaMax": "無限量", "home.quotaNote": "沒有文字的圖片不會消耗額度", "home.badgeBasic": "基礎檔", "home.badgePopular": "最受歡迎", "home.badgeHeavy": "重度用戶", "home.freeInstall": "免費安裝", "home.creditsTitle": "點數包", "home.creditsSubtitle": "用多少買多少，三年有效，可反覆購買", "home.pack5k": "5,000 點", "home.pack15k": "15,000 點", "home.pack80k": "80,000 點", "home.packUnit5k": "$1.99/1000圖", "home.packSave15k": "省 5%", "home.packSave80k": "省 8%", "home.buyBtn": "購買", "home.subscribe": "訂閱", "home.currentPlan": "當前方案", "home.managePlan": "管理訂閱", "home.upgradeTo": "升級到", "home.downgradeTo": "降級到", "home.crossPeriodBlocked": "跨週期不可切換", "home.periodNotSupported": "不支援此週期", "home.processing": "處理中...",
             "login.title": "歡迎回來", "login.subtitle": "登入以管理你的訂閱", "login.google": "使用 Google 繼續", "login.or": "或", "login.email": "Email", "login.password": "密碼", "login.submitIn": "登入", "login.submitUp": "註冊", "login.noAccount": "還沒有帳號？", "login.haveAccount": "已有帳號？", "login.create": "立即建立", "login.forgot": "忘記密碼？", "login.successTitle": "登入成功", "login.successDesc": "你已成功登入，擴充套件帳號已同步。", "login.successTip": "你可以在擴充套件彈窗中查看狀態。", "login.close": "關閉視窗", "account.title": "帳戶設定", "account.signout": "登出", "account.profile": "個人資料", "account.profileDesc": "管理你的登入資訊", "account.email": "Email", "account.password": "密碼", "account.change": "修改", "account.billing": "訂閱與帳單", "account.billingDesc": "透過 Stripe 管理方案、付款方式與帳單", "account.billingHint": "你將被導向 Stripe 託管的安全帳單入口。", "account.manage": "管理訂閱", "account.syncTitle": "擴充套件已連線", "account.syncDesc": "你的帳戶已與 Kanfan 瀏覽器擴充套件同步。", "reset.verifying": "正在驗證連結...", "reset.title": "重設密碼", "reset.subtitle": "請輸入你的新密碼。", "reset.new": "新密碼", "reset.confirm": "確認密碼", "reset.pwPlaceholder": "至少 6 個字元", "reset.pw2Placeholder": "再次輸入新密碼", "reset.update": "更新密碼", "reset.updating": "更新中...", "reset.doneTitle": "密碼已更新", "reset.doneDesc": "你現在可以關閉此頁，並使用新密碼登入。", "reset.gotoLogin": "前往登入", "pay.successTitle": "付款成功！", "pay.successDesc": "感謝你支持 Kanfan。你的帳號已升級。", "pay.cancelTitle": "付款已取消", "pay.cancelDesc": "本次未扣款。若你遇到錯誤或對方案有疑問，歡迎聯絡我們。", "pay.returnHome": "返回首頁", "uninstall.title": "很遺憾看到你離開", "uninstall.desc": "可以告訴我們你為什麼解除安裝 Kanfan 嗎？", "uninstall.reason.performance": "速度太慢", "uninstall.reason.pricing": "價格太高", "uninstall.reason.translation": "翻譯品質", "uninstall.reason.ocr_accuracy": "影像辨識準確度", "uninstall.reason.display_quality": "顯示品質", "uninstall.reason.missing_feature": "缺少功能", "uninstall.reason.site_not_supported": "部分網站不支援", "uninstall.reason.alternative": "找到替代方案", "uninstall.reason.bug": "有 Bug", "uninstall.reason.not_needed": "不再需要", "uninstall.reason.other": "其他", "uninstall.commentPlaceholder": "我們可以如何做得更好？", "uninstall.submit": "提交回饋", "uninstall.success": "感謝你的回饋！期待與你再見。", "uninstall.error": "提交失敗，請稍後再試。"
         },
@@ -85,6 +85,7 @@
             "home.footer.contact": "お問い合わせ",
             "home.footer.terms": "利用規約",
             "home.footer.refunds": "返金ポリシー",
+            "home.footer.support": "サポート",
 
             "home.modal.termsTitle": "利用規約",
             "home.modal.termsBody": "利用規約の本文...",
@@ -199,6 +200,7 @@
             "home.footer.contact": "문의하기",
             "home.footer.terms": "이용약관",
             "home.footer.refunds": "환불 정책",
+            "home.footer.support": "지원",
 
             "home.modal.termsTitle": "이용약관",
             "home.modal.termsBody": "이용약관 내용...",
@@ -313,6 +315,7 @@
             "home.footer.contact": "Kontakt",
             "home.footer.terms": "Nutzungsbedingungen",
             "home.footer.refunds": "Rückerstattungen",
+            "home.footer.support": "Support",
 
             "home.modal.termsTitle": "Nutzungsbedingungen",
             "home.modal.termsBody": "Text der Nutzungsbedingungen...",
@@ -427,6 +430,7 @@
             "home.footer.contact": "Contacto",
             "home.footer.terms": "Términos",
             "home.footer.refunds": "Política de reembolsos",
+            "home.footer.support": "Soporte",
 
             "home.modal.termsTitle": "Términos",
             "home.modal.termsBody": "Texto del acuerdo de usuario...",
@@ -541,6 +545,7 @@
             "home.footer.contact": "Contact",
             "home.footer.terms": "Conditions",
             "home.footer.refunds": "Politique de remboursement",
+            "home.footer.support": "Support",
 
             "home.modal.termsTitle": "Conditions",
             "home.modal.termsBody": "Texte des conditions d’utilisation...",
@@ -655,6 +660,7 @@
             "home.footer.contact": "Contatti",
             "home.footer.terms": "Termini",
             "home.footer.refunds": "Politica di rimborso",
+            "home.footer.support": "Supporto",
 
             "home.modal.termsTitle": "Termini",
             "home.modal.termsBody": "Testo dei termini di utilizzo...",
@@ -769,6 +775,7 @@
             "home.footer.contact": "Kontakt",
             "home.footer.terms": "Warunki",
             "home.footer.refunds": "Polityka zwrotów",
+            "home.footer.support": "Wsparcie",
 
             "home.modal.termsTitle": "Warunki",
             "home.modal.termsBody": "Treść warunków użytkowania...",
@@ -883,6 +890,7 @@
             "home.footer.contact": "Contato",
             "home.footer.terms": "Termos",
             "home.footer.refunds": "Política de reembolso",
+            "home.footer.support": "Suporte",
 
             "home.modal.termsTitle": "Termos",
             "home.modal.termsBody": "Texto dos termos de uso...",
@@ -997,6 +1005,7 @@
             "home.footer.contact": "Contato",
             "home.footer.terms": "Termos de uso",
             "home.footer.refunds": "Política de reembolso",
+            "home.footer.support": "Suporte",
 
             "home.modal.termsTitle": "Termos de uso",
             "home.modal.termsBody": "Texto dos termos de uso...",
@@ -1111,6 +1120,7 @@
             "home.footer.contact": "Контакты",
             "home.footer.terms": "Условия",
             "home.footer.refunds": "Политика возврата",
+            "home.footer.support": "Поддержка",
 
             "home.modal.termsTitle": "Условия",
             "home.modal.termsBody": "Текст пользовательского соглашения...",
@@ -1225,6 +1235,7 @@
             "home.footer.contact": "Liên hệ",
             "home.footer.terms": "Điều khoản",
             "home.footer.refunds": "Chính sách hoàn tiền",
+            "home.footer.support": "Hỗ trợ",
 
             "home.modal.termsTitle": "Điều khoản",
             "home.modal.termsBody": "Nội dung thỏa thuận người dùng...",
@@ -1339,6 +1350,7 @@
             "home.footer.contact": "Kontak",
             "home.footer.terms": "Ketentuan",
             "home.footer.refunds": "Kebijakan pengembalian dana",
+            "home.footer.support": "Dukungan",
 
             "home.modal.termsTitle": "Ketentuan",
             "home.modal.termsBody": "Teks perjanjian pengguna...",
@@ -1453,6 +1465,7 @@
             "home.footer.contact": "اتصل بنا",
             "home.footer.terms": "الشروط",
             "home.footer.refunds": "سياسة الاسترداد",
+            "home.footer.support": "الدعم",
 
             "home.modal.termsTitle": "الشروط",
             "home.modal.termsBody": "نص اتفاقية المستخدم...",
@@ -1567,6 +1580,7 @@
             "home.footer.contact": "संपर्क करें",
             "home.footer.terms": "नियम और शर्तें",
             "home.footer.refunds": "रिफ़ंड नीति",
+            "home.footer.support": "सहायता",
 
             "home.modal.termsTitle": "नियम और शर्तें",
             "home.modal.termsBody": "उपयोगकर्ता समझौते का पाठ...",
