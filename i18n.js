@@ -1647,6 +1647,7 @@
 
     const SUPPORT_TRANSLATIONS = {
         en: {
+            "support.entry": "Support",
             "support.pageTitle": "Support & Feedback - Kanfan",
             "support.title": "Feedback",
             "support.desc": "Please leave your message below. We'll reply to you by email as soon as possible.",
@@ -1665,6 +1666,7 @@
             "support.meta.notLoggedIn": "Not signed in"
         },
         zh_CN: {
+            "support.entry": "支持",
             "support.pageTitle": "技术支持与反馈 - Kanfan",
             "support.title": "留言反馈",
             "support.desc": "请在下方填写您的留言，提交后我们会通过邮件尽快回复您。",
@@ -1683,6 +1685,7 @@
             "support.meta.notLoggedIn": "未登录"
         },
         zh_TW: {
+            "support.entry": "支援",
             "support.pageTitle": "技術支援與回饋 - Kanfan",
             "support.title": "留言回饋",
             "support.desc": "請在下方填寫您的留言，提交後我們會盡快透過電子郵件回覆您。",
@@ -1701,6 +1704,7 @@
             "support.meta.notLoggedIn": "未登入"
         },
         ja: {
+            "support.entry": "サポート",
             "support.pageTitle": "サポートとフィードバック - Kanfan",
             "support.title": "フィードバック",
             "support.desc": "以下にメッセージをご記入ください。送信後、できるだけ早くメールでご返信します。",
@@ -1719,6 +1723,7 @@
             "support.meta.notLoggedIn": "未ログイン"
         },
         ko: {
+            "support.entry": "지원",
             "support.pageTitle": "지원 및 피드백 - Kanfan",
             "support.title": "피드백",
             "support.desc": "아래에 메시지를 남겨 주세요. 제출 후 가능한 한 빨리 이메일로 답변드리겠습니다.",
@@ -1737,6 +1742,7 @@
             "support.meta.notLoggedIn": "로그인되지 않음"
         },
         de: {
+            "support.entry": "Support",
             "support.pageTitle": "Support & Feedback - Kanfan",
             "support.title": "Feedback",
             "support.desc": "Bitte hinterlassen Sie unten eine Nachricht. Wir antworten Ihnen so schnell wie möglich per E-Mail.",
@@ -1755,6 +1761,7 @@
             "support.meta.notLoggedIn": "Nicht angemeldet"
         },
         es: {
+            "support.entry": "Soporte",
             "support.pageTitle": "Soporte y comentarios - Kanfan",
             "support.title": "Comentarios",
             "support.desc": "Deja tu mensaje abajo. Te responderemos por correo electrónico lo antes posible.",
@@ -1773,6 +1780,7 @@
             "support.meta.notLoggedIn": "No has iniciado sesión"
         },
         fr: {
+            "support.entry": "Support",
             "support.pageTitle": "Assistance et retours - Kanfan",
             "support.title": "Retour",
             "support.desc": "Laissez votre message ci-dessous. Nous vous répondrons par e-mail dès que possible.",
@@ -1791,6 +1799,7 @@
             "support.meta.notLoggedIn": "Non connecté"
         },
         it: {
+            "support.entry": "Supporto",
             "support.pageTitle": "Supporto e feedback - Kanfan",
             "support.title": "Feedback",
             "support.desc": "Lascia un messaggio qui sotto. Ti risponderemo via email il prima possibile.",
@@ -1809,6 +1818,7 @@
             "support.meta.notLoggedIn": "Non connesso"
         },
         pl: {
+            "support.entry": "Wsparcie",
             "support.pageTitle": "Wsparcie i opinie - Kanfan",
             "support.title": "Opinie",
             "support.desc": "Zostaw wiadomość poniżej. Odpowiemy e-mailem tak szybko, jak to możliwe.",
@@ -1827,6 +1837,7 @@
             "support.meta.notLoggedIn": "Niezalogowano"
         },
         pt: {
+            "support.entry": "Suporte",
             "support.pageTitle": "Suporte e feedback - Kanfan",
             "support.title": "Feedback",
             "support.desc": "Deixe sua mensagem abaixo. Responderemos por e-mail o mais rápido possível.",
@@ -1845,6 +1856,7 @@
             "support.meta.notLoggedIn": "Não conectado"
         },
         pt_BR: {
+            "support.entry": "Suporte",
             "support.pageTitle": "Suporte e feedback - Kanfan",
             "support.title": "Feedback",
             "support.desc": "Deixe sua mensagem abaixo. Responderemos por e-mail o mais rápido possível.",
@@ -1863,6 +1875,7 @@
             "support.meta.notLoggedIn": "Não conectado"
         },
         ru: {
+            "support.entry": "Поддержка",
             "support.pageTitle": "Поддержка и обратная связь - Kanfan",
             "support.title": "Обратная связь",
             "support.desc": "Оставьте сообщение ниже. Мы ответим вам по электронной почте как можно скорее.",
@@ -1881,6 +1894,7 @@
             "support.meta.notLoggedIn": "Не выполнен вход"
         },
         th: {
+            "support.entry": "ฝ่ายสนับสนุน",
             "support.pageTitle": "การสนับสนุนและข้อเสนอแนะ - Kanfan",
             "support.title": "ข้อเสนอแนะ",
             "support.desc": "โปรดฝากข้อความของคุณด้านล่าง เราจะตอบกลับทางอีเมลให้เร็วที่สุด",
@@ -1899,6 +1913,7 @@
             "support.meta.notLoggedIn": "ยังไม่ได้เข้าสู่ระบบ"
         },
         vi: {
+            "support.entry": "Hỗ trợ",
             "support.pageTitle": "Hỗ trợ & phản hồi - Kanfan",
             "support.title": "Phản hồi",
             "support.desc": "Vui lòng để lại tin nhắn bên dưới. Chúng tôi sẽ phản hồi qua email sớm nhất có thể.",
@@ -1917,6 +1932,7 @@
             "support.meta.notLoggedIn": "Chưa đăng nhập"
         },
         id: {
+            "support.entry": "Dukungan",
             "support.pageTitle": "Dukungan & masukan - Kanfan",
             "support.title": "Masukan",
             "support.desc": "Silakan tinggalkan pesan Anda di bawah. Kami akan membalas melalui email secepat mungkin.",
@@ -1935,6 +1951,7 @@
             "support.meta.notLoggedIn": "Belum masuk"
         },
         ar: {
+            "support.entry": "الدعم",
             "support.pageTitle": "الدعم والملاحظات - Kanfan",
             "support.title": "الملاحظات",
             "support.desc": "يرجى ترك رسالتك أدناه. سنرد عليك عبر البريد الإلكتروني في أقرب وقت ممكن.",
@@ -1953,6 +1970,7 @@
             "support.meta.notLoggedIn": "غير مسجل الدخول"
         },
         hi: {
+            "support.entry": "सहायता",
             "support.pageTitle": "सहायता और फ़ीडबैक - Kanfan",
             "support.title": "फ़ीडबैक",
             "support.desc": "कृपया नीचे अपना संदेश लिखें। हम आपको जल्द से जल्द ईमेल द्वारा उत्तर देंगे।",
