@@ -18,6 +18,14 @@
         /* 用于调试信息块的辅助样式 */
         .debug-info-label { color: var(--slate); font-weight: 600; }
         .debug-info-value { color: var(--dark); }
+        .support-status {
+            display: none;
+            text-align: center;
+            font-size: 0.875rem;
+            margin-top: 1rem;
+        }
+        .support-status.success { color: #15803d; }
+        .support-status.error { color: #dc2626; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col items-center justify-center p-4">
@@ -43,7 +51,7 @@
         <p><span class="debug-info-label" data-i18n="support.debug.email">账号邮箱:</span> <span id="info-email" class="debug-info-value">-</span></p>
     </div>
 
-    <form action="https://formspree.io/f/mojnpvva" method="POST" class="space-y-5 text-left mt-6">
+    <form id="support-form" method="POST" class="space-y-5 text-left mt-6">
 
         <input type="hidden" name="source" id="input-from">
         <input type="hidden" name="extension_version" id="input-v">
@@ -65,11 +73,14 @@
         </div>
 
         <button type="submit"
+                id="submit-btn"
                 data-i18n="support.form.submit"
                 class="w-full bg-[color:var(--primary)] hover:bg-[color:var(--primary-hover)] text-white font-bold py-3 px-6 rounded-full
                        shadow-md hover:shadow-[0_10px_15px_-3px_rgba(249,115,22,0.4)] transition-all duration-200 transform hover:-translate-y-1">
             发送留言
         </button>
+        <div class="support-status success" id="successMsg">Thank you! Your message has been submitted.</div>
+        <div class="support-status error" id="errorMsg">Oops! Something went wrong. Please try again.</div>
     </form>
 </div>
 
@@ -114,6 +125,60 @@
         // document.getElementById('input-email').readOnly = true;
         // document.getElementById('input-email').classList.add('bg-gray-50', 'cursor-not-allowed');
     }
+    const feedbackEndpoint = "https://jicbnty4ugip4n7rsn6xjg3moe0poghf.lambda-url.us-west-1.on.aws/";
+    const supportForm = document.getElementById('support-form');
+    const submitBtn = document.getElementById('submit-btn');
+    const successMsg = document.getElementById('successMsg');
+    const errorMsg = document.getElementById('errorMsg');
+
+    function showSupportError(message) {
+        errorMsg.textContent = message || "Oops! Something went wrong. Please try again.";
+        errorMsg.style.display = "block";
+        successMsg.style.display = "none";
+    }
+
+    supportForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        if (!feedbackEndpoint || feedbackEndpoint.includes("REPLACE_WITH")) {
+            showSupportError("Feedback endpoint is not configured.");
+            return;
+        }
+
+        successMsg.style.display = "none";
+        errorMsg.style.display = "none";
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = "0.7";
+
+        const payload = {
+            type: "support",
+            source: sourceFrom,
+            extension_version: extVersion,
+            issue_url: rawIssueUrl,
+            user_id: userId,
+            email: document.getElementById('input-email').value.trim(),
+            message: (supportForm.querySelector('textarea[name="message"]')?.value || "").trim(),
+            page_url: window.location.href,
+            user_agent: navigator.userAgent
+        };
+
+        try {
+            const res = await fetch(feedbackEndpoint, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
+            });
+
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            supportForm.querySelector('textarea[name="message"]').value = "";
+            successMsg.style.display = "block";
+        } catch (err) {
+            showSupportError();
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = "";
+        }
+    });
 </script>
 </body>
 </html>

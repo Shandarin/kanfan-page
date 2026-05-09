@@ -91,12 +91,12 @@
     <p class="feedback-desc" data-i18n="uninstall.desc">Please tell us why you're uninstalling. It helps us improve.</p>
 
     <!--
-      We send a Formspree request that includes:
+      We send a feedback API request that includes:
       - selected reasons (checkboxes)
       - optional comment
       - meta fields injected from URL query
     -->
-    <form id="uninstall-form" action="https://formspree.io/f/xlgwodga" method="POST">
+    <form id="uninstall-form" method="POST">
         <div class="radio-group">
             <label class="radio-label">
                 <input type="checkbox" name="reasons" value="Too slow / Not working" />
@@ -205,10 +205,11 @@
         setIfExists("meta-last-url", qs.get("lastUrl") || "");
     })();
 
-    // ===== Submit via fetch to Formspree, show success/error =====
+    // ===== Submit via fetch to feedback API, show success/error =====
     const form = document.getElementById("uninstall-form");
     const successMsg = document.getElementById("successMsg");
     const errorMsg = document.getElementById("errorMsg");
+    const feedbackEndpoint = "https://jicbnty4ugip4n7rsn6xjg3moe0poghf.lambda-url.us-west-1.on.aws/";
 
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
@@ -225,17 +226,36 @@
         successMsg.style.display = "none";
         errorMsg.style.display = "none";
 
+        if (!feedbackEndpoint || feedbackEndpoint.includes("REPLACE_WITH")) {
+            errorMsg.style.display = "block";
+            errorMsg.textContent = "Feedback endpoint is not configured.";
+            return;
+        }
+
         try {
             const formData = new FormData(form);
-            const res = await fetch(form.action, {
+            const payload = {
+                type: "uninstall",
+                reasons: formData.getAll("reasons"),
+                comment,
+                source: formData.get("source") || "",
+                language: formData.get("language") || "",
+                extension_version: formData.get("extension_version") || "",
+                uuid: formData.get("uuid") || "",
+                user_id: formData.get("uid") || "",
+                email: formData.get("email") || "",
+                last_url: formData.get("last_url") || "",
+                page_url: window.location.href,
+                user_agent: navigator.userAgent
+            };
+            const res = await fetch(feedbackEndpoint, {
                 method: "POST",
-                body: formData,
-                headers: { "Accept": "application/json" }
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(payload)
             });
 
             if (res.ok) {
-                // Hide the entire form (so success message is visible, not hidden by parent)
-                form.style.display = "none";
+                form.reset();
                 successMsg.style.display = "block";
             } else {
                 errorMsg.style.display = "block";
