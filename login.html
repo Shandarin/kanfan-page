@@ -49,6 +49,14 @@
             margin-bottom: 30px;
             display: inline-block;
         }
+        .site-logo-img {
+            display: block;
+            width: auto;
+            height: 40px;
+            max-width: 180px;
+            object-fit: contain;
+            margin: 0 auto;
+        }
 
         h2 { font-size: 1.5rem; margin-bottom: 10px; }
         p.subtitle { color: var(--slate); margin-bottom: 30px; font-size: 0.9rem; }
@@ -164,7 +172,10 @@
 <div class="auth-container">
 
     <div id="view-auth" class="card">
-        <a href="index.html" class="logo">Kanfan</a>
+        <a href="index.html" class="logo" aria-label="Kanfan home">
+            <img src="logo.png" alt="Kanfan" class="site-logo-img" onerror="this.hidden=true; this.nextElementSibling.hidden=false;">
+            <span hidden>Kanfan</span>
+        </a>
         <h2 id="title" data-i18n="login.title">Welcome Back</h2>
         <p class="subtitle" id="subtitle" data-i18n="login.subtitle">Sign in to manage your subscription</p>
 

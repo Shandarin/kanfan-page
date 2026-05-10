@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="data:,">
+    <link rel="icon" href="logo.png">
     <title>Kanfan - AI Manga Translator</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -164,9 +164,9 @@
 <body>
 
 <nav class="lp-nav">
-    <a href="#" class="lp-logo">
-        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
-        Kanfan
+    <a href="#" class="lp-logo" aria-label="Kanfan home">
+        <img src="logo.png" alt="Kanfan" class="site-logo-img" onerror="this.hidden=true; this.nextElementSibling.hidden=false;">
+        <span hidden>Kanfan</span>
     </a>
     <div style="display: flex; gap: 15px; align-items: center;">
         <select class="lp-language-select lp-nav-language" aria-label="Supported translation languages">
