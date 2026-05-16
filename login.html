@@ -239,6 +239,12 @@
     // Config (Consistent with background.js)
     const SUPABASE_URL = "https://ikriqgjylpbwqihwpsho.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_xdQsvfTfJEwfNjF5KYvxLA_y4QiKqFo";
+
+    const authHashParams = new URLSearchParams((window.location.hash || "").replace(/^#/, ""));
+    if (authHashParams.get("type") === "recovery") {
+        window.location.replace(`reset-password.html${window.location.hash}`);
+    } else {
+
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     // State
@@ -257,6 +263,16 @@
     const msgBox = document.getElementById('message-box');
     const viewAuth = document.getElementById('view-auth');
     const viewSuccess = document.getElementById('view-success');
+
+    function getCleanLoginRedirectUrl() {
+        const url = new URL('login.html', window.location.href);
+        url.search = '';
+        url.hash = '';
+        if (source === 'extension') {
+            url.searchParams.set('source', 'extension');
+        }
+        return url.toString();
+    }
 
     // Toggle Login/Signup
     document.getElementById('toggle-btn').addEventListener('click', () => {
@@ -282,11 +298,14 @@
     // 2a. Handle Google SSO
     btnGoogle.addEventListener('click', async () => {
         try {
-            // We use window.location.href to return to this exact page (preserving ?source=extension)
+            // Return to a stable login URL so stale reset/query/hash state cannot leak into OAuth.
             const { error } = await sb.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
-                    redirectTo: window.location.href
+                    redirectTo: getCleanLoginRedirectUrl(),
+                    queryParams: {
+                        prompt: 'select_account'
+                    }
                 }
             });
             if (error) throw error;
@@ -367,6 +386,7 @@
     function showMessage(text, type) {
         msgBox.textContent = text;
         msgBox.className = `msg ${type}`;
+    }
     }
 </script>
 </body>

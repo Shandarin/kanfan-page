@@ -241,8 +241,14 @@
 
     // 1. Logout
     document.getElementById('btn-logout').addEventListener('click', async () => {
-        await sb.auth.signOut();
-        window.location.href = 'index.html';
+        const btn = document.getElementById('btn-logout');
+        btn.disabled = true;
+        try {
+            await sb.auth.signOut({ scope: 'local' });
+        } finally {
+            window.postMessage({ type: "KANFAN_WEB_SIGNED_OUT" }, "*");
+            window.location.replace('index.html');
+        }
     });
 
     // 2. Reset Password (Send Email)
