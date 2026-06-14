@@ -695,18 +695,27 @@
             _fallbackPeriod: "quarterly",
         },
         pro: {
-            monthly: { price: "$8.99", unitKey: "home.unit.mo", equivKey: "" },
-            quarterly: { price: "$24.99", unitKey: "home.unit.quarter", equivKey: "home.equiv.pro.quarterly", saveKey: "home.save6" },
-            yearly: { price: "$96.99", unitKey: "home.unit.year", equivKey: "home.equiv.pro.yearly", saveKey: "home.save10" },
+            monthly: { price: "$7.99", unitKey: "home.unit.mo", equivKey: "" },
+            quarterly: { price: "$22.99", unitKey: "home.unit.quarter", equivKey: "home.equiv.pro.quarterly", equivPrice: "7.66", saveKey: "home.save6" },
+            yearly: { price: "$86.99", unitKey: "home.unit.year", equivKey: "home.equiv.pro.yearly", equivPrice: "7.25", saveKey: "home.save10" },
         },
         max: {
-            monthly: { price: "$19.99", unitKey: "home.unit.mo", equivKey: "" },
-            quarterly: { price: "$55.99", unitKey: "home.unit.quarter", equivKey: "home.equiv.max.quarterly", saveKey: "home.save6" },
-            yearly: { price: "$209.99", unitKey: "home.unit.year", equivKey: "home.equiv.max.yearly", saveKey: "home.save13" },
+            monthly: { price: "$16.99", unitKey: "home.unit.mo", equivKey: "" },
+            quarterly: { price: "$47.99", unitKey: "home.unit.quarter", equivKey: "home.equiv.max.quarterly", equivPrice: "16.00", saveKey: "home.save6" },
+            yearly: { price: "$177.99", unitKey: "home.unit.year", equivKey: "home.equiv.max.yearly", equivPrice: "14.83", saveKey: "home.save13" },
         },
     };
 
     const t = (key) => window.KanfanI18n ? window.KanfanI18n.t(key) : key;
+    function formatEquivNote(cfg) {
+        if (!cfg?.equivKey) return "";
+        let note = t(cfg.equivKey);
+        if (cfg.equivPrice) {
+            const localizedPrice = `$${note.includes(",") ? cfg.equivPrice.replace(".", ",") : cfg.equivPrice}`;
+            note = note.replace(/\$\d+[.,]\d{2}/, localizedPrice);
+        }
+        return note;
+    }
     const sb = window.supabase?.createClient?.(SUPABASE_URL, SUPABASE_ANON_KEY);
     if (sb) window.KanfanSupabaseClient = sb;
 
@@ -871,7 +880,7 @@
             document.getElementById(`price-${plan}`).textContent = cfg?.price || "-";
             document.getElementById(`price-unit-${plan}`).textContent = cfg?.unitKey ? t(cfg.unitKey) : "";
             const note = document.getElementById(`price-note-${plan}`);
-            note.innerHTML = cfg?.equivKey ? t(cfg.equivKey) : "";
+            note.innerHTML = formatEquivNote(cfg);
             if (cfg?.saveKey) {
                 note.insertAdjacentHTML("beforeend", `${note.textContent ? " " : ""}<span class="lp-save-badge">${t(cfg.saveKey)}</span>`);
             }

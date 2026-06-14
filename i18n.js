@@ -1904,6 +1904,140 @@
         Object.assign(I18N[lang] || {}, messages);
     });
 
+    const QA_TRANSLATIONS = {
+        en: {
+            "home.qaEyebrow": "Q&A",
+            "home.qaTitle": "Questions and answers",
+            "home.qa.googleVisionKey.question": "How to create a Google Vision Cloud API key?",
+            "home.qa.googleVisionKey.answer": "Watch this video",
+            "home.qa.googleVisionKey.restrictions": "When creating the API key, set Application restrictions to None."
+        },
+        zh_CN: {
+            "home.qaEyebrow": "\u95ee\u7b54",
+            "home.qaTitle": "\u5e38\u89c1\u95ee\u9898",
+            "home.qa.googleVisionKey.question": "\u5982\u4f55\u521b\u5efa Google Vision Cloud API key\uff1f",
+            "home.qa.googleVisionKey.answer": "\u89c2\u770b\u8fd9\u4e2a\u89c6\u9891",
+            "home.qa.googleVisionKey.restrictions": "\u521b\u5efa API key \u65f6\uff0c\u5c06 Application restrictions \u9009\u62e9\u4e3a None\u3002"
+        },
+        zh_TW: {
+            "home.qaEyebrow": "\u554f\u7b54",
+            "home.qaTitle": "\u5e38\u898b\u554f\u984c",
+            "home.qa.googleVisionKey.question": "\u5982\u4f55\u5efa\u7acb Google Vision Cloud API key\uff1f",
+            "home.qa.googleVisionKey.answer": "\u89c0\u770b\u9019\u500b\u5f71\u7247",
+            "home.qa.googleVisionKey.restrictions": "\u5efa\u7acb API key \u6642\uff0c\u5c07 Application restrictions \u9078\u64c7\u70ba None\u3002"
+        },
+        ja: {
+            "home.qaEyebrow": "Q&A",
+            "home.qaTitle": "\u3088\u304f\u3042\u308b\u8cea\u554f",
+            "home.qa.googleVisionKey.question": "Google Vision Cloud API key \u306f\u3069\u306e\u3088\u3046\u306b\u4f5c\u6210\u3057\u307e\u3059\u304b\uff1f",
+            "home.qa.googleVisionKey.answer": "\u3053\u306e\u52d5\u753b\u3092\u898b\u308b",
+            "home.qa.googleVisionKey.restrictions": "API key \u3092\u4f5c\u6210\u3059\u308b\u969b\u306f\u3001Application restrictions \u3092 None \u306b\u8a2d\u5b9a\u3057\u3066\u304f\u3060\u3055\u3044\u3002"
+        },
+        ko: {
+            "home.qaEyebrow": "Q&A",
+            "home.qaTitle": "\uc790\uc8fc \ubb3b\ub294 \uc9c8\ubb38",
+            "home.qa.googleVisionKey.question": "Google Vision Cloud API key\ub294 \uc5b4\ub5bb\uac8c \ub9cc\ub4dc\ub098\uc694?",
+            "home.qa.googleVisionKey.answer": "\uc774 \ub3d9\uc601\uc0c1 \ubcf4\uae30",
+            "home.qa.googleVisionKey.restrictions": "API key\ub97c \ub9cc\ub4e4 \ub54c Application restrictions\ub97c None\uc73c\ub85c \uc124\uc815\ud558\uc138\uc694."
+        },
+        de: {
+            "home.qaEyebrow": "FAQ",
+            "home.qaTitle": "Fragen und Antworten",
+            "home.qa.googleVisionKey.question": "Wie erstellt man einen Google Vision Cloud API key?",
+            "home.qa.googleVisionKey.answer": "Dieses Video ansehen",
+            "home.qa.googleVisionKey.restrictions": "Setze beim Erstellen des API key Application restrictions auf None."
+        },
+        es: {
+            "home.qaEyebrow": "Preguntas",
+            "home.qaTitle": "Preguntas y respuestas",
+            "home.qa.googleVisionKey.question": "\u00bfC\u00f3mo crear una Google Vision Cloud API key?",
+            "home.qa.googleVisionKey.answer": "Ver este v\u00eddeo",
+            "home.qa.googleVisionKey.restrictions": "Al crear la API key, configura Application restrictions como None."
+        },
+        fr: {
+            "home.qaEyebrow": "FAQ",
+            "home.qaTitle": "Questions et r\u00e9ponses",
+            "home.qa.googleVisionKey.question": "Comment cr\u00e9er une Google Vision Cloud API key ?",
+            "home.qa.googleVisionKey.answer": "Regarder cette vid\u00e9o",
+            "home.qa.googleVisionKey.restrictions": "Lors de la cr\u00e9ation de l'API key, d\u00e9finissez Application restrictions sur None."
+        },
+        it: {
+            "home.qaEyebrow": "FAQ",
+            "home.qaTitle": "Domande e risposte",
+            "home.qa.googleVisionKey.question": "Come creare una Google Vision Cloud API key?",
+            "home.qa.googleVisionKey.answer": "Guarda questo video",
+            "home.qa.googleVisionKey.restrictions": "Quando crei l'API key, imposta Application restrictions su None."
+        },
+        pl: {
+            "home.qaEyebrow": "FAQ",
+            "home.qaTitle": "Pytania i odpowiedzi",
+            "home.qa.googleVisionKey.question": "Jak utworzy\u0107 Google Vision Cloud API key?",
+            "home.qa.googleVisionKey.answer": "Obejrzyj ten film",
+            "home.qa.googleVisionKey.restrictions": "Podczas tworzenia API key ustaw Application restrictions na None."
+        },
+        pt: {
+            "home.qaEyebrow": "FAQ",
+            "home.qaTitle": "Perguntas e respostas",
+            "home.qa.googleVisionKey.question": "Como criar uma Google Vision Cloud API key?",
+            "home.qa.googleVisionKey.answer": "Ver este v\u00eddeo",
+            "home.qa.googleVisionKey.restrictions": "Ao criar a API key, defina Application restrictions como None."
+        },
+        pt_BR: {
+            "home.qaEyebrow": "FAQ",
+            "home.qaTitle": "Perguntas e respostas",
+            "home.qa.googleVisionKey.question": "Como criar uma Google Vision Cloud API key?",
+            "home.qa.googleVisionKey.answer": "Assistir a este v\u00eddeo",
+            "home.qa.googleVisionKey.restrictions": "Ao criar a API key, defina Application restrictions como None."
+        },
+        ru: {
+            "home.qaEyebrow": "FAQ",
+            "home.qaTitle": "\u0412\u043e\u043f\u0440\u043e\u0441\u044b \u0438 \u043e\u0442\u0432\u0435\u0442\u044b",
+            "home.qa.googleVisionKey.question": "\u041a\u0430\u043a \u0441\u043e\u0437\u0434\u0430\u0442\u044c Google Vision Cloud API key?",
+            "home.qa.googleVisionKey.answer": "\u041f\u043e\u0441\u043c\u043e\u0442\u0440\u0435\u0442\u044c \u044d\u0442\u043e \u0432\u0438\u0434\u0435\u043e",
+            "home.qa.googleVisionKey.restrictions": "\u041f\u0440\u0438 \u0441\u043e\u0437\u0434\u0430\u043d\u0438\u0438 API key \u0443\u0441\u0442\u0430\u043d\u043e\u0432\u0438\u0442\u0435 Application restrictions \u0432 None."
+        },
+        th: {
+            "home.qaEyebrow": "Q&A",
+            "home.qaTitle": "\u0e04\u0e33\u0e16\u0e32\u0e21\u0e41\u0e25\u0e30\u0e04\u0e33\u0e15\u0e2d\u0e1a",
+            "home.qa.googleVisionKey.question": "\u0e08\u0e30\u0e2a\u0e23\u0e49\u0e32\u0e07 Google Vision Cloud API key \u0e44\u0e14\u0e49\u0e2d\u0e22\u0e48\u0e32\u0e07\u0e44\u0e23?",
+            "home.qa.googleVisionKey.answer": "\u0e14\u0e39\u0e27\u0e34\u0e14\u0e35\u0e42\u0e2d\u0e19\u0e35\u0e49",
+            "home.qa.googleVisionKey.restrictions": "\u0e40\u0e21\u0e37\u0e48\u0e2d\u0e2a\u0e23\u0e49\u0e32\u0e07 API key \u0e43\u0e2b\u0e49\u0e15\u0e31\u0e49\u0e07 Application restrictions \u0e40\u0e1b\u0e47\u0e19 None."
+        },
+        vi: {
+            "home.qaEyebrow": "FAQ",
+            "home.qaTitle": "C\u00e2u h\u1ecfi v\u00e0 c\u00e2u tr\u1ea3 l\u1eddi",
+            "home.qa.googleVisionKey.question": "C\u00e1ch t\u1ea1o Google Vision Cloud API key?",
+            "home.qa.googleVisionKey.answer": "Xem video n\u00e0y",
+            "home.qa.googleVisionKey.restrictions": "Khi t\u1ea1o API key, h\u00e3y \u0111\u1eb7t Application restrictions th\u00e0nh None."
+        },
+        id: {
+            "home.qaEyebrow": "Tanya Jawab",
+            "home.qaTitle": "Pertanyaan dan jawaban",
+            "home.qa.googleVisionKey.question": "Bagaimana cara membuat Google Vision Cloud API key?",
+            "home.qa.googleVisionKey.answer": "Tonton video ini",
+            "home.qa.googleVisionKey.restrictions": "Saat membuat API key, atur Application restrictions ke None."
+        },
+        ar: {
+            "home.qaEyebrow": "\u0623\u0633\u0626\u0644\u0629 \u0648\u0623\u062c\u0648\u0628\u0629",
+            "home.qaTitle": "\u0623\u0633\u0626\u0644\u0629 \u0648\u0623\u062c\u0648\u0628\u0629",
+            "home.qa.googleVisionKey.question": "\u0643\u064a\u0641 \u062a\u0646\u0634\u0626 Google Vision Cloud API key\u061f",
+            "home.qa.googleVisionKey.answer": "\u0634\u0627\u0647\u062f \u0647\u0630\u0627 \u0627\u0644\u0641\u064a\u062f\u064a\u0648",
+            "home.qa.googleVisionKey.restrictions": "\u0639\u0646\u062f \u0625\u0646\u0634\u0627\u0621 API key\u060c \u0627\u0636\u0628\u0637 Application restrictions \u0639\u0644\u0649 None."
+        },
+        hi: {
+            "home.qaEyebrow": "Q&A",
+            "home.qaTitle": "\u092a\u094d\u0930\u0936\u094d\u0928 \u0914\u0930 \u0909\u0924\u094d\u0924\u0930",
+            "home.qa.googleVisionKey.question": "Google Vision Cloud API key \u0915\u0948\u0938\u0947 \u092c\u0928\u093e\u090f\u0902?",
+            "home.qa.googleVisionKey.answer": "\u092f\u0939 \u0935\u0940\u0921\u093f\u092f\u094b \u0926\u0947\u0916\u0947\u0902",
+            "home.qa.googleVisionKey.restrictions": "API key \u092c\u0928\u093e\u0924\u0947 \u0938\u092e\u092f Application restrictions \u0915\u094b None \u092a\u0930 \u0938\u0947\u091f \u0915\u0930\u0947\u0902\u0964"
+        }
+    };
+
+    Object.entries(QA_TRANSLATIONS).forEach(([lang, messages]) => {
+        I18N[lang] = I18N[lang] || {};
+        Object.assign(I18N[lang], messages);
+    });
+
     const SUPPORT_TRANSLATIONS = {
         en: {
             "support.entry": "Support",
