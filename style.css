@@ -602,6 +602,76 @@ input:focus, textarea:focus, select:focus {
 .lp-cta-current { background: #ecfdf5; color: var(--success); }
 .lp-cta-blocked { background: #f1f5f9; color: var(--muted); }
 
+.lp-qa {
+    border-top: 1px solid var(--line);
+    background: #f8fafc;
+}
+.lp-qa-list {
+    display: grid;
+    gap: 12px;
+    max-width: 820px;
+    margin: 0 auto;
+}
+.lp-qa-item {
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 8px;
+    background: var(--white);
+    box-shadow: var(--shadow-sm);
+}
+.lp-qa-item summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    min-height: 62px;
+    padding: 18px 20px;
+    color: var(--dark);
+    font-size: 1rem;
+    font-weight: 800;
+    list-style: none;
+    cursor: pointer;
+}
+.lp-qa-item summary::-webkit-details-marker { display: none; }
+.lp-qa-icon {
+    position: relative;
+    flex: 0 0 auto;
+    width: 18px;
+    height: 18px;
+}
+.lp-qa-icon::before,
+.lp-qa-icon::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14px;
+    height: 2px;
+    border-radius: 999px;
+    background: var(--primary);
+    transform: translate(-50%, -50%);
+    transition: transform 0.18s ease, opacity 0.18s ease;
+}
+.lp-qa-icon::after { transform: translate(-50%, -50%) rotate(90deg); }
+.lp-qa-item[open] .lp-qa-icon::after {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(0deg);
+}
+.lp-qa-answer {
+    padding: 0 20px 20px;
+    color: var(--slate);
+    font-size: 0.94rem;
+}
+.lp-qa-answer p {
+    margin: 10px 0 0;
+}
+.lp-qa-answer a {
+    color: var(--primary-hover);
+    font-weight: 800;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
 .lp-footer {
     display: grid;
     gap: 12px;
