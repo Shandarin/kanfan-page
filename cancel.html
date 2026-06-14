@@ -8,10 +8,10 @@
     <link rel="stylesheet" href="style.css">
     <script src="i18n.js"></script>
 </head>
-<body>
-<div style="position: fixed; top: 16px; right: 16px; z-index: 999;" data-lang-switcher></div>
-    <div class="container">
-        <div class="icon-box">
+<body class="status-page">
+    <div class="language-switcher" data-lang-switcher></div>
+    <main class="container status-card">
+        <div class="icon-box warn">
             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                 <line x1="18" y1="6" x2="6" y2="18"></line>
                 <line x1="6" y1="6" x2="18" y2="18"></line>
@@ -19,8 +19,11 @@
         </div>
         <h1 data-i18n="pay.cancelTitle">Payment Cancelled</h1>
         <p data-i18n="pay.cancelDesc">No charges were made. If you encountered an error or have questions about our plans, feel free to contact us.</p>
-        <a href="index.html" class="btn" data-i18n="pay.returnHome">Return Home</a>
-    </div>
-<script>KanfanI18n.renderSelect(document.querySelector("[data-lang-switcher]"));KanfanI18n.apply();</script>
+        <a href="index.html#pricing" class="btn" data-i18n="pay.returnHome">Return Home</a>
+    </main>
+    <script>
+        KanfanI18n.renderSelect(document.querySelector("[data-lang-switcher]"));
+        KanfanI18n.apply();
+    </script>
 </body>
 </html>

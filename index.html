@@ -3,173 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kanfan - AI Manga Translator for Browser Reading</title>
+    <meta name="description" content="Kanfan translates manga images directly in your browser with OCR, translation, and clean text rendering for Chrome and Edge.">
+    <link rel="canonical" href="https://kanfan.site/">
+    <meta property="og:title" content="Kanfan - AI Manga Translator">
+    <meta property="og:description" content="Translate raw manga in your browser with clean rendered text and flexible plans.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kanfan.site/">
+    <meta property="og:image" content="https://kanfan.site/1.png">
+    <meta name="twitter:card" content="summary_large_image">
     <link rel="icon" href="logo.png">
-    <title>Kanfan - AI Manga Translator</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="i18n.js"></script>
-    <link rel="stylesheet" href="style.css">
-
-    <style>
-        /* =========================================
-           LANDING PAGE SPECIFIC STYLES
-           ========================================= */
-
-        /* 局部变量 */
-        :root {
-            --lp-purple: #9333ea;
-        }
-
-        /* Nav */
-        .lp-nav {
-            padding: 1.25rem 8%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(12px);
-            z-index: 1000;
-            border-bottom: 1px solid #fed7aa;
-        }
-        .lp-logo {
-            font-size: 1.5rem; font-weight: 800;
-            color: var(--primary);
-            text-decoration: none;
-            display: flex; align-items: center; gap: 8px;
-        }
-
-        /* Buttons */
-        .lp-btn {
-            display: inline-flex; align-items: center; gap: 8px;
-            background: var(--primary);
-            color: white;
-            padding: 12px 24px;
-            border-radius: 50px;
-            text-decoration: none;
-            font-weight: 700;
-            transition: all 0.2s;
-            border: none;
-            cursor: pointer;
-            font-size: 0.9rem;
-            box-shadow: 0 4px 6px -1px rgba(249, 115, 22, 0.3);
-            white-space: nowrap;
-        }
-        .lp-btn:hover {
-            background: var(--primary-hover);
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(249, 115, 22, 0.4);
-        }
-
-        /* Hero Section */
-        .lp-hero {
-            padding: 60px 8%;
-            display: flex; align-items: center; justify-content: space-between; gap: 60px;
-            background: radial-gradient(circle at top right, #fff7ed, #ffffff);
-            min-height: 70vh;
-        }
-        .lp-hero-text { flex: 1; max-width: 600px; }
-        .lp-hero h1 { font-size: 3.5rem; font-weight: 800; line-height: 1.1; margin-bottom: 1.5rem; }
-        .lp-hero h1 span { color: var(--primary); }
-        .lp-hero p { font-size: 1.2rem; color: var(--slate); margin-bottom: 2rem; line-height: 1.6; }
-
-        .lp-app-preview { flex: 1; display: flex; justify-content: center; position: relative; }
-        .lp-mockup-frame {
-            width: 340px; background: #fff; border: 8px solid #0f172a; border-radius: 30px;
-            overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25); position: relative; z-index: 10;
-        }
-        .lp-mockup-header { height: 24px; background: #0f172a; display: flex; justify-content: center; align-items: center; }
-        .lp-mockup-camera { width: 60px; height: 12px; background: #1e293b; border-radius: 10px; }
-
-        /* Pricing Grid */
-        .lp-pricing {
-            padding: 60px 5%;
-            background: #fafafa;
-            text-align: center;
-            border-top: 1px solid #e2e8f0;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .lp-price-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 15px;
-            max-width: 1280px;
-            margin: 40px auto 0;
-        }
-
-        @media (max-width: 1100px) {
-            .lp-price-grid { grid-template-columns: repeat(2, 1fr); max-width: 700px; }
-        }
-        @media (max-width: 600px) {
-            .lp-price-grid { grid-template-columns: 1fr; }
-        }
-
-        .lp-plan {
-            background: white; padding: 25px; border-radius: 16px; border: 1px solid #e2e8f0;
-            text-align: left; transition: transform 0.2s; display: flex; flex-direction: column;
-            position: relative;
-        }
-        .lp-plan:hover { transform: translateY(-5px); border-color: var(--primary); z-index: 2; }
-
-        /* Popular Plan Highligh */
-        .lp-plan.popular { border: 2px solid var(--primary); transform: scale(1.02); z-index: 1; box-shadow: 0 10px 30px -10px rgba(249, 115, 22, 0.15); }
-        .lp-plan.popular:hover { transform: scale(1.02) translateY(-5px); }
-
-        .lp-badge { position: absolute; top: -12px; right: 20px; background: var(--primary); color: white; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 700; }
-
-        .lp-plan h3 { margin-top: 0; font-size: 1.1rem; margin-bottom: 0.5rem; }
-        .lp-plan-price { font-size: 2rem; font-weight: 800; margin: 10px 0; color: var(--dark); }
-        .lp-plan-price span { font-size: 0.85rem; color: var(--slate); font-weight: 500; }
-
-        .lp-features-list { list-style: none; padding: 0; margin-bottom: 20px; flex-grow: 1; }
-        .lp-features-list li { margin-bottom: 8px; color: var(--slate); display: flex; align-items: center; font-size: 0.9rem; }
-        .lp-check { color: var(--success); margin-right: 8px; flex-shrink: 0; }
-
-        /* Features Section */
-        .lp-features {
-            padding: 80px 8%; background: #fff;
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;
-        }
-        .lp-feature-card { padding: 30px; border-radius: 20px; background: #f8fafc; border: 1px solid #e2e8f0; }
-        .lp-language-select {
-            padding: 10px 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 10px;
-            background: #fff;
-            color: var(--dark);
-            font-size: 0.95rem;
-        }
-        .lp-nav-language {
-            width: 185px;
-            padding-right: 34px;
-        }
-        /* Footer */
-        .lp-footer { padding: 60px 8%; text-align: center; border-top: 1px solid #e2e8f0; color: var(--slate); font-size: 0.9rem; }
-        .lp-footer a { color: var(--slate); text-decoration: none; margin: 0 10px; cursor: pointer; }
-
-        /* Modal */
-        .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background-color: rgba(15, 23, 42, 0.7); backdrop-filter: blur(8px); }
-        .modal-content { background-color: #ffffff; margin: 5vh auto; padding: 40px; border-radius: 24px; width: 90%; max-width: 800px; max-height: 85vh; overflow-y: auto; position: relative; }
-
-        .close-btn { float: right; font-size: 28px; cursor: pointer; }
-
-        /* Mockup Internal Styles */
-        #app-preview-root { padding: 16px; background: #f8fafc; height: 100%; }
-        .header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; color: var(--primary); font-weight: 800; }
-        .status-banner { background: #fff7ed; border: 1px solid #fed7aa; padding: 12px; border-radius: 12px; margin-bottom: 12px; }
-        .card { background: white; border: 1px solid #e2e8f0; padding: 12px; border-radius: 12px; border-top: 3px solid var(--primary); }
-    </style>
+    <script src="i18n.js?v=20260614b"></script>
+    <link rel="stylesheet" href="style.css?v=20260614b">
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Kanfan",
+        "applicationCategory": "BrowserApplication",
+        "operatingSystem": "Chrome, Edge",
+        "description": "AI manga translator browser extension with OCR, translation, and rendered image previews.",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    }
+    </script>
 </head>
-<body>
-
+<body class="landing-page">
 <nav class="lp-nav">
-    <a href="#" class="lp-logo" aria-label="Kanfan home">
+    <a href="index.html" class="lp-logo" aria-label="Kanfan home">
         <img src="logo.png" alt="Kanfan" class="site-logo-img" onerror="this.hidden=true; this.nextElementSibling.hidden=false;">
         <span>Kanfan</span>
     </a>
-    <div style="display: flex; gap: 15px; align-items: center;">
-        <select class="lp-language-select lp-nav-language" aria-label="Supported translation languages">
+    <div class="lp-nav-actions">
+        <select class="lp-language-select lp-nav-language" aria-label="Language">
             <option value="zh_CN">简体中文</option>
             <option value="zh_TW">繁體中文</option>
             <option value="en">English</option>
@@ -189,854 +56,176 @@
             <option value="ar">العربية</option>
             <option value="hi">हिन्दी</option>
         </select>
-        <a href="login.html" id="nav-login-btn" style="color: var(--dark); text-decoration: none; font-weight: 600; font-size: 0.95rem;" data-i18n="nav.signin">Sign In</a>
-        <a href="https://chromewebstore.google.com/detail/kanfan-manga-translator/ffjpelbfmecoidnkjapdhpcbeianmkpp" target="_blank" class="lp-btn" data-i18n="nav.install">Install Extension</a>
+        <a href="login.html" id="nav-login-btn" class="lp-nav-link" data-i18n="nav.signin">Sign In</a>
+        <a href="https://chromewebstore.google.com/detail/kanfan-manga-translator/ffjpelbfmecoidnkjapdhpcbeianmkpp" target="_blank" rel="noopener" class="lp-btn lp-btn-primary" data-i18n="nav.install">Install Extension</a>
     </div>
 </nav>
 
-<header class="lp-hero">
-    <div class="lp-hero-text">
-        <h1><span data-i18n="home.heroLine1">Read Manga in</span> <br><span data-i18n="home.heroLine2">Your Language</span></h1>
-        <p data-i18n="home.heroDesc">The smartest AI-powered manga translator extension. Translate raw manga directly in your browser with zero friction.</p>
-        <a href="https://chromewebstore.google.com/detail/kanfan-manga-translator/ffjpelbfmecoidnkjapdhpcbeianmkpp" target="_blank" class="lp-btn" data-i18n="home.chromeStore">Chrome Web Store</a>
-        <a href="https://microsoftedge.microsoft.com/addons/detail/kanfan-manga-translator/hjdegcejfgbcikdcgafigaoieicofada" target="_blank" class="lp-btn" style="background: var(--dark);" data-i18n="home.edgeAddons">Edge Add-ons</a>
-    </div>
-    <div class="lp-app-preview">
-        <div class="lp-mockup-frame">
-            <div class="lp-mockup-header"><div class="lp-mockup-camera"></div></div>
-            <div id="app-preview-root" style="padding: 0;"> <img src="1.png" alt="App Preview" style="width: 100%; height: 100%; object-fit: cover; display: block;">
+<main>
+    <header class="lp-hero">
+        <div class="lp-hero-copy">
+            <p class="lp-eyebrow" data-i18n="home.eyebrow">Browser extension for manga readers</p>
+            <h1><span data-i18n="home.heroLine1">Read raw manga</span><span data-i18n="home.heroLine2">in your language</span></h1>
+            <p class="lp-hero-desc" data-i18n="home.heroDesc">Translate manga pages in-place with OCR, clean text boxes, and account-based quota across Chrome and Edge.</p>
+            <div class="lp-hero-actions">
+                <a href="https://chromewebstore.google.com/detail/kanfan-manga-translator/ffjpelbfmecoidnkjapdhpcbeianmkpp" target="_blank" rel="noopener" class="lp-btn lp-btn-primary" data-i18n="home.chromeStore">Chrome Web Store</a>
+                <a href="https://microsoftedge.microsoft.com/addons/detail/kanfan-manga-translator/hjdegcejfgbcikdcgafigaoieicofada" target="_blank" rel="noopener" class="lp-btn lp-btn-dark" data-i18n="home.edgeAddons">Edge Add-ons</a>
             </div>
         </div>
-    </div>
-</header>
-
-<style>
-    /* =========================================
-       PRICING STYLES (v5 - global period toggle + single CTA)
-       ========================================= */
-
-    /* Global period toggle */
-    .lp-period-toggle {
-        display: inline-flex;
-        background: #f1f5f9;
-        border-radius: 12px;
-        padding: 4px;
-        margin: 24px auto 0;
-        gap: 4px;
-    }
-    .lp-period-toggle-btn {
-        padding: 8px 22px;
-        border-radius: 10px;
-        border: none;
-        cursor: pointer;
-        font-family: inherit;
-        font-size: 0.85rem;
-        font-weight: 600;
-        color: #64748b;
-        background: transparent;
-        transition: all 0.2s ease;
-    }
-    .lp-period-toggle-btn.active {
-        background: white;
-        color: #1e293b;
-        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-    }
-    .lp-period-toggle-btn:hover:not(.active) { color: #1e293b; }
-
-    /* Plan grid */
-    .lp-price-row1 {
-        display: grid;
-        grid-template-columns: repeat(4, 1fr);
-        gap: 16px;
-        max-width: 1200px;
-        margin: 24px auto 0;
-    }
-    @media (max-width: 1050px) {
-        .lp-price-row1 { grid-template-columns: repeat(2, 1fr); max-width: 700px; }
-    }
-    @media (max-width: 600px) {
-        .lp-price-row1 { grid-template-columns: 1fr; max-width: 420px; }
-    }
-    .lp-price-row2 { max-width: 1200px; margin: 16px auto 0; }
-
-    /* Plan card */
-    .lp-plan-v2 {
-        background: white; padding: 22px 18px 20px;
-        border-radius: 18px; border: 1.5px solid #e2e8f0;
-        text-align: left; position: relative;
-        display: flex; flex-direction: column; gap: 0;
-    }
-    .lp-plan-v2.popular-v2 {
-        border: 2px solid #f97316;
-        box-shadow: 0 8px 30px -8px rgba(249,115,22,0.18);
-    }
-    .lp-plan-v2.current-plan {
-        border: 2px solid var(--success);
-        box-shadow: 0 8px 30px -8px rgba(16,185,129,0.15);
-    }
-    .lp-plan-v2-badge {
-        position: absolute; top: 12px; right: 12px;
-        padding: 3px 10px; border-radius: 20px;
-        font-size: 0.7rem; font-weight: 700;
-    }
-    .badge-popular { background: #fff7ed; color: #ea580c; }
-    .badge-heavy   { background: #fef3c7; color: #b45309; }
-    .badge-anchor  { background: #f1f5f9; color: #475569; }
-    .badge-current { background: #dcfce7; color: #16a34a; }
-
-    /* Title & price */
-    .lp-plan-v2-title {
-        font-size: 1.15rem; font-weight: 800; margin: 0 0 2px; color: #1e293b;
-    }
-    .lp-price-display { margin: 4px 0 2px; }
-    .lp-price-main {
-        font-size: 2.2rem; font-weight: 800; color: #1e293b; line-height: 1;
-    }
-    .lp-price-unit { font-size: 0.85rem; color: #64748b; font-weight: 500; }
-    .lp-price-note { font-size: 0.95rem; color: #64748b; margin: 3px 0 14px; }
-    .lp-save-badge {
-        display: inline-block; background: #dcfce7; color: #16a34a;
-        font-size: 0.68rem; font-weight: 700; padding: 2px 6px; border-radius: 20px;
-        vertical-align: middle; margin-left: 6px;
-    }
-
-    /* Quota */
-    .lp-quota-row {
-        display: flex; justify-content: space-between; align-items: center;
-        font-size: 0.82rem; color: #475569;
-        padding: 10px 0 6px; border-top: 1px solid #f1f5f9; margin-top: auto;
-    }
-    .lp-quota-val { font-weight: 700; color: #1e293b; }
-    .lp-quota-note { font-size: 0.82rem; color: #475569; text-align: left; margin: 2px 0 0; padding-bottom:  14px;}
-
-    /* Single CTA button per plan */
-    .lp-plan-cta {
-        width: 100%; padding: 11px 0;
-        border-radius: 10px; border: none;
-        font-family: inherit; font-size: 0.88rem; font-weight: 700;
-        cursor: pointer; transition: all 0.15s ease;
-        text-align: center; text-decoration: none;
-        display: flex; align-items: center; justify-content: center;
-    }
-    .lp-plan-cta:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
-    .lp-plan-cta:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
-
-    .lp-cta-subscribe { background: var(--primary); color: white; }
-    .lp-cta-subscribe:hover:not(:disabled) { background: var(--primary-hover); }
-    .lp-cta-current   { background: #dcfce7; color: #16a34a; cursor: default; }
-    .lp-cta-upgrade    { background: var(--primary); color: white; }
-    .lp-cta-upgrade:hover { background: var(--primary-hover); }
-    .lp-cta-downgrade  { background: #f1f5f9; color: #475569; border: 1.5px solid #e2e8f0; }
-    .lp-cta-downgrade:hover { background: #e2e8f0; }
-    .lp-cta-blocked    { background: #f1f5f9; color: #94a3b8; }
-    .lp-cta-free       { background: #94a3b8; color: white; }
-
-    /* Free plan */
-    .lp-free-price { font-size: 2.2rem; font-weight: 800; color: #1e293b; margin: 4px 0 2px; line-height: 1; }
-    .lp-free-desc  { font-size: 0.78rem; color: #64748b; margin-bottom: 14px; flex-grow: 1; }
-
-    /* Stripe buy button container */
-    .lp-buy-btn-container { width: 100%; }
-    .lp-buy-btn-container stripe-buy-button { width: 100%; }
-
-    /* Credit packs */
-    .lp-credits-card {
-        background: white; border: 1.5px solid #e2e8f0; border-radius: 18px;
-        padding: 22px 24px;
-    }
-    .lp-credits-title    { font-size: 1.05rem; font-weight: 800; color: #1e293b; margin-bottom: 3px; }
-    .lp-credits-subtitle { font-size: 0.78rem; color: #64748b; margin-bottom: 16px; }
-    .lp-credits-grid {
-        display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px;
-    }
-    @media (max-width: 900px) { .lp-credits-grid { grid-template-columns: repeat(2, 1fr); } }
-    @media (max-width: 500px) { .lp-credits-grid { grid-template-columns: 1fr; } }
-    .lp-credit-pack {
-        background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 12px;
-        padding: 14px 14px 12px; position: relative; display: flex; flex-direction: column; gap: 6px;
-    }
-    .lp-credit-pack.pack-popular { border-color: #f97316; background: #fff7ed; }
-    .lp-pack-badge {
-        position: absolute; top: -10px; left: 12px;
-        background: #f97316; color: white;
-        font-size: 0.65rem; font-weight: 700; padding: 2px 8px; border-radius: 20px;
-    }
-    .lp-pack-name   { font-size: 0.78rem; color: #64748b; }
-    .lp-pack-price  { font-size: 1.6rem; font-weight: 800; color: #1e293b; line-height: 1; }
-    .lp-pack-detail { font-size: 0.73rem; color: #64748b; line-height: 1.7; }
-    .lp-pack-saving { font-size: 0.73rem; color: #16a34a; font-weight: 600; }
-    .lp-pack-btn {
-        margin-top: 8px; padding: 7px 0; border-radius: 8px; border: none;
-        font-family: inherit; font-size: 0.8rem; font-weight: 700;
-        cursor: pointer; transition: opacity 0.15s;
-        background: #1e293b; color: white; width: 100%;
-    }
-    .lp-pack-btn:hover { opacity: 0.82; }
-    .pack-popular .lp-pack-btn { background: #f97316; }
-
-    .lp-pricing-note { margin-top: 18px; font-size: 0.78rem; color: #94a3b8; }
-</style>
-
-<!-- Stripe Buy Button SDK -->
-<script async src="https://js.stripe.com/v3/buy-button.js"></script>
-
-<section class="lp-pricing" id="pricing">
-    <h2 data-i18n="home.pricing">Pricing</h2>
-
-    <!-- Global period toggle -->
-    <div style="text-align:center;">
-        <div class="lp-period-toggle" id="period-toggle">
-            <button class="lp-period-toggle-btn active" data-period="monthly" data-i18n="home.period.monthly">Monthly</button>
-            <button class="lp-period-toggle-btn" data-period="quarterly" data-i18n="home.period.quarterly">Quarterly</button>
-            <button class="lp-period-toggle-btn" data-period="yearly" data-i18n="home.period.yearly">Yearly</button>
+        <div class="lp-preview" aria-label="Kanfan extension preview">
+            <div class="lp-preview-shell">
+                <img src="1.png" alt="Kanfan manga translation preview" class="lp-preview-image">
+            </div>
         </div>
-    </div>
+    </header>
 
-    <!-- Row 1: Subscription plans -->
-    <div class="lp-price-row1">
-
-        <!-- FREE -->
-        <div class="lp-plan-v2" data-plan="free">
-            <div class="lp-plan-v2-title">Free</div>
-            <div class="lp-free-price">$0</div>
-            <div class="lp-free-desc" data-i18n="home.freeDesc">Free forever · No credit card</div>
-            <div class="lp-quota-row">
-                <span data-i18n="home.quota">Quota</span>
-                <span class="lp-quota-val" data-i18n="home.quotaFree">100 img/week</span>
-            </div>
-            <a href="https://chromewebstore.google.com/detail/kanfan-manga-translator/ffjpelbfmecoidnkjapdhpcbeianmkpp"
-               target="_blank" class="lp-plan-cta lp-cta-free" data-i18n="home.freeInstall">
-                Install Free
-            </a>
+    <section class="lp-section try-section" id="try-it" aria-labelledby="try-title">
+        <div class="try-simple">
+            <h2 id="try-title" data-i18n="try.eyebrow">Try it</h2>
+            <form class="try-form" data-try-form>
+                <label class="try-upload-button lp-btn lp-btn-primary" data-try-dropzone>
+                    <input type="file" accept="image/png,image/jpeg,image/webp" data-try-file>
+                    <span data-try-upload-label data-i18n="try.dropTitle">Upload PNG, JPG, or WebP</span>
+                </label>
+                    <div class="try-controls" hidden>
+                        <select class="lp-language-select" data-try-lang aria-label="Target language">
+                            <option value="zh_CN">简体中文</option>
+                            <option value="zh_TW">繁體中文</option>
+                            <option value="en">English</option>
+                            <option value="ja">日本語</option>
+                            <option value="ko">한국어</option>
+                            <option value="de">Deutsch</option>
+                            <option value="es">Español</option>
+                            <option value="fr">Français</option>
+                            <option value="it">Italiano</option>
+                            <option value="pl">Polski</option>
+                            <option value="pt">Português</option>
+                            <option value="pt_BR">Português (Brasil)</option>
+                            <option value="ru">Русский</option>
+                            <option value="th">ไทย</option>
+                            <option value="vi">Tiếng Việt</option>
+                            <option value="id">Bahasa Indonesia</option>
+                            <option value="ar">العربية</option>
+                            <option value="hi">हिन्दी</option>
+                        </select>
+                        <button type="submit" class="lp-btn lp-btn-primary" data-try-submit data-i18n="try.button">Translate image</button>
+                    </div>
+                <p class="try-status" data-try-status data-i18n="try.status.ready">Choose an image to begin.</p>
+                <p class="try-quota" data-try-quota hidden></p>
+                <div class="try-result-panel" data-try-result-panel hidden>
+                    <h3 data-i18n="try.result">Translated</h3>
+                    <img alt="Translated manga preview" data-try-result hidden>
+                    <div class="try-actions" data-try-actions hidden>
+                        <a class="lp-btn lp-btn-ghost" data-try-download download="kanfan-translation.jpg" hidden data-i18n="try.download">Download result</a>
+                    </div>
+                </div>
+            </form>
         </div>
+    </section>
 
-        <!-- PLUS -->
-        <div class="lp-plan-v2" data-plan="plus">
-            <span class="lp-plan-v2-badge badge-anchor" data-i18n="home.badgeBasic">Basic</span>
-            <div class="lp-plan-v2-title">Plus</div>
-            <div class="lp-price-display">
-                <span class="lp-price-main" id="price-plus"></span>
-                <span class="lp-price-unit" id="price-unit-plus"></span>
-            </div>
-            <div class="lp-price-note" id="price-note-plus"></div>
-            <div class="lp-quota-row">
-                <span data-i18n="home.quota">Quota</span>
-                <span class="lp-quota-val" data-i18n="home.quotaPlus">1000 img/week</span>
-            </div>
-            <div class="lp-quota-note" data-i18n="home.quotaNote">Images without text don't consume quota</div>
-            <div id="cta-plus"></div>
+    <section class="lp-section lp-pricing" id="pricing" aria-labelledby="pricing-title">
+        <div class="lp-section-head">
+            <p class="lp-eyebrow" data-i18n="home.pricingEyebrow">Plans</p>
+            <h2 id="pricing-title" data-i18n="home.pricing">Pricing</h2>
         </div>
-
-        <!-- PRO -->
-        <div class="lp-plan-v2 popular-v2" data-plan="pro">
-            <span class="lp-plan-v2-badge badge-popular" data-i18n="home.badgePopular">Most Popular</span>
-            <div class="lp-plan-v2-title" style="color:#f97316;">Pro</div>
-            <div class="lp-price-display">
-                <span class="lp-price-main" id="price-pro"></span>
-                <span class="lp-price-unit" id="price-unit-pro"></span>
-            </div>
-            <div class="lp-price-note" id="price-note-pro"></div>
-            <div class="lp-quota-row">
-                <span data-i18n="home.quota">Quota</span>
-                <span class="lp-quota-val" data-i18n="home.quotaPro">4000 img/week</span>
-            </div>
-            <div class="lp-quota-note" data-i18n="home.quotaNote">Images without text don't consume quota</div>
-            <div id="cta-pro"></div>
+        <div class="lp-period-toggle" id="period-toggle" role="group" aria-label="Billing period">
+            <button type="button" class="lp-period-toggle-btn active" data-period="monthly" data-i18n="home.period.monthly">Monthly</button>
+            <button type="button" class="lp-period-toggle-btn" data-period="quarterly" data-i18n="home.period.quarterly">Quarterly</button>
+            <button type="button" class="lp-period-toggle-btn" data-period="yearly" data-i18n="home.period.yearly">Yearly</button>
         </div>
+        <div class="lp-price-grid">
+            <article class="lp-plan" data-plan-card="free">
+                <div class="lp-plan-title">Free</div>
+                <div class="lp-free-price">$0</div>
+                <p class="lp-price-note" data-i18n="home.freeDesc">Free forever. No credit card.</p>
+                <div class="lp-free-options">
+                    <div class="lp-free-option">
+                        <div class="lp-free-option-title" data-i18n="home.plan.freeQuotaTitle">Free 100 img/week</div>
+                    </div>
+                    <div class="lp-free-option">
+                        <div class="lp-free-option-title" data-i18n="home.plan.freeByokPath">Bring your own key</div>
+                        <ul class="lp-plan-feature-list">
+                            <li data-i18n="home.plan.freeByokUnlimited">Unlimited</li>
+                            <li data-i18n="home.plan.freeWhiteBoxOnly">White-background text box rendering</li>
+                        </ul>
+                    </div>
+                </div>
+                <a href="https://chromewebstore.google.com/detail/kanfan-manga-translator/ffjpelbfmecoidnkjapdhpcbeianmkpp" target="_blank" rel="noopener" class="lp-plan-cta lp-cta-free" data-i18n="home.freeInstall">Install Free</a>
+            </article>
 
-        <!-- MAX -->
-        <div class="lp-plan-v2" data-plan="max">
-            <span class="lp-plan-v2-badge badge-heavy" data-i18n="home.badgeHeavy">Heavy User</span>
-            <div class="lp-plan-v2-title" style="color:#ea580c;">Max</div>
-            <div class="lp-price-display">
-                <span class="lp-price-main" id="price-max"></span>
-                <span class="lp-price-unit" id="price-unit-max"></span>
-            </div>
-            <div class="lp-price-note" id="price-note-max"></div>
-            <div class="lp-quota-row">
-                <span data-i18n="home.quota">Quota</span>
-                <span class="lp-quota-val" data-i18n="home.quotaMax">Unlimited</span>
-            </div>
-            <div class="lp-quota-note" data-i18n="home.quotaNote">Images without text don't consume quota</div>
-            <div id="cta-max"></div>
+            <article class="lp-plan" data-plan-card="plus">
+                <span class="lp-plan-badge" data-i18n="home.badgeBasic">Basic</span>
+                <div class="lp-plan-title">Plus</div>
+                <div class="lp-price-display"><span class="lp-price-main" id="price-plus"></span><span class="lp-price-unit" id="price-unit-plus"></span></div>
+                <p class="lp-price-note" id="price-note-plus"></p>
+                <ul class="lp-plan-feature-list">
+                    <li data-i18n="home.quotaPlus">1000 img/week</li>
+                    <li data-i18n="home.plan.paidNoDuplicate">Local result storage</li>
+                    <li data-i18n="home.quotaNote">Images without text don't consume quota</li>
+                    <li data-i18n="home.plan.paidColoredText">Color-background text box rendering</li>
+                    <li data-i18n="home.plan.paidQuality">Higher quality and faster speed</li>
+                </ul>
+                <div id="cta-plus"></div>
+            </article>
+
+            <article class="lp-plan popular-v2" data-plan-card="pro">
+                <span class="lp-plan-badge badge-popular" data-i18n="home.badgePopular">Most Popular</span>
+                <div class="lp-plan-title">Pro</div>
+                <div class="lp-price-display"><span class="lp-price-main" id="price-pro"></span><span class="lp-price-unit" id="price-unit-pro"></span></div>
+                <p class="lp-price-note" id="price-note-pro"></p>
+                <ul class="lp-plan-feature-list">
+                    <li data-i18n="home.quotaPro">4000 img/week</li>
+                    <li data-i18n="home.plan.paidNoDuplicate">Local result storage</li>
+                    <li data-i18n="home.quotaNote">Images without text don't consume quota</li>
+                    <li data-i18n="home.plan.paidColoredText">Color-background text box rendering</li>
+                    <li data-i18n="home.plan.paidQuality">Higher quality and faster speed</li>
+                </ul>
+                <div id="cta-pro"></div>
+            </article>
+
+            <article class="lp-plan" data-plan-card="max">
+                <span class="lp-plan-badge badge-heavy" data-i18n="home.badgeHeavy">Heavy User</span>
+                <div class="lp-plan-title">Max</div>
+                <div class="lp-price-display"><span class="lp-price-main" id="price-max"></span><span class="lp-price-unit" id="price-unit-max"></span></div>
+                <p class="lp-price-note" id="price-note-max"></p>
+                <ul class="lp-plan-feature-list">
+                    <li data-i18n="home.quotaMax">Unlimited</li>
+                    <li data-i18n="home.plan.paidNoDuplicate">Local result storage</li>
+                    <li data-i18n="home.quotaNote">Images without text don't consume quota</li>
+                    <li data-i18n="home.plan.paidColoredText">Color-background text box rendering</li>
+                    <li data-i18n="home.plan.paidQuality">Higher quality and faster speed</li>
+                </ul>
+                <div id="cta-max"></div>
+            </article>
         </div>
-
-    </div>
-
-    <!-- Row 2: Credit packs (always purchasable, can buy multiple) -->
-    <!--    <div class="lp-price-row2">-->
-    <!--        <div class="lp-credits-card">-->
-    <!--            <div class="lp-credits-title" data-i18n="home.creditsTitle">Credit Packs</div>-->
-    <!--            <div class="lp-credits-subtitle" data-i18n="home.creditsSubtitle">Buy as needed, valid for 3 years, repurchasable</div>-->
-    <!--            <div class="lp-credits-grid">-->
-    <!--                <div class="lp-credit-pack">-->
-    <!--                    <div class="lp-pack-name" data-i18n="home.pack5k">5,000 credits</div>-->
-    <!--                    <div class="lp-pack-price">$9.99</div>-->
-    <!--                    <div class="lp-pack-detail" data-i18n="home.packUnit5k">$1.99/1000 img</div>-->
-    <!--                    <button onclick="handleCreditsCheckout(event, 'starter', this)" class="lp-pack-btn" data-i18n="home.buyBtn">Buy</button>-->
-    <!--                </div>-->
-    <!--                <div class="lp-credit-pack pack-popular">-->
-    <!--                    <div class="lp-pack-badge" data-i18n="home.badgePopular">Most Popular</div>-->
-    <!--                    <div class="lp-pack-name" data-i18n="home.pack15k">15,000 credits</div>-->
-    <!--                    <div class="lp-pack-price">$29.99</div>-->
-    <!--                    <div class="lp-pack-detail">$1.89/1000 img<br><span class="lp-pack-saving" data-i18n="home.packSave15k">Save 5%</span></div>-->
-    <!--                    <button onclick="handleCreditsCheckout(event, 'standard', this)" class="lp-pack-btn" data-i18n="home.buyBtn">Buy</button>-->
-    <!--                </div>-->
-    <!--                <div class="lp-credit-pack">-->
-    <!--                    <div class="lp-pack-name" data-i18n="home.pack80k">80,000 credits</div>-->
-    <!--                    <div class="lp-pack-price">$129</div>-->
-    <!--                    <div class="lp-pack-detail">$1.83/1000 img<br><span class="lp-pack-saving" data-i18n="home.packSave80k">Save 8%</span></div>-->
-    <!--                    <button onclick="handleCreditsCheckout(event, 'max', this)" class="lp-pack-btn" data-i18n="home.buyBtn">Buy</button>-->
-    <!--                </div>-->
-    <!--            </div>-->
-    <!--        </div>-->
-    <!--    </div>-->
-
-</section>
-
-<section class="lp-features">
-    <div class="lp-feature-card"><h3 data-i18n="home.feature.ocrTitle">⚡ Smart OCR</h3><p data-i18n="home.feature.ocrDesc">High-speed text recognition optimized for manga fonts.</p></div>
-    <div class="lp-feature-card"><h3 data-i18n="home.feature.cleanTitle">🎨 In-paint Cleaning</h3><p data-i18n="home.feature.cleanDesc">Automatically removes original text and restores art.</p></div>
-    <div class="lp-feature-card"><h3 data-i18n="home.feature.langTitle">🌍 Multi-Language</h3><p data-i18n="home.feature.langDesc">Instant translation into 20+ other languages.</p></div>
-</section>
+    </section>
+</main>
 
 <footer class="lp-footer">
     <p data-i18n="home.footer.copyright">&copy; 2026 Kanfan Project.</p>
-    <div style="margin-top: 15px;">
-        <a href="mailto:support@kanfan.site" data-i18n="home.footer.contact">Contact</a> |
-        <a onclick="openModal('agreementModal')" data-i18n="home.footer.terms">Terms</a> |
-        <a onclick="openModal('refundModal')" data-i18n="home.footer.refunds">Refunds</a> |
+    <div class="lp-footer-links">
+        <a href="mailto:support@kanfan.site" data-i18n="home.footer.contact">Contact</a>
+        <button type="button" data-modal-open="agreementModal" data-i18n="home.footer.terms">Terms</button>
+        <button type="button" data-modal-open="refundModal" data-i18n="home.footer.refunds">Refunds</button>
         <a href="support.html" data-i18n="support.entry">Support</a>
     </div>
 </footer>
 
-<div id="agreementModal" class="modal">
-    <div class="modal-content"><span class="close-btn" onclick="closeModal('agreementModal')">&times;</span><h2 data-i18n="home.modal.termsTitle">Terms</h2><p data-i18n="home.modal.termsBody">User agreement text...</p></div>
+<div id="agreementModal" class="modal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="terms-title">
+        <button type="button" class="close-btn" data-modal-close="agreementModal" aria-label="Close">&times;</button>
+        <h2 id="terms-title" data-i18n="home.modal.termsTitle">Terms</h2>
+        <p data-i18n="home.modal.termsBody">User agreement text...</p>
+    </div>
 </div>
-<div id="refundModal" class="modal">
-    <div class="modal-content"><span class="close-btn" onclick="closeModal('refundModal')">&times;</span><h2 data-i18n="home.modal.refundTitle">Refund Policy</h2><p data-i18n="home.modal.refundBody">Refund policy text...</p></div>
+<div id="refundModal" class="modal" aria-hidden="true">
+    <div class="modal-content" role="dialog" aria-modal="true" aria-labelledby="refund-title">
+        <button type="button" class="close-btn" data-modal-close="refundModal" aria-label="Close">&times;</button>
+        <h2 id="refund-title" data-i18n="home.modal.refundTitle">Refund Policy</h2>
+        <p data-i18n="home.modal.refundBody">Refund policy text...</p>
+    </div>
 </div>
 
-
-<script>
-    // Config
-    const SUPABASE_URL = "https://ikriqgjylpbwqihwpsho.supabase.co";
-    const SUPABASE_ANON_KEY = "sb_publishable_xdQsvfTfJEwfNjF5KYvxLA_y4QiKqFo";
-    const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    const navLangSelect = document.querySelector('.lp-nav-language');
-    if (navLangSelect && window.KanfanI18n) {
-        navLangSelect.value = KanfanI18n.getLang();
-        navLangSelect.addEventListener('change', () => { KanfanI18n.setLang(navLangSelect.value); KanfanI18n.apply(); if (typeof renderPricing === 'function') renderPricing(); });
-        KanfanI18n.apply();
-    }
-    function broadcastAuthToExtension(session) {
-        if (!session) return;
-        window.postMessage(
-            {
-                type: "KANFAN_WEB_AUTH",
-                payload: {
-                    access_token: session.access_token,
-                    refresh_token: session.refresh_token,
-                    expires_in: session.expires_in,
-                    user: session.user
-                }
-            },
-            "*"
-        );
-    }
-
-    // 1) Page load: if already logged in, broadcast once
-    (async () => {
-        const { data: { session } } = await sb.auth.getSession();
-        if (session) broadcastAuthToExtension(session);
-    })();
-
-    // 2) Realtime: listen auth changes (OAuth return, token refresh, sign in/out)
-    sb.auth.onAuthStateChange((event, session) => {
-        if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED" || event === "USER_UPDATED") {
-            broadcastAuthToExtension(session);
-        }
-        if (event === "SIGNED_OUT") {
-            window.postMessage({ type: "KANFAN_WEB_SIGNED_OUT" }, "*");
-        }
-    });
-
-    // VPN Warning: detect user country by IP
-    let _userCountry = null;
-    (async () => {
-        try {
-            const resp = await fetch("https://ipapi.co/json/", { signal: AbortSignal.timeout(5000) });
-            const data = await resp.json();
-            _userCountry = data.country_code; // e.g. "CN"
-        } catch (e) {
-            console.warn("IP geolocation failed:", e);
-        }
-    })();
-
-    function isChinese() {
-        if (!window.KanfanI18n) return false;
-        const lang = KanfanI18n.getLang();
-        return lang === 'zh_CN' || lang === 'zh_TW';
-    }
-
-    const AUTH_API_URL = "https://api.kanfan.site/auth";
-    function getCheckoutCurrency() {
-        return (isChinese() || _userCountry === 'CN') ? "cny" : "usd";
-    }
-
-    /* =========================================
-       PLAN CONFIG - prices, lookup keys, buy button IDs
-       ========================================= */
-    const PLAN_TIERS = ['free', 'plus', 'pro', 'max'];
-
-    const t = (key) => window.KanfanI18n ? KanfanI18n.t(key) : key;
-
-    const PLANS = {
-        plus: {
-            quarterly: { price: '$11.99',  unitKey: 'home.unit.quarter', equivKey: 'home.equiv.plus.quarterly', monthlyEquiv: '$3.99' },
-            yearly:    { price: '$44.99',  unitKey: 'home.unit.year',  equivKey: 'home.equiv.plus.yearly', saveKey: 'home.save6' },
-            _fallbackPeriod: 'quarterly',  // when monthly is selected, fall back to this
-        },
-        pro: {
-            monthly:   { price: '$7.99',   unitKey: 'home.unit.mo',       equivKey: '' },
-            quarterly: { price: '$22.99',  unitKey: 'home.unit.quarter',  equivKey: 'home.equiv.pro.quarterly', saveKey: 'home.save6' },
-            yearly:    { price: '$86.99',  unitKey: 'home.unit.year',     equivKey: 'home.equiv.pro.yearly', saveKey: 'home.save10' },
-        },
-        max: {
-            monthly:   { price: '$16.99',  unitKey: 'home.unit.mo',        equivKey: '' },
-            quarterly: { price: '$47.99',  unitKey: 'home.unit.quarter',  equivKey: 'home.equiv.max.quarterly', saveKey: 'home.save6' },
-            yearly:    { price: '$177.99', unitKey: 'home.unit.year',       equivKey: 'home.equiv.max.yearly', saveKey: 'home.save13' },
-        }
-    };
-
-    /* =========================================
-       STATE
-       ========================================= */
-    let selectedPeriod = 'monthly';
-    let userProfile = null;   // { plan, subscription_status, ... }
-    let userSession = null;
-    let userTier = 'free';    // parsed tier: free | plus | pro | max
-    let userPeriod = null;    // parsed period: monthly | quarterly | yearly
-
-    /* =========================================
-       PARSE USER PLAN from profiles.plan field
-       ========================================= */
-    function parseUserPlan(planStr) {
-        if (!planStr) return { tier: 'free', period: null };
-        const s = planStr.toLowerCase();
-        let tier = 'free';
-        if (s.includes('max')) tier = 'max';
-        else if (s.includes('pro')) tier = 'pro';
-        else if (s.includes('plus')) tier = 'plus';
-        let period = null;
-        if (s.includes('monthly')) period = 'monthly';
-        else if (s.includes('quarterly')) period = 'quarterly';
-        else if (s.includes('yearly') || s.includes('annual')) period = 'yearly';
-        return { tier, period };
-    }
-
-    function tierIndex(tier) {
-        return PLAN_TIERS.indexOf(tier);
-    }
-
-    /* =========================================
-       PERIOD TOGGLE
-       ========================================= */
-    document.getElementById('period-toggle').addEventListener('click', (e) => {
-        const btn = e.target.closest('.lp-period-toggle-btn');
-        if (!btn) return;
-        document.querySelectorAll('.lp-period-toggle-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        selectedPeriod = btn.dataset.period;
-        renderPricing();
-    });
-
-
-    async function openStripePortal(btnEl) {
-        const { data: { session } } = await sb.auth.getSession();
-        if (!session) {
-            window.location.href = 'login.html';
-            return;
-        }
-
-        const btn = btnEl || null;
-        const originalText = btn ? btn.innerText : "";
-
-        if (btn) {
-            btn.innerText = t('home.processing');
-            btn.style.opacity = "0.7";
-            btn.style.pointerEvents = "none";
-        }
-
-        try {
-            const resp = await fetch(AUTH_API_URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${session.access_token}`,
-                },
-                body: JSON.stringify({
-                    action: "createStripePortal",
-                    payload: {}
-                })
-            });
-
-            const data = await resp.json();
-            if (data.success && data.portal_url) {
-                window.location.href = data.portal_url;
-                return;
-            }
-
-            console.error("Portal API Error:", data);
-            alert("Error: " + (data.error || "Could not open billing portal"));
-        } catch (e) {
-            console.error("Portal Network Error:", e);
-            alert("Network error. Please try again.");
-        } finally {
-            if (btn) {
-                btn.innerText = originalText;
-                btn.style.opacity = "1";
-                btn.style.pointerEvents = "auto";
-            }
-        }
-    }
-
-    /* =========================================
-       RENDER PRICING
-       ========================================= */
-    function renderPricing() {
-        const isSubscribed = userProfile &&
-            userProfile.subscription_status === 'active' &&
-            userTier !== 'free';
-        const samePeriod = userPeriod === selectedPeriod;
-
-        // Update prices & CTA for each paid plan
-        ['plus', 'pro', 'max'].forEach(plan => {
-            const cfg = PLANS[plan][selectedPeriod];
-            const planCard = document.querySelector(`.lp-plan-v2[data-plan="${plan}"]`);
-            const ctaContainer = document.getElementById(`cta-${plan}`);
-
-            // Clean up dynamic badge
-            planCard.classList.remove('current-plan');
-            const existingBadge = planCard.querySelector('.badge-current');
-            if (existingBadge) existingBadge.remove();
-
-            // Fallback: plan doesn't support this period → show the fallback period pricing directly
-            const fallbackPeriod = PLANS[plan]._fallbackPeriod;
-            if (!cfg && fallbackPeriod) {
-                const fb = PLANS[plan][fallbackPeriod];
-                // Show fallback period price directly (e.g. quarterly price for Plus when monthly is selected)
-                document.getElementById(`price-${plan}`).textContent = fb.price;
-                document.getElementById(`price-unit-${plan}`).textContent = t(fb.unitKey);
-                const noteEl = document.getElementById(`price-note-${plan}`);
-                let noteHtml = fb.equivKey ? t(fb.equivKey) : '';
-                if (fb.saveKey) noteHtml += (noteHtml ? ' · ' : '') + `<span class="lp-save-badge">${t(fb.saveKey)}</span>`;
-                noteEl.innerHTML = noteHtml;
-                ctaContainer.innerHTML = '';
-                // Use fallback period for the CTA — always send quarterly to backend
-                if (!userSession) {
-                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-subscribe" onclick="handleFallbackCheckout(event, '${plan}', '${fallbackPeriod}', this)">${t('home.subscribe')}</button>`;
-                } else if (!isSubscribed) {
-                    renderSubscribeButton(ctaContainer, plan, fallbackPeriod);
-                } else {
-                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-blocked" onclick="openStripePortal(this)">${t('home.managePlan')}</button>`;
-                }
-                return;
-            } else if (!cfg) {
-                document.getElementById(`price-${plan}`).textContent = '—';
-                document.getElementById(`price-unit-${plan}`).textContent = '';
-                document.getElementById(`price-note-${plan}`).innerHTML = '';
-                ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-blocked" disabled>${t('home.periodNotSupported')}</button>`;
-                return;
-            }
-
-            // Price display
-            document.getElementById(`price-${plan}`).textContent = cfg.price;
-            document.getElementById(`price-unit-${plan}`).textContent = t(cfg.unitKey);
-
-            const noteEl = document.getElementById(`price-note-${plan}`);
-            let noteHtml = cfg.equivKey ? t(cfg.equivKey) : '';
-            if (cfg.saveKey) noteHtml += (noteHtml ? ' · ' : '') + `<span class="lp-save-badge">${t(cfg.saveKey)}</span>`;
-            noteEl.innerHTML = noteHtml;
-
-            // CTA
-            ctaContainer.innerHTML = '';
-            const planLabel = plan.charAt(0).toUpperCase() + plan.slice(1);
-
-            if (!userSession) {
-                ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-subscribe" onclick="handlePlanCheckout(event, '${plan}', this)">${t('home.subscribe')}</button>`;
-            } else if (!isSubscribed) {
-                renderSubscribeButton(ctaContainer, plan);
-            } else if (isSubscribed && samePeriod) {
-                if (plan === userTier) {
-                    planCard.classList.add('current-plan');
-                    const badge = document.createElement('span');
-                    badge.className = 'lp-plan-v2-badge badge-current';
-                    badge.textContent = t('home.currentPlan');
-                    planCard.appendChild(badge);
-                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-current" onclick="openStripePortal(this)">${t('home.currentPlan')}</button>`;
-                } else {
-                    ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-upgrade" onclick="openStripePortal(this)">${t('home.managePlan')}</button>`;
-                }
-            } else if (isSubscribed && !samePeriod) {
-                ctaContainer.innerHTML = `<button class="lp-plan-cta lp-cta-blocked" onclick="openStripePortal(this)">${t('home.managePlan')}</button>`;
-            }
-        });
-
-        // Highlight the user's current period tab if subscribed
-        if (isSubscribed && userPeriod) {
-            document.querySelectorAll('.lp-period-toggle-btn').forEach(btn => {
-                if (btn.dataset.period === userPeriod) {
-                    btn.style.fontWeight = '800';
-                } else {
-                    btn.style.fontWeight = '';
-                }
-            });
-        }
-    }
-
-    /* =========================================
-       RENDER SUBSCRIBE BUTTON (Checkout Session flow)
-       ========================================= */
-    function renderSubscribeButton(container, plan, periodOverride) {
-        const period = periodOverride || selectedPeriod;
-        const cfg = PLANS[plan][period];
-        if (!cfg) return;
-        container.innerHTML = `<button class="lp-plan-cta lp-cta-subscribe" onclick="handlePlanCheckout(event, '${plan}', this, '${period}')">${t('home.subscribe')}</button>`;
-    }
-
-    async function handleFallbackCheckout(event, plan, period, btnEl) {
-        if (event) event.preventDefault();
-        const { data: { session } } = await sb.auth.getSession();
-        if (!session) {
-            window.location.href = 'login.html';
-            return;
-        }
-
-        const cfg = PLANS[plan][period];
-        if (!cfg) return;
-
-        const btn = btnEl || (event && event.currentTarget);
-
-        if (userProfile && userProfile.subscription_status === 'active' && userTier !== 'free') {
-            await openStripePortal(btn);
-            return;
-        }
-
-        const originalText = btn ? btn.innerText : "";
-
-        if (btn) {
-            btn.innerText = t('home.processing');
-            btn.style.opacity = "0.7";
-            btn.style.pointerEvents = "none";
-        }
-
-        try {
-            const resp = await fetch(AUTH_API_URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${session.access_token}`
-                },
-                body: JSON.stringify({
-                    action: "createStripeCheckout",
-                    payload: {
-                        tier: plan,
-                        period: period,
-                        currency: getCheckoutCurrency(),
-                        product_type: "subscription"
-                    }
-                })
-            });
-
-            const data = await resp.json();
-            if (data.success && data.checkout_url) {
-                window.location.href = data.checkout_url;
-                return;
-            }
-
-            alert("Error: " + (data.error || "Could not init checkout"));
-        } catch (e) {
-            alert("Network error. Please try again.");
-        } finally {
-            if (btn) {
-                btn.innerText = originalText;
-                btn.style.opacity = "1";
-                btn.style.pointerEvents = "auto";
-            }
-        }
-    }
-
-    async function handlePlanCheckout(event, plan, btnEl, periodOverride) {
-        if (event) event.preventDefault();
-
-        const { data: { session } } = await sb.auth.getSession();
-        if (!session) {
-            window.location.href = 'login.html';
-            return;
-        }
-
-        const period = periodOverride || selectedPeriod;
-        const cfg = PLANS[plan][period];
-        if (!cfg) return;
-
-        const btn = btnEl || (event && event.currentTarget);
-
-        if (userProfile && userProfile.subscription_status === 'active' && userTier !== 'free') {
-            await openStripePortal(btn);
-            return;
-        }
-
-        const originalText = btn ? btn.innerText : "";
-
-        if (btn) {
-            btn.innerText = t('home.processing');
-            btn.style.opacity = "0.7";
-            btn.style.pointerEvents = "none";
-        }
-
-        try {
-            const resp = await fetch(AUTH_API_URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${session.access_token}`,
-                },
-                body: JSON.stringify({
-                    action: "createStripeCheckout",
-                    payload: {
-                        tier: plan,
-                        period: period,
-                        currency: getCheckoutCurrency(),
-                        product_type: "subscription"
-                    }
-                })
-            });
-
-            const data = await resp.json();
-            if (data.success && data.portal_url) {
-                window.location.href = data.portal_url;
-                return;
-            }
-            if (data.success && data.checkout_url) {
-                window.location.href = data.checkout_url;
-                return;
-            }
-
-            console.error("API Error:", data);
-            alert("Error: " + (data.error || "Could not init checkout"));
-        } catch (e) {
-            console.error("Network Error:", e);
-            alert("Network error. Please try again.");
-        } finally {
-            if (btn) {
-                btn.innerText = originalText;
-                btn.style.opacity = "1";
-                btn.style.pointerEvents = "auto";
-            }
-        }
-    }
-
-    async function handleCreditsCheckout(event, pack, btnEl) {
-        if (event) event.preventDefault();
-
-        const { data: { session } } = await sb.auth.getSession();
-        if (!session) {
-            window.location.href = 'login.html';
-            return;
-        }
-
-        const btn = btnEl || (event && event.currentTarget);
-        const originalText = btn ? btn.innerText : "";
-
-        if (btn) {
-            btn.innerText = t('home.processing');
-            btn.style.opacity = "0.7";
-            btn.style.pointerEvents = "none";
-        }
-
-        try {
-            const resp = await fetch(AUTH_API_URL, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Authorization": `Bearer ${session.access_token}`,
-                },
-                body: JSON.stringify({
-                    action: "createStripeCheckout",
-                    payload: {
-                        pack: pack,
-                        currency: getCheckoutCurrency(),
-                        product_type: "credits"
-                    }
-                })
-            });
-
-            const data = await resp.json();
-            if (data.success && data.checkout_url) {
-                window.location.href = data.checkout_url;
-                return;
-            }
-
-            console.error("API Error:", data);
-            alert("Error: " + (data.error || "Could not init checkout"));
-        } catch (e) {
-            console.error("Network Error:", e);
-            alert("Network error. Please try again.");
-        } finally {
-            if (btn) {
-                btn.innerText = originalText;
-                btn.style.opacity = "1";
-                btn.style.pointerEvents = "auto";
-            }
-        }
-    }
-
-    /* =========================================
-       INIT: fetch auth + profile, then render
-       ========================================= */
-    (async () => {
-        const { data: { session } } = await sb.auth.getSession();
-        userSession = session;
-
-        if (session) {
-            // Update nav
-            const navBtn = document.getElementById('nav-login-btn');
-            navBtn.dataset.i18n = "nav.myAccount";
-            navBtn.textContent = KanfanI18n.t("nav.myAccount");
-            navBtn.href = "account.html";
-
-            // Fetch profile from Supabase
-            try {
-                const { data: profile } = await sb
-                    .from('profiles')
-                    .select('plan, subscription_status, credits, quota_tier')
-                    .eq('id', session.user.id)
-                    .single();
-
-                if (profile) {
-                    userProfile = profile;
-                    const parsed = parseUserPlan(profile.plan);
-                    userTier = parsed.tier;
-                    userPeriod = parsed.period;
-
-                    // If user has an active subscription, default the toggle to their period
-                    if (profile.subscription_status === 'active' && userTier !== 'free' && userPeriod) {
-                        selectedPeriod = userPeriod;
-                        document.querySelectorAll('.lp-period-toggle-btn').forEach(btn => {
-                            btn.classList.toggle('active', btn.dataset.period === selectedPeriod);
-                        });
-                    }
-                }
-            } catch (e) {
-                console.warn("Failed to fetch profile:", e);
-            }
-        }
-
-        renderPricing();
-    })();
-
-    // Modal Logic
-    function openModal(id) { document.getElementById(id).style.display = "block"; }
-    function closeModal(id) { document.getElementById(id).style.display = "none"; }
-</script>
+<script src="try-it.js?v=20260614c"></script>
+</body>
+</html>

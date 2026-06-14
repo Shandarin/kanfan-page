@@ -9,96 +9,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="i18n.js"></script>
     <link rel="stylesheet" href="style.css">
-
-    <style>
-        /* =========================================
-           ACCOUNT PAGE SPECIFIC STYLES
-           ========================================= */
-
-        /* 布局容器 */
-        .account-container {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
-            width: 100%;
-            flex: 1;
-        }
-
-        /* 标题 */
-        .page-title {
-            font-size: 1.8rem;
-            font-weight: 800;
-            margin-bottom: 30px;
-            color: var(--dark);
-        }
-
-        /* 导航栏右侧 */
-        .nav-right { display: flex; align-items: center; gap: 15px; }
-
-        /* Logo 微调 */
-        .logo {
-            font-weight: 800;
-            font-size: 1.25rem;
-            color: var(--primary);
-            text-decoration: none;
-            display: flex; align-items: center; gap: 8px;
-        }
-
-        /* 覆盖卡片样式 */
-        .section-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 20px;
-        }
-        .section-title { font-size: 1.1rem; font-weight: 700; color: var(--dark); margin-bottom: 5px; }
-        .section-desc { font-size: 0.9rem; color: var(--slate); line-height: 1.5; }
-
-        /* 用户信息行 */
-        .info-row {
-            display: flex;
-            align-items: center;
-            padding: 15px 0;
-            border-bottom: 1px solid #f1f5f9;
-        }
-        .info-row:last-child { border-bottom: none; }
-        .info-label { width: 120px; color: var(--slate); font-size: 0.9rem; }
-        .info-value { font-weight: 500; color: var(--dark); flex: 1; }
-
-        /* 特殊按钮样式补充 */
-        .btn-outline {
-            background: white;
-            border: 1px solid #cbd5e1;
-            color: var(--slate);
-            padding: 8px 16px;
-            border-radius: 50px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.2s;
-        }
-        .btn-outline:hover { border-color: var(--dark); color: var(--dark); }
-
-        .btn-text {
-            background: none;
-            border: none;
-            color: var(--primary);
-            padding: 0;
-            font-size: 0.9rem;
-            cursor: pointer;
-            font-weight: 600;
-        }
-        .btn-text:hover { text-decoration: underline; color: var(--primary-hover); }
-
-        /* 扩展同步状态卡片颜色 */
-        .sync-card {
-            background: #f0f9ff;
-            border: 1px solid #bae6fd;
-            border-radius: 12px;
-            padding: 20px;
-            margin-bottom: 25px;
-            display: none;
-        }
-    </style>
 </head>
 <body>
 
@@ -107,20 +17,21 @@
         <img src="logo.png" alt="Kanfan" class="site-logo-img" onerror="this.hidden=true; this.nextElementSibling.hidden=false;">
         <span>Kanfan</span>
     </a>
-    <div class="nav-right"><div data-lang-switcher></div>
-        <span id="nav-email" style="font-size: 0.9rem; color: var(--slate); margin-right: 10px;"></span>
-        <button id="btn-logout" class="btn-outline" style="font-size: 0.85rem;"><span data-i18n="account.signout">Sign Out</span></button>
+    <div class="nav-right">
+        <div data-lang-switcher></div>
+        <span id="nav-email" class="nav-email"></span>
+        <button id="btn-logout" class="btn-outline"><span data-i18n="account.signout">Sign Out</span></button>
     </div>
 </nav>
 
 <div class="account-container">
 
     <div id="sync-status" class="sync-card">
-        <div style="display: flex; gap: 15px; align-items: center;">
-            <svg width="24" height="24" fill="none" stroke="#0284c7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+        <div class="sync-content">
+            <svg class="sync-icon" width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
             <div>
-                <h3 style="font-size: 1rem; color: #0c4a6e; margin-bottom: 2px;"><span data-i18n="account.syncTitle">Extension Connected</span></h3>
-                <p style="font-size: 0.9rem; color: #0369a1;"><span data-i18n="account.syncDesc">Your account is now synced with the Kanfan browser extension.</span></p>
+                <h3 class="sync-title"><span data-i18n="account.syncTitle">Extension Connected</span></h3>
+                <p class="sync-desc"><span data-i18n="account.syncDesc">Your account is now synced with the Kanfan browser extension.</span></p>
             </div>
         </div>
     </div>
@@ -155,12 +66,10 @@
             </div>
         </div>
 
-        <p style="color: var(--slate); font-size: 0.95rem; margin-bottom: 20px;">
-            You will be redirected to our secure billing portal hosted by Stripe.
-        </p>
+        <p class="account-billing-copy" data-i18n="account.billingHint">You will be redirected to our secure billing portal hosted by Stripe.</p>
 
         <button id="btn-portal" class="btn">
-            <span data-i18n="account.manage">Manage Subscription</span> <span style="margin-left: 8px">→</span>
+            <span data-i18n="account.manage">Manage Subscription</span><span class="button-icon">→</span>
         </button>
         <div id="portal-msg" class="msg"></div>
     </div>
@@ -241,14 +150,8 @@
 
     // 1. Logout
     document.getElementById('btn-logout').addEventListener('click', async () => {
-        const btn = document.getElementById('btn-logout');
-        btn.disabled = true;
-        try {
-            await sb.auth.signOut({ scope: 'local' });
-        } finally {
-            window.postMessage({ type: "KANFAN_WEB_SIGNED_OUT" }, "*");
-            window.location.replace('index.html');
-        }
+        await sb.auth.signOut();
+        window.location.href = 'index.html';
     });
 
     // 2. Reset Password (Send Email)
@@ -324,7 +227,7 @@
             msg.className = "msg error";
             msg.style.display = "block";
             btn.disabled = false;
-            btn.innerHTML = '<span data-i18n="account.manage">Manage Subscription</span> <span style="margin-left: 8px">→</span>';
+            btn.innerHTML = '<span data-i18n="account.manage">Manage Subscription</span><span class="button-icon">→</span>';
         }
     });
 

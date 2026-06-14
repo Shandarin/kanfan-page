@@ -5,126 +5,76 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>技术支持与反馈 - Kanfan</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="style.css">
     <script src="i18n.js"></script>
-    <style>
-        /* 确保 body 使用项目定义的字体和背景色变量 */
-        body {
-            font-family: var(--font-main, sans-serif);
-            background-color: var(--light, #f8fafc);
-            color: var(--dark, #0f172a);
-        }
-        /* 用于调试信息块的辅助样式 */
-        .debug-info-label { color: var(--slate); font-weight: 600; }
-        .debug-info-value { color: var(--dark); }
-        .support-status {
-            display: none;
-            text-align: center;
-            font-size: 0.875rem;
-            margin-top: 1rem;
-        }
-        .support-status.success { color: #15803d; }
-        .support-status.error { color: #dc2626; }
-    </style>
 </head>
-<body class="min-h-screen flex flex-col items-center justify-center p-4">
+<body class="form-page">
 
-<div class="max-w-md w-full bg-white rounded-2xl shadow-xl p-8 text-center space-y-6 border border-slate-100">
-
-    <div class="flex items-center justify-center gap-2 mb-2">
-        <svg class="w-10 h-10 text-[color:var(--primary)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-            <polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/>
-        </svg>
-        <span class="text-3xl font-extrabold text-[color:var(--primary)] tracking-tight">Kanfan</span>
+<main class="support-shell">
+    <div class="page-card-header">
+        <a href="index.html" class="brand-mark" aria-label="Kanfan home">
+            <img src="logo.png" alt="Kanfan" class="site-logo-img" onerror="this.hidden=true; this.nextElementSibling.hidden=false;">
+            <span>Kanfan</span>
+        </a>
+        <h1 class="page-card-title" data-i18n="support.title">留言反馈</h1>
+        <p class="page-card-desc" data-i18n="support.desc">请在下方填写您的留言，提交后我们会通过邮件尽快回复您。</p>
     </div>
 
-    <h1 class="text-2xl font-bold text-[color:var(--dark)]" data-i18n="support.title">留言反馈</h1>
-    <p class="text-[color:var(--slate)] text-sm leading-relaxed" data-i18n="support.desc">
-        请在下方填写您的留言，提交后我们会通过邮件尽快回复您。
-    </p>
-
-    <div id="debug-info" class="text-left bg-[color:var(--light)] p-4 rounded-xl text-xs space-y-2 border border-slate-200">
+    <div id="debug-info" class="debug-box">
         <p><span class="debug-info-label" data-i18n="support.debug.source">来源:</span> <span id="info-from" class="debug-info-value">-</span></p>
         <p><span class="debug-info-label" data-i18n="support.debug.version">插件版本:</span> <span id="info-v" class="debug-info-value">-</span></p>
-        <p><span class="debug-info-label" data-i18n="support.debug.page">来源页面:</span> <span class="break-all debug-info-value" id="info-url">-</span></p>
+        <p><span class="debug-info-label" data-i18n="support.debug.page">来源页面:</span> <span id="info-url" class="debug-info-value">-</span></p>
         <p><span class="debug-info-label" data-i18n="support.debug.email">账号邮箱:</span> <span id="info-email" class="debug-info-value">-</span></p>
     </div>
 
-    <form id="support-form" method="POST" class="space-y-5 text-left mt-6">
-
+    <form id="support-form" method="POST" class="form-stack">
         <input type="hidden" name="source" id="input-from">
         <input type="hidden" name="extension_version" id="input-v">
         <input type="hidden" name="issue_url" id="input-url">
         <input type="hidden" name="user_id" id="input-uid">
 
         <div>
-            <label class="block text-sm font-semibold text-[color:var(--dark)] mb-2" data-i18n="support.form.emailLabel">您的邮箱</label>
-            <input type="email" name="email" id="input-email" required placeholder="name@example.com" data-i18n-placeholder="support.form.emailPlaceholder"
-                   class="w-full px-4 py-3 border border-slate-200 rounded-lg text-sm shadow-sm
-                          focus:ring-2 focus:ring-[color:var(--primary)] focus:border-[color:var(--primary)] focus:ring-opacity-20 outline-none transition-all">
+            <label for="input-email" data-i18n="support.form.emailLabel">您的邮箱</label>
+            <input type="email" name="email" id="input-email" required placeholder="name@example.com" data-i18n-placeholder="support.form.emailPlaceholder">
         </div>
 
         <div>
-            <label class="block text-sm font-semibold text-[color:var(--dark)] mb-2" data-i18n="support.form.messageLabel">留言内容</label>
-            <textarea name="message" required rows="4" placeholder="请详细描述您遇到的情况或建议..." data-i18n-placeholder="support.form.messagePlaceholder"
-                      class="w-full px-4 py-3 border border-slate-200 rounded-lg text-sm shadow-sm
-                             focus:ring-2 focus:ring-[color:var(--primary)] focus:border-[color:var(--primary)] focus:ring-opacity-20 outline-none transition-all resize-none"></textarea>
+            <label for="support-message" data-i18n="support.form.messageLabel">留言内容</label>
+            <textarea id="support-message" name="message" required rows="4" placeholder="请详细描述您遇到的情况或建议..." data-i18n-placeholder="support.form.messagePlaceholder"></textarea>
         </div>
 
-        <button type="submit"
-                id="submit-btn"
-                data-i18n="support.form.submit"
-                class="w-full bg-[color:var(--primary)] hover:bg-[color:var(--primary-hover)] text-white font-bold py-3 px-6 rounded-full
-                       shadow-md hover:shadow-[0_10px_15px_-3px_rgba(249,115,22,0.4)] transition-all duration-200 transform hover:-translate-y-1">
-            发送留言
-        </button>
+        <button type="submit" id="submit-btn" class="submit-btn" data-i18n="support.form.submit">发送留言</button>
         <div class="support-status success" id="successMsg">Thank you! Your message has been submitted.</div>
         <div class="support-status error" id="errorMsg">Oops! Something went wrong. Please try again.</div>
     </form>
-</div>
+</main>
 
-<script type="text/javascript">
+<script>
     KanfanI18n.apply();
     document.title = KanfanI18n.t('support.pageTitle');
-    // 1. 读取 URL 参数
+
     const urlParams = new URLSearchParams(window.location.search);
     const sourceFrom = urlParams.get('from') || 'web';
-    const extVersion = urlParams.get('v') ||  KanfanI18n.t('support.meta.unknown');
-    // 如果 url 太长，截断显示，但保留完整值用于提交
+    const extVersion = urlParams.get('v') || KanfanI18n.t('support.meta.unknown');
     const rawIssueUrl = urlParams.get('url') || KanfanI18n.t('support.meta.unknown');
-    let displayIssueUrl = rawIssueUrl;
-    if (displayIssueUrl.length > 100) {
-        displayIssueUrl = displayIssueUrl.substring(0, 97) + '...';
-    }
-
+    const displayIssueUrl = rawIssueUrl.length > 100 ? `${rawIssueUrl.substring(0, 97)}...` : rawIssueUrl;
     const userId = urlParams.get('uid') || '';
     const userEmail = urlParams.get('email') || '';
 
-    // 2. 更新页面上的 UI 显示
     document.getElementById('info-from').textContent = sourceFrom === 'ext'
         ? KanfanI18n.t('support.source.ext')
         : KanfanI18n.t('support.source.web');
     document.getElementById('info-v').textContent = extVersion;
-    // 显示截断后的 URL
     document.getElementById('info-url').textContent = displayIssueUrl;
-    // 设置完整 URL 的 title，鼠标悬停可见
     document.getElementById('info-url').title = rawIssueUrl;
     document.getElementById('info-email').textContent = userEmail || KanfanI18n.t('support.meta.notLoggedIn');
 
-    // 3. 将参数填入 Formspree 的隐藏表单字段中 (提交完整值)
     document.getElementById('input-from').value = sourceFrom;
     document.getElementById('input-v').value = extVersion;
     document.getElementById('input-url').value = rawIssueUrl;
     document.getElementById('input-uid').value = userId;
+    if (userEmail) document.getElementById('input-email').value = userEmail;
 
-    // 如果 URL 中有邮箱，自动填入邮箱输入框
-    if (userEmail) {
-        document.getElementById('input-email').value = userEmail;
-        // 可选：如果已自动填入，让邮箱框只读，防止用户修改
-        // document.getElementById('input-email').readOnly = true;
-        // document.getElementById('input-email').classList.add('bg-gray-50', 'cursor-not-allowed');
-    }
     const feedbackEndpoint = "https://jicbnty4ugip4n7rsn6xjg3moe0poghf.lambda-url.us-west-1.on.aws/";
     const supportForm = document.getElementById('support-form');
     const submitBtn = document.getElementById('submit-btn');
@@ -148,7 +98,6 @@
         successMsg.style.display = "none";
         errorMsg.style.display = "none";
         submitBtn.disabled = true;
-        submitBtn.style.opacity = "0.7";
 
         const payload = {
             type: "support",
@@ -176,7 +125,6 @@
             showSupportError();
         } finally {
             submitBtn.disabled = false;
-            submitBtn.style.opacity = "";
         }
     });
 </script>

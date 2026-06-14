@@ -4,134 +4,55 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Uninstall Feedback - Kanfan</title>
-
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="/style.css">
     <script src="/i18n.js"></script>
-
-    <style>
-        .feedback-container {
-            max-width: 500px;
-            margin: 60px auto;
-            background: var(--white);
-            padding: 20px 40px 40px 40px;
-            border-radius: 16px;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1),
-            0 4px 6px -2px rgba(0,0,0,0.05);
-        }
-        .feedback-title {
-            font-size: 1.5rem;
-            font-weight: 800;
-            text-align: center;
-            margin-bottom: 8px;
-        }
-        .feedback-desc {
-            text-align: center;
-            color: var(--slate);
-            font-size: 0.95rem;
-            margin-bottom: 24px;
-        }
-
-        .radio-group {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 24px;
-        }
-        .radio-label {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-            font-size: 0.95rem;
-            cursor: pointer;
-            line-height: 1.25;
-        }
-        .radio-label input[type="checkbox"] {
-            margin-top: 2px;
-            accent-color: var(--primary);
-            width: 16px;
-            height: 16px;
-        }
-
-        .textarea-box {
-            width: 100%;
-            min-height: 50px;
-            padding: 12px;
-            border: 1px solid #cbd5e1;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            resize: vertical;
-            margin-bottom: 24px;
-        }
-        .submit-btn {
-            width: 100%;
-            background: var(--primary);
-            color: var(--white);
-            font-weight: 600;
-            padding: 14px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.25s;
-        }
-
-        .success-msg, .error-msg {
-            text-align: center;
-            font-size: 0.95rem;
-            margin-top: 20px;
-        }
-        .success-msg { color: green; }
-        .error-msg { color: red; }
-    </style>
 </head>
 
-<body>
-<div class="feedback-container">
-    <h1 class="feedback-title" data-i18n="uninstall.title">Sorry to see you go 😢</h1>
-    <p class="feedback-desc" data-i18n="uninstall.desc">Please tell us why you're uninstalling. It helps us improve.</p>
+<body class="form-page">
+<main class="feedback-container">
+    <div class="page-card-header">
+        <a href="/" class="brand-mark" aria-label="Kanfan home">
+            <span>Kanfan</span>
+        </a>
+        <h1 class="feedback-title" data-i18n="uninstall.title">Sorry to see you go</h1>
+        <p class="feedback-desc" data-i18n="uninstall.desc">Please tell us why you're uninstalling. It helps us improve.</p>
+    </div>
 
-    <!--
-      We send a feedback API request that includes:
-      - selected reasons (checkboxes)
-      - optional comment
-      - meta fields injected from URL query
-    -->
     <form id="uninstall-form" method="POST">
         <div class="radio-group">
             <label class="radio-label">
                 <input type="checkbox" name="reasons" value="Too slow / Not working" />
-                <span data-i18n="uninstall.reason1">Too slow / Not working</span>
+                <span data-i18n="uninstall.reason.performance">Too slow / Not working</span>
             </label>
             <label class="radio-label">
                 <input type="checkbox" name="reasons" value="Translation quality is not good" />
-                <span data-i18n="uninstall.reason2">Translation quality is not good</span>
+                <span data-i18n="uninstall.reason.translation">Translation quality is not good</span>
             </label>
             <label class="radio-label">
                 <input type="checkbox" name="reasons" value="Hard to use / Confusing UI" />
-                <span data-i18n="uninstall.reason3">Hard to use / Confusing UI</span>
+                <span data-i18n="uninstall.reason.missing_feature">Hard to use / Confusing UI</span>
             </label>
             <label class="radio-label">
                 <input type="checkbox" name="reasons" value="Too expensive" />
-                <span data-i18n="uninstall.reason4">Too expensive</span>
+                <span data-i18n="uninstall.reason.pricing">Too expensive</span>
             </label>
             <label class="radio-label">
                 <input type="checkbox" name="reasons" value="Privacy concerns" />
-                <span data-i18n="uninstall.reason5">Privacy concerns</span>
+                <span data-i18n="uninstall.reason.bug">Bug or privacy concern</span>
             </label>
             <label class="radio-label">
                 <input type="checkbox" name="reasons" value="I found an alternative" />
-                <span data-i18n="uninstall.reason6">I found an alternative</span>
+                <span data-i18n="uninstall.reason.alternative">I found an alternative</span>
             </label>
             <label class="radio-label">
                 <input type="checkbox" name="reasons" value="Other" />
-                <span data-i18n="uninstall.reason7">Other</span>
+                <span data-i18n="uninstall.reason.other">Other</span>
             </label>
         </div>
 
-        <textarea class="textarea-box" name="comment" placeholder="Anything else you'd like to share?"
-                  data-i18n-placeholder="uninstall.placeholder"></textarea>
+        <textarea class="textarea-box" name="comment" placeholder="Anything else you'd like to share?" data-i18n-placeholder="uninstall.commentPlaceholder"></textarea>
 
-        <!-- ===== Meta fields injected from URL query params ===== -->
         <input type="hidden" name="source" id="meta-from">
         <input type="hidden" name="language" id="meta-lang">
         <input type="hidden" name="extension_version" id="meta-v">
@@ -142,17 +63,12 @@
 
         <button type="submit" class="submit-btn" data-i18n="uninstall.submit">Submit</button>
 
-        <div class="success-msg" id="successMsg" style="display:none;" data-i18n="uninstall.success">
-            Thank you! Your feedback has been submitted.
-        </div>
-        <div class="error-msg" id="errorMsg" style="display:none;" data-i18n="uninstall.error">
-            Oops! Something went wrong. Please try again.
-        </div>
+        <div class="success-msg" id="successMsg" data-i18n="uninstall.success">Thank you! Your feedback has been submitted.</div>
+        <div class="error-msg" id="errorMsg" data-i18n="uninstall.error">Oops! Something went wrong. Please try again.</div>
     </form>
-</div>
+</main>
 
 <script>
-    // ===== Helpers =====
     function setIfExists(id, value) {
         const el = document.getElementById(id);
         if (!el) return;
@@ -160,43 +76,36 @@
     }
 
     function normalizeEmail(email) {
-        const e = (email || "").trim();
-        // very light check; keep raw if unknown
-        return e;
+        return (email || "").trim();
     }
 
     function applyLangFromQuery(qs) {
         const lang = (qs.get("lang") || "").trim();
-        if (!lang) return;
+        if (!lang) return "";
 
-        // 核心新增：动态修改 <html> 标签的 lang 属性
-        document.documentElement.lang = lang;
-
-        // 1) store into hidden input
-        setIfExists("meta-lang", lang);
-
-        // 2) try to drive your i18n.js (best-effort, won't break if not present)
+        let appliedLang = lang;
         try {
-            // common patterns seen in your codebase: KanfanI18n.getLang()/setLang()
             if (window.KanfanI18n && typeof window.KanfanI18n.setLang === "function") {
-                window.KanfanI18n.setLang(lang);
+                appliedLang = window.KanfanI18n.setLang(lang);
             } else if (window.KanfanI18n && typeof window.KanfanI18n.init === "function") {
-                // some setups re-init based on query
-                window.KanfanI18n.init({ lang });
+                appliedLang = window.KanfanI18n.init({ lang });
             }
-        } catch (e) {
-            // ignore
-        }
+        } catch (e) {}
+
+        document.documentElement.lang = appliedLang;
+        setIfExists("meta-lang", appliedLang);
+        return appliedLang;
     }
 
-    // ===== Read URL params and inject into hidden fields =====
     (function initFromUrlParams() {
         const qs = new URLSearchParams(location.search);
+        const appliedLang = applyLangFromQuery(qs);
+        if (window.KanfanI18n && typeof window.KanfanI18n.apply === "function") {
+            window.KanfanI18n.apply();
+            document.title = `${window.KanfanI18n.t("uninstall.title")} - Kanfan`;
+            setIfExists("meta-lang", appliedLang || window.KanfanI18n.getLang());
+        }
 
-        // language (also drives i18n best-effort)
-        applyLangFromQuery(qs);
-
-        // meta fields
         setIfExists("meta-from", qs.get("from") || "");
         setIfExists("meta-v", qs.get("v") || "");
         setIfExists("meta-uuid", qs.get("uuid") || "");
@@ -205,7 +114,6 @@
         setIfExists("meta-last-url", qs.get("lastUrl") || "");
     })();
 
-    // ===== Submit via fetch to feedback API, show success/error =====
     const form = document.getElementById("uninstall-form");
     const successMsg = document.getElementById("successMsg");
     const errorMsg = document.getElementById("errorMsg");
@@ -214,7 +122,6 @@
     form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
-        // basic guard: require at least one reason OR comment
         const checked = form.querySelectorAll('input[name="reasons"]:checked');
         const comment = (form.querySelector('textarea[name="comment"]')?.value || "").trim();
         if (checked.length === 0 && !comment) {

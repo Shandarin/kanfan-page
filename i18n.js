@@ -24,7 +24,7 @@
         en: {
             "nav.signin": "Sign In", "nav.install": "Install Extension", "nav.myAccount": "My Account",
             "home.heroLine1": "Read Manga in", "home.heroLine2": "Your Language", "home.heroDesc": "The smartest AI-powered manga translator extension. Translate raw manga directly in your browser with zero friction.", "home.chromeStore": "Chrome Web Store", "home.edgeAddons": "Edge Add-ons", "home.pricing": "Pricing", "home.perMonth": "/month", "home.install": "Install", "home.popular": "POPULAR", "home.plan.free": "Free", "home.plan.freeFeature": "50 Images Weekly", "home.plan.flex": "Flex", "home.plan.flexF1": "No monthly fees", "home.plan.flexF2": "Pay only for usage", "home.plan.flexF3": "Billed monthly", "home.plan.startFlex": "Start Flex", "home.plan.proFeature": "2,000 Weekly Images", "home.plan.subscribePro": "Subscribe Pro", "home.plan.maxFeature": "Unlimited Images", "home.plan.subscribeMax": "Subscribe Max", "home.feature.ocrTitle": "⚡ Smart OCR", "home.feature.ocrDesc": "High-speed text recognition optimized for manga fonts.", "home.feature.cleanTitle": "🎨 In-paint Cleaning", "home.feature.cleanDesc": "Automatically removes original text and restores art.", "home.feature.langTitle": "🌍 Multi-Language", "home.feature.langDesc": "Instant translation into 20+ other languages.", "home.footer.copyright": "© 2026 Kanfan Project.", "home.footer.contact": "Contact", "home.footer.terms": "Terms", "home.footer.refunds": "Refunds", "home.modal.termsTitle": "Terms", "home.modal.termsBody": "User agreement text...", "home.modal.refundTitle": "Refund Policy", "home.modal.refundBody": "Refund policy text...",
-            "home.period.monthly": "Monthly", "home.period.quarterly": "Quarterly", "home.period.yearly": "Yearly", "home.unit.mo": "/mo", "home.unit.quarter": "/quarter", "home.unit.year": "/year", "home.equiv.plus.quarterly": "Equiv. $3.99/mo", "home.equiv.plus.yearly": "Equiv. $3.75/mo", "home.equiv.pro.quarterly": "Equiv. $8.33/mo", "home.equiv.pro.yearly": "Equiv. $8.08/mo", "home.equiv.max.quarterly": "Equiv. $18.66/mo", "home.equiv.max.yearly": "Equiv. $17.49/mo", "home.save6": "Save 6%", "home.save10": "Save 10%", "home.save13": "Save 13%", "home.freeDesc": "Free forever · No credit card", "home.quota": "Quota", "home.quotaFree": "100 img/week", "home.quotaPlus": "1000 img/week", "home.quotaPro": "4000 img/week", "home.quotaMax": "Unlimited", "home.quotaNote": "Images without text don't consume quota", "home.badgeBasic": "Basic", "home.badgePopular": "Most Popular", "home.badgeHeavy": "Heavy User", "home.freeInstall": "Install Free", "home.creditsTitle": "Credit Packs", "home.creditsSubtitle": "Buy as needed, valid for 3 years, repurchasable", "home.pack5k": "5,000 credits", "home.pack15k": "15,000 credits", "home.pack80k": "80,000 credits", "home.packUnit5k": "$1.99/1000 img", "home.packSave15k": "Save 5%", "home.packSave80k": "Save 8%", "home.buyBtn": "Buy", "home.subscribe": "Subscribe", "home.currentPlan": "Current Plan", "home.managePlan": "Manage Plan", "home.upgradeTo": "Upgrade to", "home.downgradeTo": "Downgrade to", "home.crossPeriodBlocked": "Cannot switch across periods", "home.periodNotSupported": "Period not supported", "home.processing": "Processing...",
+            "home.period.monthly": "Monthly", "home.period.quarterly": "Quarterly", "home.period.yearly": "Yearly", "home.unit.mo": "/mo", "home.unit.quarter": "/quarter", "home.unit.year": "/year", "home.equiv.plus.quarterly": "Equiv. $3.99/mo", "home.equiv.plus.yearly": "Equiv. $3.75/mo", "home.equiv.pro.quarterly": "Equiv. $8.33/mo", "home.equiv.pro.yearly": "Equiv. $8.08/mo", "home.equiv.max.quarterly": "Equiv. $18.66/mo", "home.equiv.max.yearly": "Equiv. $17.49/mo", "home.save6": "Save 6%", "home.save10": "Save 10%", "home.save13": "Save 13%", "home.freeDesc": "Free forever · No credit card", "home.quota": "Quota", "home.quotaFree": "100 img/week", "home.quotaPlus": "1000 img/week", "home.quotaPro": "4000 img/week", "home.quotaMax": "Unlimited", "home.quotaNote": "Images without text don't consume quota", "home.plan.includedQuota": "Included quota", "home.plan.freeSamePath": "Same translation path as paid plans", "home.plan.freeByokPath": "Bring your own key", "home.plan.freeByokUnlimited": "Unlimited", "home.plan.freeGoogleRateLimit": "Limited by Google Cloud rate limits", "home.plan.freeWhiteBoxOnly": "White text boxes only", "home.plan.paidCache": "Local result cache", "home.plan.paidTextBoxRender": "Text box rendering", "home.badgeBasic": "Basic", "home.badgePopular": "Most Popular", "home.badgeHeavy": "Heavy User", "home.freeInstall": "Install Free", "home.creditsTitle": "Credit Packs", "home.creditsSubtitle": "Buy as needed, valid for 3 years, repurchasable", "home.pack5k": "5,000 credits", "home.pack15k": "15,000 credits", "home.pack80k": "80,000 credits", "home.packUnit5k": "$1.99/1000 img", "home.packSave15k": "Save 5%", "home.packSave80k": "Save 8%", "home.buyBtn": "Buy", "home.subscribe": "Subscribe", "home.currentPlan": "Current Plan", "home.managePlan": "Manage Plan", "home.upgradeTo": "Upgrade to", "home.downgradeTo": "Downgrade to", "home.crossPeriodBlocked": "Cannot switch across periods", "home.periodNotSupported": "Period not supported", "home.processing": "Processing...",
             "login.title": "Welcome Back", "login.subtitle": "Sign in to manage your subscription", "login.google": "Continue with Google", "login.or": "or", "login.email": "Email", "login.password": "Password", "login.submitIn": "Sign In", "login.submitUp": "Sign Up", "login.noAccount": "Don't have an account?", "login.haveAccount": "Already have an account?", "login.create": "Create one", "login.forgot": "Forgot Password?", "login.successTitle": "Successfully Signed In", "login.successDesc": "You have successfully logged in. Your extension is now synced.", "login.successTip": "You can verify your status in the extension popup.", "login.close": "Close Window",
             "account.title": "Account Settings", "account.signout": "Sign Out", "account.profile": "Profile", "account.profileDesc": "Manage your login information", "account.email": "Email", "account.password": "Password", "account.change": "Change", "account.billing": "Subscription & Billing", "account.billingDesc": "Manage your plan, payment methods, and invoices via Stripe", "account.billingHint": "You will be redirected to our secure billing portal hosted by Stripe.", "account.manage": "Manage Subscription", "account.syncTitle": "Extension Connected", "account.syncDesc": "Your account is now synced with the Kanfan browser extension.",
             "reset.verifying": "Verifying link...", "reset.title": "Reset Password", "reset.subtitle": "Enter your new password below.", "reset.new": "New Password", "reset.confirm": "Confirm Password", "reset.pwPlaceholder": "At least 6 characters", "reset.pw2Placeholder": "Confirm new password", "reset.update": "Update Password", "reset.updating": "Updating...", "reset.doneTitle": "Password Updated", "reset.doneDesc": "You can now close this page and log in with your new password.", "reset.gotoLogin": "Go to Login", "reset.requestTitle": "Forgot Password?", "reset.requestSubtitle": "Enter your email and we'll send you a link to reset your password.", "reset.email": "Email", "reset.emailPlaceholder": "you@example.com", "reset.sendLink": "Send Reset Link", "reset.sending": "Sending...", "reset.sentTitle": "Check Your Inbox", "reset.sentDesc": "We've sent a password reset link to your email. The link will expire shortly, so please use it soon.", "reset.backToLogin": "Back to Login",
@@ -34,7 +34,7 @@
         zh_CN: {
             "nav.signin": "登录", "nav.install": "安装扩展", "nav.myAccount": "我的账户",
             "home.heroLine1": "阅读漫画，", "home.heroLine2": "用你的语言", "home.heroDesc": "最智能的 AI 漫画翻译扩展，直接在浏览器中翻译生肉漫画，丝滑无阻。", "home.chromeStore": "Chrome 商店", "home.edgeAddons": "Edge 插件", "home.pricing": "价格", "home.perMonth": "/月", "home.install": "安装", "home.popular": "热门", "home.plan.free": "免费", "home.plan.freeFeature": "每周 50 张图片", "home.plan.flex": "灵活包", "home.plan.flexF1": "无需月费", "home.plan.flexF2": "按量付费", "home.plan.flexF3": "按月结算", "home.plan.startFlex": "开始使用灵活包", "home.plan.proFeature": "每周 2,000 张图片", "home.plan.subscribePro": "订阅 Pro", "home.plan.maxFeature": "无限图片", "home.plan.subscribeMax": "订阅 Max", "home.feature.ocrTitle": "⚡ 智能 OCR", "home.feature.ocrDesc": "针对漫画字体优化的高速文字识别。", "home.feature.cleanTitle": "🎨 智能修复", "home.feature.cleanDesc": "自动去除原文并修复画面。", "home.feature.langTitle": "🌍 多语言", "home.feature.langDesc": "一键翻译为 20+ 种语言。", "home.footer.copyright": "© 2026 Kanfan 项目。", "home.footer.contact": "联系我们", "home.footer.terms": "条款", "home.footer.refunds": "退款", "home.modal.termsTitle": "服务条款", "home.modal.termsBody": "用户协议内容...", "home.modal.refundTitle": "退款政策", "home.modal.refundBody": "退款政策内容...",
-            "home.period.monthly": "月付", "home.period.quarterly": "季付", "home.period.yearly": "年付", "home.unit.mo": "/月", "home.unit.quarter": "/季", "home.unit.year": "/年", "home.equiv.plus.quarterly": "等效 $3.99/月", "home.equiv.plus.yearly": "等效 $3.75/月", "home.equiv.pro.quarterly": "等效 $8.33/月", "home.equiv.pro.yearly": "等效 $8.08/月", "home.equiv.max.quarterly": "等效 $18.66/月", "home.equiv.max.yearly": "等效 $17.49/月", "home.save6": "省6%", "home.save10": "省10%", "home.save13": "省13%", "home.freeDesc": "永久免费 · 无需信用卡", "home.quota": "额度", "home.quotaFree": "100图/周", "home.quotaPlus": "1000图/周", "home.quotaPro": "4000图/周", "home.quotaMax": "无限量", "home.quotaNote": "没有文字的图片不会消耗额度", "home.badgeBasic": "基础档", "home.badgePopular": "最受欢迎", "home.badgeHeavy": "重度用户", "home.freeInstall": "免费安装", "home.creditsTitle": "点数包", "home.creditsSubtitle": "用多少买多少，三年有效，可反复购买", "home.pack5k": "5,000 点", "home.pack15k": "15,000 点", "home.pack80k": "80,000 点", "home.packUnit5k": "$1.99/1000图", "home.packSave15k": "省 5%", "home.packSave80k": "省 8%", "home.buyBtn": "购买", "home.subscribe": "订阅", "home.currentPlan": "当前方案", "home.managePlan": "管理订阅", "home.upgradeTo": "升级到", "home.downgradeTo": "降级到", "home.crossPeriodBlocked": "跨周期不可切换", "home.periodNotSupported": "不支持此周期", "home.processing": "处理中...",
+            "home.period.monthly": "月付", "home.period.quarterly": "季付", "home.period.yearly": "年付", "home.unit.mo": "/月", "home.unit.quarter": "/季", "home.unit.year": "/年", "home.equiv.plus.quarterly": "等效 $3.99/月", "home.equiv.plus.yearly": "等效 $3.75/月", "home.equiv.pro.quarterly": "等效 $8.33/月", "home.equiv.pro.yearly": "等效 $8.08/月", "home.equiv.max.quarterly": "等效 $18.66/月", "home.equiv.max.yearly": "等效 $17.49/月", "home.save6": "省6%", "home.save10": "省10%", "home.save13": "省13%", "home.freeDesc": "永久免费 · 无需信用卡", "home.quota": "额度", "home.quotaFree": "100图/周", "home.quotaPlus": "1000图/周", "home.quotaPro": "4000图/周", "home.quotaMax": "无限量", "home.quotaNote": "没有文字的图片不会消耗额度", "home.plan.includedQuota": "内置额度", "home.plan.freeSamePath": "与其他 plan 使用同一路径", "home.plan.freeByokPath": "自带密钥路径", "home.plan.freeByokUnlimited": "不限额", "home.plan.freeGoogleRateLimit": "受 Google Cloud 速率限制", "home.plan.freeWhiteBoxOnly": "仅白色文字框", "home.plan.paidCache": "本地缓存结果", "home.plan.paidTextBoxRender": "文字框渲染", "home.badgeBasic": "基础档", "home.badgePopular": "最受欢迎", "home.badgeHeavy": "重度用户", "home.freeInstall": "免费安装", "home.creditsTitle": "点数包", "home.creditsSubtitle": "用多少买多少，三年有效，可反复购买", "home.pack5k": "5,000 点", "home.pack15k": "15,000 点", "home.pack80k": "80,000 点", "home.packUnit5k": "$1.99/1000图", "home.packSave15k": "省 5%", "home.packSave80k": "省 8%", "home.buyBtn": "购买", "home.subscribe": "订阅", "home.currentPlan": "当前方案", "home.managePlan": "管理订阅", "home.upgradeTo": "升级到", "home.downgradeTo": "降级到", "home.crossPeriodBlocked": "跨周期不可切换", "home.periodNotSupported": "不支持此周期", "home.processing": "处理中...",
             "login.title": "欢迎回来", "login.subtitle": "登录以管理你的订阅", "login.google": "使用 Google 继续", "login.or": "或", "login.email": "邮箱", "login.password": "密码", "login.submitIn": "登录", "login.submitUp": "注册", "login.noAccount": "还没有账号？", "login.haveAccount": "已有账号？", "login.create": "立即创建", "login.forgot": "忘记密码？", "login.successTitle": "登录成功", "login.successDesc": "你已成功登录，扩展账号已同步。", "login.successTip": "你可以在扩展弹窗中查看状态。", "login.close": "关闭窗口",
             "account.title": "账户设置", "account.signout": "退出登录", "account.profile": "个人资料", "account.profileDesc": "管理你的登录信息", "account.email": "邮箱", "account.password": "密码", "account.change": "修改", "account.billing": "订阅与账单", "account.billingDesc": "通过 Stripe 管理套餐、支付方式与账单", "account.billingHint": "你将跳转到 Stripe 托管的安全账单门户。", "account.manage": "管理订阅", "account.syncTitle": "扩展已连接", "account.syncDesc": "你的账户已与 Kanfan 浏览器扩展同步。",
             "reset.verifying": "正在验证链接...", "reset.title": "重置密码", "reset.subtitle": "请输入你的新密码。", "reset.new": "新密码", "reset.confirm": "确认密码", "reset.pwPlaceholder": "至少 6 个字符", "reset.pw2Placeholder": "再次输入新密码", "reset.update": "更新密码", "reset.updating": "更新中...", "reset.doneTitle": "密码已更新", "reset.doneDesc": "现在你可以关闭本页，并使用新密码登录。", "reset.gotoLogin": "前往登录", "reset.requestTitle": "忘记密码？", "reset.requestSubtitle": "输入你的邮箱，我们会发送一封重置密码的邮件给你。", "reset.email": "邮箱", "reset.emailPlaceholder": "you@example.com", "reset.sendLink": "发送重置链接", "reset.sending": "发送中...", "reset.sentTitle": "请查收邮箱", "reset.sentDesc": "我们已向你的邮箱发送了一封密码重置邮件。链接会很快过期，请尽快使用。", "reset.backToLogin": "返回登录",
@@ -44,7 +44,7 @@
         zh_TW: {
             "nav.signin": "登入", "nav.install": "安裝擴充", "nav.myAccount": "我的帳戶",
             "home.heroLine1": "閱讀漫畫，", "home.heroLine2": "用你的語言", "home.heroDesc": "最聰明的 AI 漫畫翻譯擴充，直接在瀏覽器翻譯生肉漫畫，流暢零阻力。", "home.chromeStore": "Chrome 商店", "home.edgeAddons": "Edge 附加元件", "home.pricing": "價格", "home.perMonth": "/月", "home.install": "安裝", "home.popular": "熱門", "home.plan.free": "免費", "home.plan.freeFeature": "每週 50 張圖片", "home.plan.flex": "彈性包", "home.plan.flexF1": "免月費", "home.plan.flexF2": "按用量付費", "home.plan.flexF3": "每月結算", "home.plan.startFlex": "開始使用彈性包", "home.plan.proFeature": "每週 2,000 張圖片", "home.plan.subscribePro": "訂閱 Pro", "home.plan.maxFeature": "無限圖片", "home.plan.subscribeMax": "訂閱 Max", "home.feature.ocrTitle": "⚡ 智慧 OCR", "home.feature.ocrDesc": "針對漫畫字體優化的高速文字辨識。", "home.feature.cleanTitle": "🎨 智慧修復", "home.feature.cleanDesc": "自動移除原文並修復畫面。", "home.feature.langTitle": "🌍 多語言", "home.feature.langDesc": "即時翻譯成 20+ 種語言。", "home.footer.copyright": "© 2026 Kanfan 專案。", "home.footer.contact": "聯絡我們", "home.footer.terms": "條款", "home.footer.refunds": "退款", "home.modal.termsTitle": "服務條款", "home.modal.termsBody": "使用者協議內容...", "home.modal.refundTitle": "退款政策", "home.modal.refundBody": "退款政策內容...",
-            "home.period.monthly": "月付", "home.period.quarterly": "季付", "home.period.yearly": "年付", "home.unit.mo": "/月", "home.unit.quarter": "/季", "home.unit.year": "/年", "home.equiv.plus.quarterly": "等效 $3.99/月", "home.equiv.plus.yearly": "等效 $3.75/月", "home.equiv.pro.quarterly": "等效 $8.33/月", "home.equiv.pro.yearly": "等效 $8.08/月", "home.equiv.max.quarterly": "等效 $18.66/月", "home.equiv.max.yearly": "等效 $17.49/月", "home.save6": "省6%", "home.save10": "省10%", "home.save13": "省13%", "home.freeDesc": "永久免費 · 無需信用卡", "home.quota": "額度", "home.quotaFree": "100圖/週", "home.quotaPlus": "1000圖/週", "home.quotaPro": "4000圖/週", "home.quotaMax": "無限量", "home.quotaNote": "沒有文字的圖片不會消耗額度", "home.badgeBasic": "基礎檔", "home.badgePopular": "最受歡迎", "home.badgeHeavy": "重度用戶", "home.freeInstall": "免費安裝", "home.creditsTitle": "點數包", "home.creditsSubtitle": "用多少買多少，三年有效，可反覆購買", "home.pack5k": "5,000 點", "home.pack15k": "15,000 點", "home.pack80k": "80,000 點", "home.packUnit5k": "$1.99/1000圖", "home.packSave15k": "省 5%", "home.packSave80k": "省 8%", "home.buyBtn": "購買", "home.subscribe": "訂閱", "home.currentPlan": "當前方案", "home.managePlan": "管理訂閱", "home.upgradeTo": "升級到", "home.downgradeTo": "降級到", "home.crossPeriodBlocked": "跨週期不可切換", "home.periodNotSupported": "不支援此週期", "home.processing": "處理中...",
+            "home.period.monthly": "月付", "home.period.quarterly": "季付", "home.period.yearly": "年付", "home.unit.mo": "/月", "home.unit.quarter": "/季", "home.unit.year": "/年", "home.equiv.plus.quarterly": "等效 $3.99/月", "home.equiv.plus.yearly": "等效 $3.75/月", "home.equiv.pro.quarterly": "等效 $8.33/月", "home.equiv.pro.yearly": "等效 $8.08/月", "home.equiv.max.quarterly": "等效 $18.66/月", "home.equiv.max.yearly": "等效 $17.49/月", "home.save6": "省6%", "home.save10": "省10%", "home.save13": "省13%", "home.freeDesc": "永久免費 · 無需信用卡", "home.quota": "額度", "home.quotaFree": "100圖/週", "home.quotaPlus": "1000圖/週", "home.quotaPro": "4000圖/週", "home.quotaMax": "無限量", "home.quotaNote": "沒有文字的圖片不會消耗額度", "home.plan.includedQuota": "內建額度", "home.plan.freeSamePath": "與其他 plan 使用同一路徑", "home.plan.freeByokPath": "自帶金鑰路徑", "home.plan.freeByokUnlimited": "不限額", "home.plan.freeGoogleRateLimit": "受 Google Cloud 速率限制", "home.plan.freeWhiteBoxOnly": "僅白色文字框", "home.plan.paidCache": "本地快取結果", "home.plan.paidTextBoxRender": "文字框渲染", "home.badgeBasic": "基礎檔", "home.badgePopular": "最受歡迎", "home.badgeHeavy": "重度用戶", "home.freeInstall": "免費安裝", "home.creditsTitle": "點數包", "home.creditsSubtitle": "用多少買多少，三年有效，可反覆購買", "home.pack5k": "5,000 點", "home.pack15k": "15,000 點", "home.pack80k": "80,000 點", "home.packUnit5k": "$1.99/1000圖", "home.packSave15k": "省 5%", "home.packSave80k": "省 8%", "home.buyBtn": "購買", "home.subscribe": "訂閱", "home.currentPlan": "當前方案", "home.managePlan": "管理訂閱", "home.upgradeTo": "升級到", "home.downgradeTo": "降級到", "home.crossPeriodBlocked": "跨週期不可切換", "home.periodNotSupported": "不支援此週期", "home.processing": "處理中...",
             "login.title": "歡迎回來", "login.subtitle": "登入以管理你的訂閱", "login.google": "使用 Google 繼續", "login.or": "或", "login.email": "Email", "login.password": "密碼", "login.submitIn": "登入", "login.submitUp": "註冊", "login.noAccount": "還沒有帳號？", "login.haveAccount": "已有帳號？", "login.create": "立即建立", "login.forgot": "忘記密碼？", "login.successTitle": "登入成功", "login.successDesc": "你已成功登入，擴充套件帳號已同步。", "login.successTip": "你可以在擴充套件彈窗中查看狀態。", "login.close": "關閉視窗", "account.title": "帳戶設定", "account.signout": "登出", "account.profile": "個人資料", "account.profileDesc": "管理你的登入資訊", "account.email": "Email", "account.password": "密碼", "account.change": "修改", "account.billing": "訂閱與帳單", "account.billingDesc": "透過 Stripe 管理方案、付款方式與帳單", "account.billingHint": "你將被導向 Stripe 託管的安全帳單入口。", "account.manage": "管理訂閱", "account.syncTitle": "擴充套件已連線", "account.syncDesc": "你的帳戶已與 Kanfan 瀏覽器擴充套件同步。", "reset.verifying": "正在驗證連結...", "reset.title": "重設密碼", "reset.subtitle": "請輸入你的新密碼。", "reset.new": "新密碼", "reset.confirm": "確認密碼", "reset.pwPlaceholder": "至少 6 個字元", "reset.pw2Placeholder": "再次輸入新密碼", "reset.update": "更新密碼", "reset.updating": "更新中...", "reset.doneTitle": "密碼已更新", "reset.doneDesc": "你現在可以關閉此頁，並使用新密碼登入。", "reset.gotoLogin": "前往登入", "pay.successTitle": "付款成功！", "pay.successDesc": "感謝你支持 Kanfan。你的帳號已升級。", "pay.cancelTitle": "付款已取消", "pay.cancelDesc": "本次未扣款。若你遇到錯誤或對方案有疑問，歡迎聯絡我們。", "pay.returnHome": "返回首頁", "uninstall.title": "很遺憾看到你離開", "uninstall.desc": "可以告訴我們你為什麼解除安裝 Kanfan 嗎？", "uninstall.reason.performance": "速度太慢", "uninstall.reason.pricing": "價格太高", "uninstall.reason.translation": "翻譯品質", "uninstall.reason.ocr_accuracy": "影像辨識準確度", "uninstall.reason.display_quality": "顯示品質", "uninstall.reason.missing_feature": "缺少功能", "uninstall.reason.site_not_supported": "部分網站不支援", "uninstall.reason.alternative": "找到替代方案", "uninstall.reason.bug": "有 Bug", "uninstall.reason.not_needed": "不再需要", "uninstall.reason.other": "其他", "uninstall.commentPlaceholder": "我們可以如何做得更好？", "uninstall.submit": "提交回饋", "uninstall.success": "感謝你的回饋！期待與你再見。", "uninstall.error": "提交失敗，請稍後再試。"
         },
         ja: {
@@ -1645,6 +1645,260 @@
         }
     };
 
+    const LANDING_TRANSLATIONS = {
+        en: {
+            "home.eyebrow": "Browser extension for manga readers",
+            "home.heroLine1": "Read raw manga",
+            "home.heroLine2": "in your language",
+            "home.heroDesc": "Translate manga pages in-place with OCR, clean text boxes, and account-based quota across Chrome and Edge.",
+            "home.proof.inline": "Inline translation",
+            "home.proof.quota": "Shared quota",
+            "home.proof.langs": "20+ languages",
+            "home.featuresEyebrow": "Built for browser reading",
+            "home.featuresTitle": "Translation that stays close to the page",
+            "home.feature.ocrTitle": "Smart OCR",
+            "home.feature.ocrDesc": "Recognizes manga text and speech bubbles without leaving the page.",
+            "home.feature.cleanTitle": "Clean Rendering",
+            "home.feature.cleanDesc": "Places translated text back into the image with readable layout.",
+            "home.feature.langTitle": "Account Sync",
+            "home.feature.langDesc": "Keeps auth, quota, and billing connected between web and extension.",
+            "home.pricingEyebrow": "Plans",
+            "home.freeDesc": "Free forever. No credit card.",
+            "home.plan.paidNoDuplicate": "Local result storage",
+            "home.plan.paidColoredText": "Color-background text box rendering",
+            "home.plan.paidQuality": "Higher quality and faster speed",
+            "try.eyebrow": "Try it on one image",
+            "try.title": "Preview manga translation",
+            "try.desc": "Upload a single image to test the same quota, auth, fingerprint, and rendering path used by the extension.",
+            "try.dropTitle": "Upload PNG, JPG, or WebP",
+            "try.dropDesc": "Image stays in this browser session after preview.",
+            "try.button": "Translate image",
+            "try.status.ready": "Choose an image to begin.",
+            "try.status.translating": "Translating...",
+            "try.status.done": "Translation ready.",
+            "try.placeholder": "Preview appears here",
+            "try.original": "Original",
+            "try.result": "Translated",
+            "try.textTitle": "Detected text",
+            "try.download": "Download result",
+            "try.quota": "Quota",
+            "try.reset": "Reset",
+            "try.noText": "No text detected.",
+            "try.retryAfter": "Try again after",
+            "try.error.file": "Please upload a PNG, JPG, or WebP image.",
+            "try.error.quota": "Quota limit reached. Sign in or manage your plan to continue.",
+            "try.error.retryable": "The service is busy right now.",
+            "try.error.generic": "Translation failed. Please try again."
+        },
+        zh_CN: {
+            "home.eyebrow": "为漫画阅读设计的浏览器扩展",
+            "home.heroLine1": "阅读生肉漫画",
+            "home.heroLine2": "用你的语言",
+            "home.heroDesc": "在 Chrome 和 Edge 中直接完成 OCR、翻译与文字框渲染，并复用同一套账号与额度。",
+            "home.proof.inline": "页面内翻译",
+            "home.proof.quota": "额度同步",
+            "home.proof.langs": "20+ 语言",
+            "home.featuresEyebrow": "为浏览器阅读而做",
+            "home.featuresTitle": "翻译结果贴近原页面",
+            "home.feature.ocrTitle": "智能 OCR",
+            "home.feature.ocrDesc": "识别漫画文字与气泡，不需要离开当前页面。",
+            "home.feature.cleanTitle": "清爽渲染",
+            "home.feature.cleanDesc": "把译文重新放回图片中，排版清晰易读。",
+            "home.feature.langTitle": "账号同步",
+            "home.feature.langDesc": "网页与扩展共用登录、额度和订阅状态。",
+            "home.pricingEyebrow": "套餐",
+            "home.freeDesc": "永久免费，无需信用卡。",
+            "home.plan.paidNoDuplicate": "本地保存翻译结果",
+            "home.plan.paidColoredText": "彩色背景文字框渲染",
+            "home.plan.paidQuality": "质量更高，速度更快",
+            "try.eyebrow": "单图试用",
+            "try.title": "预览漫画翻译",
+            "try.desc": "上传一张图片，体验与扩展一致的额度、登录、指纹和渲染链路。",
+            "try.dropTitle": "上传 PNG、JPG 或 WebP",
+            "try.dropDesc": "预览图片只保留在本次浏览器会话中。",
+            "try.button": "翻译图片",
+            "try.status.ready": "选择图片后开始。",
+            "try.status.translating": "翻译中...",
+            "try.status.done": "翻译完成。",
+            "try.placeholder": "预览会显示在这里",
+            "try.original": "原图",
+            "try.result": "译图",
+            "try.textTitle": "识别文本",
+            "try.download": "下载结果",
+            "try.quota": "额度",
+            "try.reset": "重置",
+            "try.noText": "未检测到文字。",
+            "try.retryAfter": "请稍后重试",
+            "try.error.file": "请上传 PNG、JPG 或 WebP 图片。",
+            "try.error.quota": "额度已用完。请登录或管理套餐后继续。",
+            "try.error.retryable": "服务正忙。",
+            "try.error.generic": "翻译失败，请稍后重试。"
+        },
+        zh_TW: {
+            "home.eyebrow": "為漫畫閱讀設計的瀏覽器擴充",
+            "home.heroLine1": "閱讀生肉漫畫",
+            "home.heroLine2": "用你的語言",
+            "home.heroDesc": "在 Chrome 和 Edge 中直接完成 OCR、翻譯與文字框渲染，並共用同一套帳號與額度。",
+            "home.proof.inline": "頁面內翻譯",
+            "home.proof.quota": "額度同步",
+            "home.proof.langs": "20+ 語言",
+            "home.featuresEyebrow": "為瀏覽器閱讀而做",
+            "home.featuresTitle": "翻譯結果貼近原頁面",
+            "home.feature.ocrTitle": "智慧 OCR",
+            "home.feature.ocrDesc": "辨識漫畫文字與對話框，不需要離開目前頁面。",
+            "home.feature.cleanTitle": "清爽渲染",
+            "home.feature.cleanDesc": "把譯文重新放回圖片中，排版清晰易讀。",
+            "home.feature.langTitle": "帳號同步",
+            "home.feature.langDesc": "網頁與擴充共用登入、額度和訂閱狀態。",
+            "home.pricingEyebrow": "方案",
+            "home.freeDesc": "永久免費，無需信用卡。",
+            "home.plan.paidNoDuplicate": "本地保存翻譯結果",
+            "home.plan.paidColoredText": "彩色背景文字框渲染",
+            "home.plan.paidQuality": "品質更高，速度更快",
+            "try.eyebrow": "單圖試用",
+            "try.title": "預覽漫畫翻譯",
+            "try.desc": "上傳一張圖片，體驗與擴充一致的額度、登入、指紋和渲染鏈路。",
+            "try.dropTitle": "上傳 PNG、JPG 或 WebP",
+            "try.dropDesc": "預覽圖片只保留在本次瀏覽器工作階段。",
+            "try.button": "翻譯圖片",
+            "try.status.ready": "選擇圖片後開始。",
+            "try.status.translating": "翻譯中...",
+            "try.status.done": "翻譯完成。",
+            "try.placeholder": "預覽會顯示在這裡",
+            "try.original": "原圖",
+            "try.result": "譯圖",
+            "try.textTitle": "辨識文字",
+            "try.download": "下載結果",
+            "try.quota": "額度",
+            "try.reset": "重設",
+            "try.noText": "未偵測到文字。",
+            "try.retryAfter": "請稍後重試",
+            "try.error.file": "請上傳 PNG、JPG 或 WebP 圖片。",
+            "try.error.quota": "額度已用完。請登入或管理方案後繼續。",
+            "try.error.retryable": "服務正忙。",
+            "try.error.generic": "翻譯失敗，請稍後再試。"
+        }
+    };
+
+    Object.entries(LANDING_TRANSLATIONS).forEach(([lang, messages]) => {
+        Object.assign(I18N[lang] || {}, messages);
+    });
+
+    const FREE_PLAN_TRANSLATIONS = {
+        en: {
+            "home.plan.freeQuotaTitle": "Free 100 img/week",
+            "home.plan.freeWhiteBoxOnly": "White-background text box rendering",
+            "home.plan.paidNoDuplicate": "Local result storage",
+            "home.plan.paidColoredText": "Color-background text box rendering"
+        },
+        zh_CN: {
+            "home.plan.freeQuotaTitle": "\u514d\u8d39 100\u56fe/\u5468",
+            "home.plan.freeWhiteBoxOnly": "\u767d\u5e95\u6587\u5b57\u6846\u6e32\u67d3",
+            "home.plan.paidNoDuplicate": "\u672c\u5730\u4fdd\u5b58\u7ffb\u8bd1\u7ed3\u679c",
+            "home.plan.paidColoredText": "\u5f69\u8272\u80cc\u666f\u6587\u5b57\u6846\u6e32\u67d3"
+        },
+        zh_TW: {
+            "home.plan.freeQuotaTitle": "\u514d\u8cbb 100\u5f35/\u9031",
+            "home.plan.freeWhiteBoxOnly": "\u767d\u5e95\u6587\u5b57\u6846\u6e32\u67d3",
+            "home.plan.paidNoDuplicate": "\u672c\u5730\u4fdd\u5b58\u7ffb\u8b6f\u7d50\u679c",
+            "home.plan.paidColoredText": "\u5f69\u8272\u80cc\u666f\u6587\u5b57\u6846\u6e32\u67d3"
+        },
+        ja: {
+            "home.plan.freeQuotaTitle": "無料 100枚/週",
+            "home.plan.freeWhiteBoxOnly": "白背景のテキストボックス描画",
+            "home.plan.paidNoDuplicate": "翻訳結果のローカル保存",
+            "home.plan.paidColoredText": "カラー背景のテキストボックス描画"
+        },
+        ko: {
+            "home.plan.freeQuotaTitle": "무료 100장/주",
+            "home.plan.freeWhiteBoxOnly": "흰 배경 텍스트 박스 렌더링",
+            "home.plan.paidNoDuplicate": "번역 결과 로컬 저장",
+            "home.plan.paidColoredText": "색상 배경 텍스트 박스 렌더링"
+        },
+        de: {
+            "home.plan.freeQuotaTitle": "Kostenlos 100 Bilder/Woche",
+            "home.plan.freeWhiteBoxOnly": "Textfeld-Rendering mit weißem Hintergrund",
+            "home.plan.paidNoDuplicate": "Lokale Speicherung der Ergebnisse",
+            "home.plan.paidColoredText": "Textfeld-Rendering mit farbigem Hintergrund"
+        },
+        es: {
+            "home.plan.freeQuotaTitle": "Gratis 100 imágenes/semana",
+            "home.plan.freeWhiteBoxOnly": "Renderizado de cuadros de texto con fondo blanco",
+            "home.plan.paidNoDuplicate": "Almacenamiento local de resultados",
+            "home.plan.paidColoredText": "Renderizado de cuadros de texto con fondo de color"
+        },
+        fr: {
+            "home.plan.freeQuotaTitle": "Gratuit 100 images/semaine",
+            "home.plan.freeWhiteBoxOnly": "Rendu de zones de texte à fond blanc",
+            "home.plan.paidNoDuplicate": "Stockage local des résultats",
+            "home.plan.paidColoredText": "Rendu de zones de texte à fond coloré"
+        },
+        it: {
+            "home.plan.freeQuotaTitle": "Gratis 100 immagini/settimana",
+            "home.plan.freeWhiteBoxOnly": "Rendering di riquadri di testo con sfondo bianco",
+            "home.plan.paidNoDuplicate": "Salvataggio locale dei risultati",
+            "home.plan.paidColoredText": "Rendering di riquadri di testo con sfondo colorato"
+        },
+        pl: {
+            "home.plan.freeQuotaTitle": "Darmowe 100 obrazów/tydzień",
+            "home.plan.freeWhiteBoxOnly": "Renderowanie pól tekstowych z białym tłem",
+            "home.plan.paidNoDuplicate": "Lokalne zapisywanie wyników",
+            "home.plan.paidColoredText": "Renderowanie pól tekstowych z kolorowym tłem"
+        },
+        pt: {
+            "home.plan.freeQuotaTitle": "Grátis 100 imagens/semana",
+            "home.plan.freeWhiteBoxOnly": "Renderização de caixas de texto com fundo branco",
+            "home.plan.paidNoDuplicate": "Armazenamento local dos resultados",
+            "home.plan.paidColoredText": "Renderização de caixas de texto com fundo colorido"
+        },
+        pt_BR: {
+            "home.plan.freeQuotaTitle": "Grátis 100 imagens/semana",
+            "home.plan.freeWhiteBoxOnly": "Renderização de caixas de texto com fundo branco",
+            "home.plan.paidNoDuplicate": "Armazenamento local de resultados",
+            "home.plan.paidColoredText": "Renderização de caixas de texto com fundo colorido"
+        },
+        ru: {
+            "home.plan.freeQuotaTitle": "Бесплатно 100 изображений/неделю",
+            "home.plan.freeWhiteBoxOnly": "Отрисовка текстовых блоков с белым фоном",
+            "home.plan.paidNoDuplicate": "Локальное сохранение результатов",
+            "home.plan.paidColoredText": "Отрисовка текстовых блоков с цветным фоном"
+        },
+        th: {
+            "home.plan.freeQuotaTitle": "ฟรี 100 ภาพ/สัปดาห์",
+            "home.plan.freeWhiteBoxOnly": "แสดงกล่องข้อความพื้นหลังสีขาว",
+            "home.plan.paidNoDuplicate": "บันทึกผลลัพธ์ไว้ในเครื่อง",
+            "home.plan.paidColoredText": "แสดงกล่องข้อความพื้นหลังสี"
+        },
+        vi: {
+            "home.plan.freeQuotaTitle": "Miễn phí 100 ảnh/tuần",
+            "home.plan.freeWhiteBoxOnly": "Hiển thị hộp văn bản nền trắng",
+            "home.plan.paidNoDuplicate": "Lưu kết quả cục bộ",
+            "home.plan.paidColoredText": "Hiển thị hộp văn bản nền màu"
+        },
+        id: {
+            "home.plan.freeQuotaTitle": "Gratis 100 gambar/minggu",
+            "home.plan.freeWhiteBoxOnly": "Rendering kotak teks berlatar putih",
+            "home.plan.paidNoDuplicate": "Penyimpanan hasil lokal",
+            "home.plan.paidColoredText": "Rendering kotak teks berlatar warna"
+        },
+        ar: {
+            "home.plan.freeQuotaTitle": "مجانًا 100 صورة/أسبوع",
+            "home.plan.freeWhiteBoxOnly": "عرض مربعات نص بخلفية بيضاء",
+            "home.plan.paidNoDuplicate": "تخزين النتائج محليًا",
+            "home.plan.paidColoredText": "عرض مربعات نص بخلفية ملونة"
+        },
+        hi: {
+            "home.plan.freeQuotaTitle": "मुफ़्त 100 चित्र/सप्ताह",
+            "home.plan.freeWhiteBoxOnly": "सफेद पृष्ठभूमि वाले टेक्स्ट बॉक्स रेंडरिंग",
+            "home.plan.paidNoDuplicate": "परिणामों का स्थानीय संग्रहण",
+            "home.plan.paidColoredText": "रंगीन पृष्ठभूमि वाले टेक्स्ट बॉक्स रेंडरिंग"
+        }
+    };
+
+    Object.entries(FREE_PLAN_TRANSLATIONS).forEach(([lang, messages]) => {
+        Object.assign(I18N[lang] || {}, messages);
+    });
+
     const SUPPORT_TRANSLATIONS = {
         en: {
             "support.entry": "Support",
@@ -1998,24 +2252,61 @@
 
     function normalizeLang(lang) {
         if (!lang) return '';
-        const clean = String(lang).replace('-', '_');
+        const clean = String(lang).trim().replace(/-/g, '_');
         if (SUPPORTED_LANGS.has(clean)) return clean;
+
         const lower = clean.toLowerCase();
         const exact = [...SUPPORTED_LANGS].find((code) => code.toLowerCase() === lower);
-        return exact || '';
+        if (exact) return exact;
+
+        const parts = lower.split('_').filter(Boolean);
+        const base = parts[0] || '';
+        const regionOrScript = parts[1] || '';
+
+        if (base === 'zh') {
+            return ['tw', 'hk', 'mo', 'hant'].includes(regionOrScript) ? 'zh_TW' : 'zh_CN';
+        }
+        if (base === 'pt' && regionOrScript === 'br') return 'pt_BR';
+        if (SUPPORTED_LANGS.has(base)) return base;
+        return '';
     }
 
-    function getLang() { return normalizeLang(localStorage.getItem('kanfan_lang')) || 'en'; }
+    function getSystemLang() {
+        const candidates = [
+            ...(Array.isArray(navigator.languages) ? navigator.languages : []),
+            navigator.language,
+            navigator.userLanguage
+        ];
+        for (const candidate of candidates) {
+            const normalized = normalizeLang(candidate);
+            if (normalized) return normalized;
+        }
+        return '';
+    }
+
+    function getStoredLang() {
+        try {
+            return normalizeLang(localStorage.getItem('kanfan_lang'));
+        } catch {
+            return '';
+        }
+    }
+
+    function getLang() { return getStoredLang() || getSystemLang() || 'en'; }
     function setLang(lang) {
         const normalized = normalizeLang(lang) || 'en';
-        localStorage.setItem('kanfan_lang', normalized);
+        try {
+            localStorage.setItem('kanfan_lang', normalized);
+        } catch {}
         return normalized;
     }
 
     function initLangFromUrl() {
-        const urlLang = normalizeLang(new URLSearchParams(window.location.search).get('lang'));
+        const params = new URLSearchParams(window.location.search);
+        const urlLang = normalizeLang(params.get('lang') || params.get('locale') || params.get('uiLocale'));
         if (!urlLang) return;
         setLang(urlLang);
+        return urlLang;
     }
 
     function tr(key) {
@@ -2044,5 +2335,12 @@
 
     initLangFromUrl();
 
-    window.KanfanI18n = { LANGS, getLang, setLang, t: tr, apply, renderSelect, initLangFromUrl };
+    function init(options = {}) {
+        if (options.lang) setLang(options.lang);
+        else initLangFromUrl();
+        apply();
+        return getLang();
+    }
+
+    window.KanfanI18n = { LANGS, getLang, getSystemLang, setLang, t: tr, apply, renderSelect, initLangFromUrl, init };
 })();

@@ -7,169 +7,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="i18n.js"></script>
-    <style>
-        :root {
-            --primary: #f97316;
-            --primary-hover: #ea580c;
-            --dark: #0f172a;
-            --slate: #64748b;
-            --light: #f8fafc;
-            --danger: #ef4444;
-        }
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--light);
-            color: var(--dark);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-        }
-
-        .auth-container {
-            width: 100%;
-            max-width: 400px;
-            padding: 20px;
-        }
-
-        .card {
-            background: white;
-            padding: 40px;
-            border-radius: 24px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
-            text-align: center;
-        }
-
-        .logo {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--primary);
-            text-decoration: none;
-            margin-bottom: 30px;
-            display: inline-block;
-        }
-        .site-logo-img {
-            display: block;
-            width: auto;
-            height: 40px;
-            max-width: 180px;
-            object-fit: contain;
-            margin: 0 auto;
-        }
-
-        h2 { font-size: 1.5rem; margin-bottom: 10px; }
-        p.subtitle { color: var(--slate); margin-bottom: 30px; font-size: 0.9rem; }
-
-        .form-group { margin-bottom: 15px; text-align: left; }
-        label { display: block; font-size: 0.85rem; font-weight: 600; margin-bottom: 5px; color: var(--slate); }
-        input {
-            width: 100%;
-            padding: 12px;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            font-size: 1rem;
-            transition: all 0.2s;
-        }
-        input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1); }
-
-        .btn {
-            width: 100%;
-            background: var(--primary);
-            color: white;
-            padding: 14px;
-            border: none;
-            border-radius: 50px;
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: background 0.2s;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        .btn:hover { background: var(--primary-hover); }
-        .btn:disabled { opacity: 0.7; cursor: not-allowed; }
-
-        /* Google Button Specifics */
-        .btn-google {
-            background: white;
-            color: var(--dark);
-            border: 1px solid #e2e8f0;
-            margin-bottom: 20px;
-            margin-top: 0;
-            position: relative;
-        }
-        .btn-google:hover {
-            background-color: #f8fafc;
-            border-color: #cbd5e1;
-        }
-        .btn-google svg {
-            margin-right: 10px;
-            width: 20px;
-            height: 20px;
-        }
-
-        /* Divider */
-        .divider {
-            display: flex;
-            align-items: center;
-            text-align: center;
-            margin: 20px 0;
-            color: var(--slate);
-            font-size: 0.85rem;
-        }
-        .divider::before, .divider::after {
-            content: '';
-            flex: 1;
-            border-bottom: 1px solid #e2e8f0;
-        }
-        .divider span {
-            padding: 0 10px;
-        }
-
-        .toggle-text { margin-top: 20px; font-size: 0.9rem; color: var(--slate); }
-        .toggle-link { color: var(--primary); cursor: pointer; font-weight: 600; text-decoration: none; }
-        .toggle-link:hover { text-decoration: underline; }
-
-        .msg {
-            margin-top: 15px;
-            padding: 10px;
-            border-radius: 8px;
-            font-size: 0.9rem;
-            display: none;
-        }
-        .msg.error { background: #fef2f2; color: var(--danger); display: block; }
-        .msg.success { background: #f0fdf4; color: #15803d; display: block; }
-
-        /* Success State for Extension */
-        .success-view { display: none; }
-        .success-icon {
-            width: 60px; height: 60px;
-            background: #dcfce7; color: #15803d;
-            border-radius: 50%;
-            display: flex; align-items: center; justifyContent: center;
-            margin: 0 auto 20px;
-        }
-
-        .spinner {
-            display: inline-block;
-            width: 1rem;
-            height: 1rem;
-            border: 2px solid rgba(255,255,255,0.3);
-            border-radius: 50%;
-            border-top-color: #fff;
-            animation: spin 1s ease-in-out infinite;
-            margin-right: 8px;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-    </style>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="auth-page">
 
-<div style="position: fixed; top: 16px; right: 16px; z-index: 999;" data-lang-switcher></div>
-<div class="auth-container">
+<div class="language-switcher" data-lang-switcher></div>
+<div class="auth-container flush">
 
     <div id="view-auth" class="card">
         <a href="index.html" class="logo" aria-label="Kanfan home">
@@ -214,8 +57,8 @@
             <span id="toggle-desc" data-i18n="login.noAccount">Don't have an account?</span>
             <a class="toggle-link" id="toggle-btn" data-i18n="login.create">Create one</a>
         </div>
-        <div style="margin-top: 15px;">
-            <a href="reset-password.html" style="font-size: 0.85rem; color: var(--slate); text-decoration: none;" data-i18n="login.forgot">Forgot Password?</a>
+        <div class="form-footer">
+            <a href="reset-password.html" class="link-muted" data-i18n="login.forgot">Forgot Password?</a>
         </div>
     </div>
 
@@ -224,13 +67,13 @@
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
         </div>
         <h2 data-i18n="login.successTitle">Successfully Signed In</h2>
-        <p style="color: var(--slate); margin-bottom: 20px;">
+        <p class="success-copy">
             <span data-i18n="login.successDesc">You have successfully logged in. Your extension is now synced.</span>
         </p>
-        <p style="font-size: 0.9rem; color: var(--slate);">
+        <p class="success-copy">
             <span data-i18n="login.successTip">You can verify your status in the extension popup.</span>
         </p>
-        <button onclick="window.close()" class="btn" style="margin-top: 20px; background: var(--dark);" data-i18n="login.close">Close Window</button>
+        <button type="button" class="btn btn-dark" data-close-window data-i18n="login.close">Close Window</button>
     </div>
 
 </div>
@@ -239,12 +82,6 @@
     // Config (Consistent with background.js)
     const SUPABASE_URL = "https://ikriqgjylpbwqihwpsho.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_xdQsvfTfJEwfNjF5KYvxLA_y4QiKqFo";
-
-    const authHashParams = new URLSearchParams((window.location.hash || "").replace(/^#/, ""));
-    if (authHashParams.get("type") === "recovery") {
-        window.location.replace(`reset-password.html${window.location.hash}`);
-    } else {
-
     const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
     // State
@@ -263,16 +100,7 @@
     const msgBox = document.getElementById('message-box');
     const viewAuth = document.getElementById('view-auth');
     const viewSuccess = document.getElementById('view-success');
-
-    function getCleanLoginRedirectUrl() {
-        const url = new URL('login.html', window.location.href);
-        url.search = '';
-        url.hash = '';
-        if (source === 'extension') {
-            url.searchParams.set('source', 'extension');
-        }
-        return url.toString();
-    }
+    document.querySelector('[data-close-window]')?.addEventListener('click', () => window.close());
 
     // Toggle Login/Signup
     document.getElementById('toggle-btn').addEventListener('click', () => {
@@ -298,14 +126,11 @@
     // 2a. Handle Google SSO
     btnGoogle.addEventListener('click', async () => {
         try {
-            // Return to a stable login URL so stale reset/query/hash state cannot leak into OAuth.
+            // We use window.location.href to return to this exact page (preserving ?source=extension)
             const { error } = await sb.auth.signInWithOAuth({
                 provider: 'google',
                 options: {
-                    redirectTo: getCleanLoginRedirectUrl(),
-                    queryParams: {
-                        prompt: 'select_account'
-                    }
+                    redirectTo: window.location.href
                 }
             });
             if (error) throw error;
@@ -386,7 +211,6 @@
     function showMessage(text, type) {
         msgBox.textContent = text;
         msgBox.className = `msg ${type}`;
-    }
     }
 </script>
 </body>

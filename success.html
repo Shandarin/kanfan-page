@@ -8,17 +8,21 @@
     <link rel="stylesheet" href="style.css">
     <script src="i18n.js"></script>
 </head>
-<body>
-    <div style="position: fixed; top: 16px; right: 16px; z-index: 999;" data-lang-switcher></div>
-    <div class="container">
+<body class="status-page">
+    <div class="language-switcher" data-lang-switcher></div>
+    <main class="container status-card">
         <div class="icon-box">
             <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
         </div>
         <h1 data-i18n="pay.successTitle">Payment Successful!</h1>
-        <p data-i18n="pay.successDesc">Thank you for supporting Kanfan. Your account has been upgraded to Pro. You can now enjoy unlimited manga translations.</p>
-    </div>
-    <script>KanfanI18n.renderSelect(document.querySelector("[data-lang-switcher]"));KanfanI18n.apply();</script>
+        <p data-i18n="pay.successDesc">Thank you for supporting Kanfan. Your account has been upgraded.</p>
+        <a href="account.html" class="btn" data-i18n="nav.myAccount">My Account</a>
+    </main>
+    <script>
+        KanfanI18n.renderSelect(document.querySelector("[data-lang-switcher]"));
+        KanfanI18n.apply();
+    </script>
 </body>
 </html>
