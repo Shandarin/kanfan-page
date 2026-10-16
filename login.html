@@ -48,7 +48,14 @@
                 <input type="password" id="password" required placeholder="••••••••">
             </div>
 
-            <div id="message-box" class="msg"></div>
+            <div id="signup-verification" hidden>
+                <div class="form-group">
+                    <label for="signup-code" id="signup-code-label">Email verification code</label>
+                    <input id="signup-code" type="text" inputmode="numeric" autocomplete="one-time-code" pattern="[0-9]{6,10}" maxlength="10" disabled>
+                </div>
+                <button type="button" class="btn" id="resend-code">Resend code</button>
+            </div>
+            <div id="message-box" class="msg" role="status" aria-live="polite"></div>
 
             <button type="submit" class="btn" id="btn-submit" data-i18n="login.submitIn">Sign In</button>
         </form>
@@ -88,6 +95,13 @@
     const params = new URLSearchParams(window.location.search);
     const source = params.get('source'); // 'extension' or null
     let isLoginMode = true;
+    let pendingSignupEmail = null;
+    let authBusy = false;
+    let resendAt = 0;
+    let resendTimer;
+    function signupText(en, zh) {
+        return KanfanI18n.getLang().startsWith('zh') ? zh : en;
+    }
     KanfanI18n.renderSelect(document.querySelector('[data-lang-switcher]'));
     KanfanI18n.apply();
 
@@ -100,10 +114,54 @@
     const msgBox = document.getElementById('message-box');
     const viewAuth = document.getElementById('view-auth');
     const viewSuccess = document.getElementById('view-success');
+    const codeEl = document.getElementById('signup-code');
+    const verificationEl = document.getElementById('signup-verification');
+    const resendEl = document.getElementById('resend-code');
+    function renderSignupStep() {
+        const verifying = !!pendingSignupEmail;
+        verificationEl.hidden = !verifying;
+        codeEl.disabled = !verifying || authBusy;
+        codeEl.required = verifying;
+        emailEl.readOnly = verifying || authBusy;
+        passEl.disabled = verifying || authBusy;
+        passEl.autocomplete = isLoginMode ? 'current-password' : 'new-password';
+        document.getElementById('signup-code-label').textContent = signupText('Email verification code', '邮箱验证码');
+        btnSubmit.removeAttribute('data-i18n');
+        btnSubmit.textContent = authBusy ? signupText('Processing...', '处理中…')
+            : verifying ? signupText('Verify and register', '验证并完成注册')
+            : isLoginMode ? KanfanI18n.t('login.submitIn') : signupText('Send verification code', '发送注册验证码');
+        const seconds = Math.max(0, Math.ceil((resendAt - Date.now()) / 1000));
+        resendEl.disabled = authBusy || seconds > 0;
+        resendEl.textContent = signupText('Resend code', '重新发送验证码') + (seconds ? ` (${seconds}s)` : '');
+        if (!seconds) clearInterval(resendTimer);
+    }
+    function startResendCooldown() {
+        resendAt = Date.now() + 60000;
+        clearInterval(resendTimer);
+        resendTimer = setInterval(renderSignupStep, 1000);
+        renderSignupStep();
+    }
+    resendEl.addEventListener('click', async () => {
+        if (!pendingSignupEmail || authBusy || Date.now() < resendAt) return;
+        setLoading(true);
+        try {
+            const { error } = await sb.auth.resend({ type: 'signup', email: pendingSignupEmail });
+            if (error) throw error;
+            startResendCooldown();
+            showMessage(signupText('A new code has been sent. Check your inbox and spam folder.', '验证码已重新发送，请检查邮箱和垃圾邮件。'), 'success');
+        } catch (err) { showMessage(err.message, 'error'); }
+        finally { setLoading(false); }
+    });
+    document.querySelector('[data-lang-switcher]').addEventListener('change', renderSignupStep);
     document.querySelector('[data-close-window]')?.addEventListener('click', () => window.close());
 
     // Toggle Login/Signup
     document.getElementById('toggle-btn').addEventListener('click', () => {
+        if (authBusy) return;
+        pendingSignupEmail = null;
+        codeEl.value = '';
+        clearInterval(resendTimer);
+        resendAt = 0;
         isLoginMode = !isLoginMode;
         document.getElementById('title').textContent = isLoginMode ? KanfanI18n.t('login.title') : 'Create Account';
         document.getElementById('subtitle').textContent = isLoginMode ? KanfanI18n.t('login.subtitle') : 'Start your manga translation journey';
@@ -112,6 +170,7 @@
         document.getElementById('toggle-btn').textContent = isLoginMode ? KanfanI18n.t('login.create') : KanfanI18n.t('login.submitIn');
         msgBox.className = 'msg';
         msgBox.textContent = '';
+        renderSignupStep();
     });
 
     // 1. Check if already logged in (Handles page load AND OAuth redirect return)
@@ -143,30 +202,42 @@
     // 2b. Handle Email/Password Submit
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
+        if (authBusy) return;
         setLoading(true);
         const email = emailEl.value.trim();
-        const password = passEl.value.trim();
-
+        const password = passEl.value;
         try {
             let result;
             if (isLoginMode) {
                 result = await sb.auth.signInWithPassword({ email, password });
+            } else if (pendingSignupEmail) {
+                result = await sb.auth.verifyOtp({ email: pendingSignupEmail, token: codeEl.value.trim(), type: 'email' });
+                if (!result.error && !result.data.session) throw new Error(signupText('Verification did not complete. Please try again.', '验证未完成，请重试。'));
             } else {
+                // Fail before creating an account if server-side email confirmation is disabled.
+                const response = await fetch(`${SUPABASE_URL}/auth/v1/settings`, { headers: { apikey: SUPABASE_ANON_KEY } });
+                if (!response.ok) throw new Error(signupText('Registration is temporarily unavailable.', '注册暂不可用，请稍后重试。'));
+                const settings = await response.json();
+                if (settings.mailer_autoconfirm !== false) throw new Error(signupText('Email verification is not ready. Please try again later.', '邮箱验证暂未就绪，请稍后重试。'));
                 result = await sb.auth.signUp({ email, password });
+                if (result.error) throw result.error;
+                if (result.data.session) {
+                    await sb.auth.signOut({ scope: 'local' });
+                    throw new Error(signupText('Email verification is required. Please contact support.', '注册必须验证邮箱，请联系支持。'));
+                }
+                pendingSignupEmail = email;
+                passEl.value = '';
+                startResendCooldown();
+                showMessage(signupText('Check your email for the registration code. Enter it below to finish. If you already have an account, sign in instead.', '请查看邮箱中的注册验证码，输入后完成注册。已有账号请切换到登录。'), 'success');
+                return;
             }
-
             if (result.error) throw result.error;
-
-            if (!isLoginMode && !result.data.session) {
-                // Signup success but needs email verification (optional handling)
-                showMessage("Account created! Please check your email to confirm.", "success");
-                setLoading(false);
-            } else if (result.data.session) {
-                handleAuthSuccess(result.data.session);
-            }
+            if (result.data.session) handleAuthSuccess(result.data.session);
         } catch (err) {
-            showMessage(err.message, "error");
+            showMessage(err.message, 'error');
+        } finally {
             setLoading(false);
+            if (pendingSignupEmail) codeEl.focus();
         }
     });
 
@@ -204,8 +275,10 @@
 
     // Helpers
     function setLoading(isLoading) {
+        authBusy = isLoading;
         btnSubmit.disabled = isLoading;
-        btnSubmit.innerHTML = isLoading ? '<span class="spinner"></span> Processing...' : (isLoginMode ? KanfanI18n.t('login.submitIn') : KanfanI18n.t('login.submitUp'));
+        btnGoogle.disabled = isLoading;
+        renderSignupStep();
     }
 
     function showMessage(text, type) {
