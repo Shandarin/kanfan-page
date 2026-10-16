@@ -687,7 +687,7 @@
 
     const SUPABASE_URL = "https://ikriqgjylpbwqihwpsho.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_xdQsvfTfJEwfNjF5KYvxLA_y4QiKqFo";
-    const AUTH_API_URL = "https://api.kanfan.site/auth";
+    const AUTH_API_URL = "https://ikriqgjylpbwqihwpsho.supabase.co/functions/v1/kanfan-billing";
     const PLANS = {
         plus: {
             quarterly: { price: "$11.99", unitKey: "home.unit.quarter", equivKey: "home.equiv.plus.quarterly" },

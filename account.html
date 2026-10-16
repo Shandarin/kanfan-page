@@ -78,7 +78,7 @@
 
 <script>
     // ================= CONFIG =================
-    const STRIPE_PORTAL_URL = "https://api.kanfan.site/stripe_portal";
+    const STRIPE_PORTAL_URL = "https://ikriqgjylpbwqihwpsho.supabase.co/functions/v1/kanfan-billing";
     const SUPABASE_URL = "https://ikriqgjylpbwqihwpsho.supabase.co";
     const SUPABASE_ANON_KEY = "sb_publishable_xdQsvfTfJEwfNjF5KYvxLA_y4QiKqFo";
 
@@ -201,26 +201,19 @@
                 return;
             }
 
-            // ✅ 推荐：用 Authorization header（更干净）
-            // 但浏览器 location.href 不能带 header，所以用“临时 form POST”来提交 token
-            const form = document.createElement("form");
-            form.method = "POST";
-            form.action = STRIPE_PORTAL_URL;
-
-            const input = document.createElement("input");
-            input.type = "hidden";
-            input.name = "access_token";
-            input.value = session.access_token;
-
-            const returnUrl = document.createElement("input");
-            returnUrl.type = "hidden";
-            returnUrl.name = "return_url";
-            returnUrl.value = window.location.origin + "/account.html";
-
-            form.appendChild(input);
-            form.appendChild(returnUrl);
-            document.body.appendChild(form);
-            form.submit();
+            const response = await fetch(STRIPE_PORTAL_URL, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${session.access_token}`,
+                },
+                body: JSON.stringify({ action: "createStripePortal", payload: {} }),
+            });
+            const result = await response.json();
+            if (!response.ok || !result.success || !result.portal_url) {
+                throw new Error(result.error || "Could not open billing portal");
+            }
+            window.location.href = result.portal_url;
         } catch (err) {
             console.error(err);
             msg.textContent = (KanfanI18n.getLang().startsWith("zh") ? "无法打开账单页面。" : "Could not open billing portal. ") + err.message;
