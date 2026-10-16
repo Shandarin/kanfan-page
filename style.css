@@ -795,6 +795,7 @@ label { display: block; margin-bottom: 6px; color: var(--ink); font-size: 0.86re
 }
 .toggle-text { margin-top: 18px; color: var(--slate); font-size: 0.9rem; }
 .toggle-link, .btn-text { color: var(--primary); font-weight: 800; }
+.toggle-link { cursor: pointer; }
 .success-view { display: none; }
 .success-icon, .icon-box {
     display: grid;
